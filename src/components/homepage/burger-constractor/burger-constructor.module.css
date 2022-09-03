@@ -1,0 +1,41 @@
+.wrapper{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+    margin-top: 6.25rem;
+    padding-right: 1rem;
+}
+.container{
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1rem;
+    margin-top: 6.25rem;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 500px;
+    padding-right: 0.5rem;
+}
+.container-row{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.container-total{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 2.5rem;
+}
+
+@media screen and (max-width: 1250px) {
+    .wrapper {
+        margin-bottom: 2rem;
+        padding: 0;
+    }
+}
