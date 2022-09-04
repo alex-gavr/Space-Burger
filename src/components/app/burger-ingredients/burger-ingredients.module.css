@@ -20,6 +20,10 @@
     justify-content: center;
     align-items: center;
 }
+.container-tabs > *{
+    width: 100%;
+}
+
 .sections-container{
     display: flex;
     flex-flow: column nowrap;
@@ -49,6 +53,7 @@
     overflow: hidden;
     position: relative;
 }
+
 
 @media screen and (max-width: 600px) {
     .container {

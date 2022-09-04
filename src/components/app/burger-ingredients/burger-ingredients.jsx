@@ -12,7 +12,7 @@ const BurgerIngredients = () => {
             <div className="mt-10">
                 <h1 className="text text_type_main-large mb-5">Собери бургер</h1>
                 <div className={styles["container-tabs"]}>
-                    <Tab value="one" active={current === 'one'} onClick={setCurrent}>
+                    <Tab className={styles.tab} value="one" active={current === 'one'} onClick={setCurrent}>
                         Булки
                     </Tab>
                     <Tab value="two" active={current === 'two'} onClick={setCurrent}>
