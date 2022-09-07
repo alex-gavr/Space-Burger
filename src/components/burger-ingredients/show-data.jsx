@@ -2,7 +2,7 @@ import '@ya.praktikum/react-developer-burger-ui-components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './burger-ingredients.module.css';
-import { data } from '../../../utils/data';
+import { data } from '../../utils/data';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 
 
@@ -34,21 +34,7 @@ const ShowData = (props) => {
     )
 }
 ShowData.propTypes = {
-    data: PropTypes.arrayOf(
-        PropTypes.shape({
-            _id: PropTypes.string.isRequired,
-            name: PropTypes.string.isRequired,
-            type: PropTypes.string.isRequired,
-            proteins: PropTypes.number,
-            fat: PropTypes.number,
-            carbohydrates: PropTypes.number,
-            calories: PropTypes.number,
-            price: PropTypes.number.isRequired,
-            image: PropTypes.string.isRequired,
-            image_mobile: PropTypes.string,
-            image_large: PropTypes.string,
-            __v: PropTypes.number.isRequired
-        }).isRequired
-    )
+    type: PropTypes.string.isRequired,
+    heading: PropTypes.string.isRequired
 }
 export default ShowData

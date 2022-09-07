@@ -5,7 +5,7 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import ShowData from './show-data';
 
 const BurgerIngredients = () => {
-
+    
     const [current, setCurrent] = React.useState('one')
     return(
         <section className={styles.wrapper}>

@@ -2,7 +2,7 @@ import '@ya.praktikum/react-developer-burger-ui-components';
 import React from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { data } from '../../../utils/data';
+import { data } from '../../utils/data';
 
 const BurgerConstructor = () => {
     const filteredData = data.filter(ingredient => ingredient.type==="main");
