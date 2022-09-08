@@ -8,13 +8,13 @@ const Modal = (props) => {
 
     // CLOSE IF ESCAPE KEY PRESSED
 
-    // useEffect(() => {
-    //     const closeOnEscapeKey = e => e.key === "Escape" ? handleClose() : null;
-    //     document.body.addEventListener("keydown", closeOnEscapeKey);
-    //     return () => {
-    //         document.body.removeEventListener("keydown", closeOnEscapeKey);
-    //     };
-    // }, [handleClose]);
+    useEffect(() => {
+        const closeOnEscapeKey = e => e.key === "Escape" ? props.onClick() : null;
+        document.body.addEventListener("keydown", closeOnEscapeKey);
+        return () => {
+            document.body.removeEventListener("keydown", closeOnEscapeKey);
+        };
+    },[]);
 
 
     return createPortal( 
