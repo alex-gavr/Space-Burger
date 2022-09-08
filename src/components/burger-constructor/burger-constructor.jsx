@@ -2,10 +2,12 @@ import '@ya.praktikum/react-developer-burger-ui-components';
 import React, {useContext} from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { DataContext } from '../app/app';
+import { DataContext } from '../../utils/create-context';
+
+
 
 const BurgerConstructor = () => {
-    const [data] = useContext(DataContext);
+    const data = useContext(DataContext);
     const filteredData = data.filter(ingredient => ingredient.type==="main");
     return(
         <section className={styles.wrapper}>

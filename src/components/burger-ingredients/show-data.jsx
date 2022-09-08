@@ -3,13 +3,13 @@ import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
 import styles from './burger-ingredients.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import { DataContext } from '../app/app';
+import { DataContext } from '../../utils/create-context';
+
 
 
 
 const ShowData = (props) => {
-
-    const [data] = useContext(DataContext);
+    const data = useContext(DataContext);
     const filteredData = data.filter(ingredient => ingredient.type === props.type);
     return(
         <div>
