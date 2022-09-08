@@ -7,7 +7,7 @@ import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { useFetch } from '../../utils/hook-fetch';
 import { Preloader } from '../preloader/preloader';
 import { DataContext } from '../../utils/create-context';
-
+import IngredientDetails from '../ingredient-details/ingredient-details';
 
 
 const App = () => {
@@ -21,9 +21,7 @@ const App = () => {
 
   return(
     <>
-      { isLoading ?
-        <Preloader />
-        :
+      { isLoading ? <Preloader /> :
         <DataContext.Provider value={data}>
           <div className={styles.wrapper}>
               <AppHeader />

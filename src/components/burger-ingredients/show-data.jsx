@@ -1,5 +1,5 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import PropTypes from 'prop-types';
 import styles from './burger-ingredients.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -8,7 +8,9 @@ import { DataContext } from '../../utils/create-context';
 
 
 
+
 const ShowData = (props) => {
+
     const data = useContext(DataContext);
     const filteredData = data.filter(ingredient => ingredient.type === props.type);
     return(
@@ -18,7 +20,7 @@ const ShowData = (props) => {
             {
                 filteredData.map((ingredient) => {
                     return(
-                        <li key={ingredient._id} className={styles["container-element"]} >
+                        <li key={ingredient._id} className={styles["container-element"]} onClick={() => props.stateChanger(true)} >
                             <div className={styles["container-image"]}>
                                 <img src={ingredient.image} alt={ingredient.name} />
                             </div>

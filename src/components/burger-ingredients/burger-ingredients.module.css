@@ -42,6 +42,7 @@
     align-content: center;
     gap: 4px;
     position: relative;
+    cursor: pointer;
 }
 .container-price{
     composes: container-tabs;
