@@ -1,12 +1,20 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { DataContext } from '../../utils/create-context';
+import { OrderDetails } from '../order-details/order-details';
 
 
 
 const BurgerConstructor = () => {
+
+    const [isModalOpened, setIsModalOpened] = useState(false);
+
+    const handleClose = () => {
+        setIsModalOpened(false)
+    }
+
     const data = useContext(DataContext);
     const filteredData = data.filter(ingredient => ingredient.type==="main");
     return(
@@ -37,8 +45,9 @@ const BurgerConstructor = () => {
                     <h1 className='text text_type_digits-medium'>610</h1>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button type="primary" size="large" > Оформить заказ </Button>
+                <Button type="primary" size="large" onClick={() => setIsModalOpened(true)} > Оформить заказ </Button>
             </div>
+            <OrderDetails isOpened={isModalOpened} isClosed={handleClose} />
         </section>
     )
 }

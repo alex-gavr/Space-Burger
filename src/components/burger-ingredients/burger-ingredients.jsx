@@ -11,7 +11,7 @@ const BurgerIngredients = (props) => {
     const [id, setId] = useState(void 0);
     const [current, setCurrent] = React.useState('one')
 
-    const handleClose = (e) => {
+    const handleClose = () => {
         setIsModalOpened(false)
     }
 
