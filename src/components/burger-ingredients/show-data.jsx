@@ -1,5 +1,5 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
 import styles from './burger-ingredients.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -13,6 +13,8 @@ const ShowData = (props) => {
 
     const data = useContext(DataContext);
     const filteredData = data.filter(ingredient => ingredient.type === props.type);
+
+
     return(
         <div>
             <h3 className='text text_type_main-medium'>{props.heading}</h3>
@@ -20,7 +22,7 @@ const ShowData = (props) => {
             {
                 filteredData.map((ingredient) => {
                     return(
-                        <li key={ingredient._id} className={styles["container-element"]} onClick={() => props.stateChanger(true)} >
+                        <li key={ingredient._id} className={styles["container-element"]} onClick={()=> {props.setId(ingredient._id); props.setIsModalOpened(true)}}  >
                             <div className={styles["container-image"]}>
                                 <img src={ingredient.image} alt={ingredient.name} />
                             </div>

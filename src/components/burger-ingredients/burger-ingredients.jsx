@@ -8,7 +8,7 @@ import { IngredientDetails } from '../ingredient-details/ingredient-details';
 
 const BurgerIngredients = (props) => {
     const [isModalOpened, setIsModalOpened] = useState(false);
-
+    const [id, setId] = useState(void 0);
     const [current, setCurrent] = React.useState('one')
 
     const handleClose = (e) => {
@@ -33,13 +33,13 @@ const BurgerIngredients = (props) => {
             </div>
             <div className={styles["sections-container"]}>
                 {/* Контейнер булок */}
-                <ShowData heading="Булки" type="bun" stateChanger={setIsModalOpened} />
+                <ShowData heading="Булки" type="bun" setIsModalOpened={setIsModalOpened} setId={setId}  />
                 {/* Контейнер соусов */}
-                <ShowData heading="Соусы" type="sauce" stateChanger={setIsModalOpened} />
+                <ShowData heading="Соусы" type="sauce" setIsModalOpened={setIsModalOpened} setId={setId} />
                 {/* Контейнер начинки */}
-                <ShowData heading="Начинка" type="main" stateChanger={setIsModalOpened} />
+                <ShowData heading="Начинка" type="main" setIsModalOpened={setIsModalOpened} setId={setId} />
             </div>
-            <IngredientDetails isOpened={isModalOpened} isClosed={handleClose} />
+            <IngredientDetails isOpened={isModalOpened} isClosed={handleClose} id={id} />
             
         </section>
     )
