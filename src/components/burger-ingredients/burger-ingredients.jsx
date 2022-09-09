@@ -6,7 +6,7 @@ import ShowData from './show-data';
 import { IngredientDetails } from '../ingredient-details/ingredient-details';
 
 
-const BurgerIngredients = (props) => {
+const BurgerIngredients = () => {
     const [isModalOpened, setIsModalOpened] = useState(false);
     const [id, setId] = useState(void 0);
     const [current, setCurrent] = React.useState('one')

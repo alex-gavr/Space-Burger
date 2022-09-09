@@ -1,7 +1,8 @@
 import { useContext } from "react";
 import { DataContext } from "../../utils/create-context";
 import Modal from "../modal/modal";
-import styles from './ingredient-details.module.css'
+import styles from './ingredient-details.module.css';
+import PropTypes from 'prop-types';
 
 
 
@@ -39,4 +40,9 @@ export const IngredientDetails = ({isOpened, isClosed, id}) => {
             </div>
         </Modal>
     );
+}
+IngredientDetails.propTypes = {
+    isOpened: PropTypes.bool.isRequired,
+    isClosed: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired
 }

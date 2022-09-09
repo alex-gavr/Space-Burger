@@ -1,6 +1,7 @@
 import Modal from "../modal/modal";
 import styles from './order-details.module.css'
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import PropTypes from 'prop-types';
 
 export const OrderDetails = ({isOpened, isClosed}) => {
 
@@ -19,4 +20,8 @@ export const OrderDetails = ({isOpened, isClosed}) => {
             </div>
         </Modal>
     );
+}
+OrderDetails.propTypes = {
+    isOpened: PropTypes.bool.isRequired,
+    isClosed: PropTypes.func.isRequired
 }

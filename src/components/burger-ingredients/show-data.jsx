@@ -42,6 +42,8 @@ const ShowData = (props) => {
 }
 ShowData.propTypes = {
     type: PropTypes.string.isRequired,
-    heading: PropTypes.string.isRequired
+    heading: PropTypes.string.isRequired,
+    setId: PropTypes.func.isRequired,
+    setIsModalOpened: PropTypes.func.isRequired
 }
 export default ShowData
