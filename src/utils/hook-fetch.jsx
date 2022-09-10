@@ -2,23 +2,28 @@ import {useState} from "react";
 
 export const useFetch = (url) => {
 
-    const [isLoading, SetIsLoading] = useState(true);
-    const [isError, SetIsError] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isError, setIsError] = useState(false);
     const [data, setData] = useState();
 
 
     const getData = () => {
         console.log(url);
-        SetIsError(false);
+        setIsError(false);
         fetch(url)
-        .then((res) => res.json())
+        .then((res) => {
+            if (res.ok){
+                return res.json() 
+            }
+            return Promise.reject(`Ошибка ${res.status}`);
+        })
         .then((data) => setData(data.data))
         .catch((err)=>{
-            SetIsError(true)
+            setIsError(true)
             console.log(err.message);
         })
         .finally(()=>{
-            SetIsLoading(false);
+            setIsLoading(false);
         });
     }
 
