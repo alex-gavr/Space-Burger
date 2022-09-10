@@ -4,11 +4,12 @@ import styles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import ShowData from './show-data';
 import { IngredientDetails } from '../ingredient-details/ingredient-details';
+import Modal from '../modal/modal';
 
 
 const BurgerIngredients = () => {
     const [isModalOpened, setIsModalOpened] = useState(false);
-    const [id, setId] = useState(void 0);
+    const [ingredient, setIngredient] = useState(void 0);
     const [current, setCurrent] = React.useState('one')
 
     const handleClose = () => {
@@ -33,14 +34,15 @@ const BurgerIngredients = () => {
             </div>
             <div className={styles["sections-container"]}>
                 {/* Контейнер булок */}
-                <ShowData heading="Булки" type="bun" setIsModalOpened={setIsModalOpened} setId={setId}  />
+                <ShowData title="Булки" type="bun" setIsModalOpened={setIsModalOpened} setIngredient={setIngredient}  />
                 {/* Контейнер соусов */}
-                <ShowData heading="Соусы" type="sauce" setIsModalOpened={setIsModalOpened} setId={setId} />
+                <ShowData title="Соусы" type="sauce" setIsModalOpened={setIsModalOpened} setIngredient={setIngredient} />
                 {/* Контейнер начинки */}
-                <ShowData heading="Начинка" type="main" setIsModalOpened={setIsModalOpened} setId={setId} />
+                <ShowData title="Начинка" type="main" setIsModalOpened={setIsModalOpened} setIngredient={setIngredient} />
             </div>
-            <IngredientDetails isOpened={isModalOpened} isClosed={handleClose} id={id} />
-            
+            <Modal title='Детали ингредиента' isOpened={isModalOpened} onClose={handleClose} >
+                <IngredientDetails ingredient={ingredient} />
+            </Modal>
         </section>
     )
 }

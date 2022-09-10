@@ -17,12 +17,12 @@ const ShowData = (props) => {
 
     return(
         <div>
-            <h3 className='text text_type_main-medium'>{props.heading}</h3>
+            <h3 className='text text_type_main-medium'>{props.title}</h3>
             <ul className={styles.container}>
             {
                 filteredData.map((ingredient) => {
                     return(
-                        <li key={ingredient._id} className={styles["container-element"]} onClick={()=> {props.setId(ingredient._id); props.setIsModalOpened(true)}}  >
+                        <li key={ingredient._id} className={styles["container-element"]} onClick={()=> {props.setIngredient(ingredient); props.setIsModalOpened(true)}}  >
                             <div className={styles["container-image"]}>
                                 <img src={ingredient.image} alt={ingredient.name} />
                             </div>
@@ -42,8 +42,8 @@ const ShowData = (props) => {
 }
 ShowData.propTypes = {
     type: PropTypes.string.isRequired,
-    heading: PropTypes.string.isRequired,
-    setId: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
+    setIngredient: PropTypes.func.isRequired,
     setIsModalOpened: PropTypes.func.isRequired
 }
 export default ShowData
