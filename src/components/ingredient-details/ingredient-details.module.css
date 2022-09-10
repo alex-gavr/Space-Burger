@@ -1,0 +1,26 @@
+.wrapper{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 3.5rem;
+    width: 100%;
+    padding: 0rem 2.5rem;
+}
+.wrapper > img{
+    margin-bottom: 1rem;
+}
+
+.column{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+.row{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
+}

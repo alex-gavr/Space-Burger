@@ -1,0 +1,23 @@
+.wrapper{
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: calc(7.5rem - 71px);
+    margin-bottom: 7.5rem;
+}
+.wrapper > h1 {
+    margin-bottom: 2rem;
+}
+.wrapper:nth-child(4){
+    margin-bottom: 0.5rem;
+}
+
+.checkContainer {
+    padding: 1rem;
+    margin-top: 3.75rem;
+    margin-bottom: 3.75rem;
+    border-radius: 30% 70% 70% 30% / 36% 36% 64% 64%;
+    background: linear-gradient(to left, var(--colors-interface-accent), var(--colors-interface-success));
+}

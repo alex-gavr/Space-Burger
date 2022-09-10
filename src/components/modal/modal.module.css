@@ -1,0 +1,32 @@
+.container{
+    width: 90%;
+    max-width: 620px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--background-alt);
+    position: relative;
+    border-radius: 2rem;
+    z-index: 999;
+    cursor:default;
+}
+.container > svg {
+    position:absolute;
+    bottom: 3.75rem;
+    right: 2.5rem;
+}
+.rowBetween{
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2.5rem;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+}
+.iconContainer{
+    padding: 0.1rem;
+    cursor: pointer;
+}
