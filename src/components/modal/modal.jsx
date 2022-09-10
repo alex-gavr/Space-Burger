@@ -11,11 +11,14 @@ const Modal = ({isOpened, onClose, title, children}) => {
 
     useEffect(() => {
         const closeOnEscapeKey = e => e.key === "Escape" ? onClose() : null;
-        document.body.addEventListener("keydown", closeOnEscapeKey);
-        return () => {
-            document.body.removeEventListener("keydown", closeOnEscapeKey);
-        };
-    },[]);
+        
+        if(isOpened){
+            document.body.addEventListener("keydown", closeOnEscapeKey);
+            return () => {
+                document.body.removeEventListener("keydown", closeOnEscapeKey);
+            };
+        }
+    },[isOpened]);
 
     if (!isOpened) return null;
 
