@@ -1,4 +1,4 @@
-.container{
+.container {
     width: 90%;
     max-width: 620px;
     display: flex;
@@ -9,14 +9,14 @@
     position: relative;
     border-radius: 2rem;
     z-index: 999;
-    cursor:default;
+    cursor: default;
 }
 .container > svg {
-    position:absolute;
+    position: absolute;
     bottom: 3.75rem;
     right: 2.5rem;
 }
-.rowBetween{
+.rowBetween {
     width: 100%;
     display: flex;
     flex-flow: row nowrap;
@@ -26,7 +26,7 @@
     padding-left: 2.5rem;
     padding-right: 2.5rem;
 }
-.iconContainer{
+.iconContainer {
     padding: 0.1rem;
     cursor: pointer;
 }
