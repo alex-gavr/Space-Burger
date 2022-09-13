@@ -55,7 +55,7 @@ const BurgerConstructor = () => {
         <section className={styles.wrapper}>
             <ul className={styles.container}>
                     {/* Верхняя булка */}
-                    <li className={`${styles["container-row"]} ${styles["padding-right"]}`}>
+                    <li className={[styles.containerRow, styles.paddingRight].join(' ')}>
                         <ConstructorElement type='top' isLocked={true} text={ingredients[0].name + " (верх)"} price={ingredients[0].price} thumbnail ={ingredients[0].image} />
                     </li>
                     {/* Начинка */}
@@ -63,7 +63,7 @@ const BurgerConstructor = () => {
                         {
                             state.map((ingredient) => {
                                 return(
-                                    <li className={styles["container-row"]} key={ingredient._id} onClick={() => deleteIngredient(ingredient)} >
+                                    <li className={styles.containerRow} key={ingredient._id} onClick={() => deleteIngredient(ingredient)} >
                                         <DragIcon />
                                         <ConstructorElement text={ingredient.name} price={ingredient.price} thumbnail ={ingredient.image}  /> 
                                     </li>
@@ -72,12 +72,12 @@ const BurgerConstructor = () => {
                         }
                     </div>
                     {/* Нижняя булка */}
-                <li className={`${styles["container-row"]} ${styles["padding-right"]}`}>
+                <li className={[styles.containerRow, styles.paddingRight].join(' ')}>
                     <ConstructorElement type='bottom' isLocked={true} text={ingredients[0].name + ' (низ)'} price={ingredients[0].price} thumbnail ={ingredients[0].image}  />
                 </li>
             </ul>
-            <div className={styles["container-total"]}>
-                <div className={styles["container-row"]}>
+            <div className={styles.containerTotal}>
+                <div className={styles.containerRow}>
                     {/* Цена */}
                     <h1 className='text text_type_digits-medium'>{totalPrice}</h1>
                     <CurrencyIcon type="primary" />

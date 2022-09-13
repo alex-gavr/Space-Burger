@@ -21,7 +21,7 @@
     overflow-y: scroll;
     height: 500px;
 }
-.container-row{
+.containerRow{
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-end;
@@ -29,15 +29,12 @@
     gap: 0.4rem;
     padding-right: 0.5rem;
 }
-.padding-right{
+.paddingRight{
     padding-right: 1rem;
 }
 
-.container-ro last-child{
-    width: 230px;
-}
 
-.container-total{
+.containerTotal{
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-end;
