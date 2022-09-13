@@ -1,30 +1,30 @@
-.wrapper{
+.wrapper {
     display: flex;
     flex-flow: column nowrap;
     align-content: center;
     gap: 2.5rem;
     width: auto;
 }
-.container{
+.container {
     display: grid;
-    grid-template-columns: repeat(2,1fr);
+    grid-template-columns: repeat(2, 1fr);
     justify-items: center;
     align-items: center;
     text-align: center;
     gap: 2rem 1.5rem;
     margin-top: 1.5rem;
 }
-.container-tabs{
+.containerTabs {
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
     align-items: center;
 }
-.container-tabs > *{
+.containerTabs > * {
     width: 100%;
 }
 
-.sections-container{
+.sectionsContainer {
     display: flex;
     flex-flow: column nowrap;
     gap: 2.5rem;
@@ -34,7 +34,7 @@
     padding-right: 0.5rem;
 }
 
-.container-element{
+.containerElement {
     width: auto;
     display: flex;
     flex-flow: column nowrap;
@@ -44,24 +44,23 @@
     position: relative;
     cursor: pointer;
 }
-.container-price{
-    composes: container-tabs;
+.containerPrice {
+    composes: containerTabs;
     gap: 5px;
 }
 
-.container-image{
+.containerImage {
     padding: 0em 1em;
     overflow: hidden;
     position: relative;
 }
-
 
 @media screen and (max-width: 600px) {
     .container {
         display: grid;
         grid-template-columns: 1fr;
     }
-    .sections-container{
+    .sectionsContainer {
         height: auto;
         overflow-y: auto;
         overflow-x: auto;
