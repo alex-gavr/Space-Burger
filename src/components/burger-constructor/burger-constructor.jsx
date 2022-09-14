@@ -1,5 +1,5 @@
 import "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useContext, useState, useReducer, useEffect } from "react";
+import React, { useContext, useState, useReducer } from "react";
 import styles from "./burger-constructor.module.css";
 import {
     ConstructorElement,
@@ -7,17 +7,20 @@ import {
     CurrencyIcon,
     DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { DataContext } from "../../utils/create-context";
+import { DataContext } from "../../services/create-context";
 import { OrderDetails } from "../order-details/order-details";
 import Modal from "../modal/modal";
-import { usePost } from "../../utils/hook-post";
+import { useFetch } from "../../utils/hook-fetch";
+import { ORDER_URL } from "../../utils/config";
+import { INGREDIENT_TYPES } from "../../utils/ingredient-types";
+import { v4 as uuidv4 } from 'uuid';
 
 const BurgerConstructor = () => {
     // Беру все ингредиенты из API
     const ingredients = useContext(DataContext);
     // Фильтрую ингредиенты чтобы была только "начинка"
     const mainIngredients = ingredients.filter(
-        (ingredient) => ingredient.type === "main"
+        (ingredient) => ingredient.type === INGREDIENT_TYPES.MAIN
     );
     // Использую начинку как initialState в useReducer
     const initialState = mainIngredients;
@@ -63,27 +66,19 @@ const BurgerConstructor = () => {
         ingredients[0]._id,
     ];
 
-    const url = "https://norma.nomoreparties.space/api/orders";
-
-    const { isLoading, isError, data, getData } = usePost(
-        url,
-        allIngredientIds
+    const { isLoading, isError, data, getData } = useFetch(
+        ORDER_URL,
+        "POST",
+        {
+            "Content-Type": "application/json",
+        },
+        {
+            ingredients: allIngredientIds,
+        }
     );
-
-    // Правильнее ли будет использовать useEffect? Или можно просто обойтись handleSubmit?
-
-    // const [postData, setPostData] = useState(false);
-
-    // useEffect(() => {
-    //     if (postData){
-    //         getData()
-    //         setPostData(false);
-    //     }
-    // },[postData])
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // setPostData(true);
         getData();
         handleOpen();
     };
@@ -103,8 +98,7 @@ const BurgerConstructor = () => {
         <section className={styles.wrapper}>
             <ul className={styles.container}>
                 {/* Верхняя булка */}
-                <li
-                    className={[styles.containerRow, styles.paddingRight].join(" ")}>
+                <li className={`${styles.containerRow} ${styles.paddingRight}`}>
                     <ConstructorElement
                         type="top"
                         isLocked={true}
@@ -119,21 +113,24 @@ const BurgerConstructor = () => {
                         return (
                             <li
                                 className={styles.containerRow}
-                                key={ingredient._id}
-                                onClick={() => deleteIngredient(ingredient)}
+                                key={uuidv4()}
+                                onClick={() =>addAnotherIngredient(ingredient)}
                             >
                                 <DragIcon />
                                 <ConstructorElement
                                     text={ingredient.name}
                                     price={ingredient.price}
                                     thumbnail={ingredient.image}
+                                    handleClose={() =>
+                                        deleteIngredient(ingredient)
+                                    }
                                 />
                             </li>
                         );
                     })}
                 </div>
                 {/* Нижняя булка */}
-                <li className={[styles.containerRow, styles.paddingRight].join(" ")}>
+                <li className={`${styles.containerRow} ${styles.paddingRight}`}>
                     <ConstructorElement
                         type="bottom"
                         isLocked={true}
@@ -146,9 +143,7 @@ const BurgerConstructor = () => {
             <div className={styles.containerTotal}>
                 <div className={styles.containerRow}>
                     {/* Цена */}
-                    <h1 className="text text_type_digits-medium">
-                        {totalPrice}
-                    </h1>
+                    <p className="text text_type_digits-medium">{totalPrice}</p>
                     <CurrencyIcon type="primary" />
                 </div>
                 {/* Кнопка оформить заказ */}

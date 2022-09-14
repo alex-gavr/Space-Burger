@@ -1,18 +1,18 @@
 import "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import PropTypes from "prop-types";
 import styles from "./burger-ingredients.module.css";
 import {
     CurrencyIcon,
     Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { DataContext } from "../../utils/create-context";
+import { DataContext } from "../../services/create-context";
 
-const ShowData = (props) => {
+const IngredientCategory = (props) => {
     const data = useContext(DataContext);
-    const filteredData = data.filter(
+    const filteredData = useMemo(()=>  data.filter(
         (ingredient) => ingredient.type === props.type
-    );
+    ),[data]);
 
     return (
         <div>
@@ -56,10 +56,10 @@ const ShowData = (props) => {
         </div>
     );
 };
-ShowData.propTypes = {
+IngredientCategory.propTypes = {
     type: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     setIngredient: PropTypes.func.isRequired,
     setIsModalOpened: PropTypes.func.isRequired,
 };
-export default ShowData;
+export default IngredientCategory;

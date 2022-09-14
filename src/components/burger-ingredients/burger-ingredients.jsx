@@ -2,14 +2,15 @@ import "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useState } from "react";
 import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import ShowData from "./show-data";
+import IngredientCategory from "./ingredient-category";
 import { IngredientDetails } from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
+import { INGREDIENT_TYPES } from "../../utils/ingredient-types";
 
 const BurgerIngredients = () => {
     const [isModalOpened, setIsModalOpened] = useState(false);
     const [ingredient, setIngredient] = useState(void 0);
-    const [current, setCurrent] = React.useState("one");
+    const [current, setCurrent] = useState(INGREDIENT_TYPES.BUN);
 
     const handleClose = () => {
         setIsModalOpened(false);
@@ -23,23 +24,22 @@ const BurgerIngredients = () => {
                 </h1>
                 <div className={styles.containerTabs}>
                     <Tab
-                        className={styles.tab}
-                        value="one"
-                        active={current === "one"}
+                        value={INGREDIENT_TYPES.BUN}
+                        active={current === INGREDIENT_TYPES.BUN}
                         onClick={setCurrent}
                     >
                         Булки
                     </Tab>
                     <Tab
-                        value="two"
-                        active={current === "two"}
+                        value={INGREDIENT_TYPES.SAUCE}
+                        active={current === INGREDIENT_TYPES.SAUCE}
                         onClick={setCurrent}
                     >
                         Соусы
                     </Tab>
                     <Tab
-                        value="three"
-                        active={current === "three"}
+                        value={INGREDIENT_TYPES.MAIN}
+                        active={current === INGREDIENT_TYPES.MAIN}
                         onClick={setCurrent}
                     >
                         Начинка
@@ -47,24 +47,24 @@ const BurgerIngredients = () => {
                 </div>
             </div>
             <div className={styles.sectionsContainer}>
-                {/* Контейнер булок */}
-                <ShowData
+                {/* Булки */}
+                <IngredientCategory
                     title="Булки"
-                    type="bun"
+                    type={INGREDIENT_TYPES.BUN}
                     setIsModalOpened={setIsModalOpened}
                     setIngredient={setIngredient}
                 />
-                {/* Контейнер соусов */}
-                <ShowData
+                {/* Соусы */}
+                <IngredientCategory
                     title="Соусы"
-                    type="sauce"
+                    type={INGREDIENT_TYPES.SAUCE}
                     setIsModalOpened={setIsModalOpened}
                     setIngredient={setIngredient}
                 />
-                {/* Контейнер начинки */}
-                <ShowData
+                {/* Начинка */}
+                <IngredientCategory
                     title="Начинка"
-                    type="main"
+                    type={INGREDIENT_TYPES.MAIN}
                     setIsModalOpened={setIsModalOpened}
                     setIngredient={setIngredient}
                 />
