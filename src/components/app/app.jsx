@@ -6,11 +6,11 @@ import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import { useFetch } from "../../utils/hook-fetch";
 import { Preloader } from "../preloader/preloader";
-import { DataContext } from "../../utils/create-context";
+import { DataContext } from "../../services/create-context";
+import { INGREDIENTS_URL } from "../../utils/config";
 
 const App = () => {
-    const api = "https://norma.nomoreparties.space/api/ingredients";
-    const { isLoading, isError, data, getData } = useFetch(api);
+    const { isLoading, isError, data, getData } = useFetch(INGREDIENTS_URL);
 
     useEffect(() => {
         getData();
@@ -21,15 +21,15 @@ const App = () => {
             {isLoading ? (
                 <Preloader />
             ) : (
-                <DataContext.Provider value={data}>
                     <div className={styles.wrapper}>
                         <AppHeader />
+                        <DataContext.Provider value={data.data}>
                         <main className={styles.container}>
                             <BurgerIngredients />
                             <BurgerConstructor />
                         </main>
+                        </DataContext.Provider>
                     </div>
-                </DataContext.Provider>
             )}
         </>
     );

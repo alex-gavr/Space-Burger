@@ -128,7 +128,7 @@ nav ul li a{
     }
     nav ul{
         display: grid;
-        grid-template-columns: 1fr 1fr fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
         grid-template-areas: 
             "constr order logo . profile ";
         place-items: center;
