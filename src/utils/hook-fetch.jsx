@@ -11,7 +11,7 @@ export const useFetch = (url, method, headers, body) => {
         method: method,
         headers: headers,
     }
-    if (method === 'POST') {
+    if (body) {
         requestOptions.body = JSON.stringify(body)
     }
 

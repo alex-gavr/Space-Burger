@@ -1,5 +1,5 @@
 import "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useContext, useState, useReducer } from "react";
+import React, { useContext, useState, useReducer, useEffect } from "react";
 import styles from "./burger-constructor.module.css";
 import {
     ConstructorElement,
@@ -80,8 +80,13 @@ const BurgerConstructor = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         getData();
-        handleOpen();
     };
+
+    useEffect(() => {
+        if (data) {
+            handleOpen();
+        }
+    }, [data]);
 
     // Модуль
     const [isModalOpened, setIsModalOpened] = useState(false);
@@ -151,9 +156,11 @@ const BurgerConstructor = () => {
                     Оформить заказ
                 </Button>
             </div>
-            <Modal isOpened={isModalOpened} onClose={handleClose}>
-                <OrderDetails orderNumber={data && data.order.number} />
-            </Modal>
+            {data && 
+                <Modal isOpened={isModalOpened} onClose={handleClose}>
+                    <OrderDetails orderNumber={data.order.number} />
+                </Modal>
+            }
         </section>
     );
 };
