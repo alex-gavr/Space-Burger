@@ -8,13 +8,21 @@ import { useFetch } from "../../utils/hook-fetch";
 import { Preloader } from "../preloader/preloader";
 import { DataContext } from "../../services/create-context";
 import { INGREDIENTS_URL } from "../../utils/config";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchIngredients } from "../../services/ingredients-slice";
 
 const App = () => {
+    const {ingredients, loading, error} = useSelector((state) => state.ingredients);
+
+    const dispatch = useDispatch();
     const { isLoading, isError, data, getData } = useFetch(INGREDIENTS_URL);
 
     useEffect(() => {
         getData();
+        dispatch(fetchIngredients())
     }, []);
+
+    console.log('Fetched',ingredients);
 
     return (
         <>

@@ -1,31 +1,43 @@
 import "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useContext, useMemo } from "react";
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import styles from "./burger-ingredients.module.css";
 import {
     CurrencyIcon,
     Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { DataContext } from "../../services/create-context";
+import { useSelector, useDispatch } from "react-redux";
+import { setDetails } from "../../services/ingredient-details-slice";
 
 const IngredientCategory = (props) => {
-    const data = useContext(DataContext);
-    const filteredData = useMemo(()=>  data.filter(
-        (ingredient) => ingredient.type === props.type
-    ),[data]);
+    const dispatch = useDispatch();
+
+    const handleOpenModal = (ingredient) => {
+        dispatch(setDetails(ingredient));
+        props.setIsModalOpened(true);
+    };
+
+    const { ingredients, loading, error } = useSelector(
+        (state) => state.ingredients
+    );
+
+    const filteredIngredients = useMemo(
+        () =>
+            ingredients.filter((ingredient) => ingredient.type === props.type),
+        [ingredients]
+    );
 
     return (
         <div>
             <h3 className="text text_type_main-medium">{props.title}</h3>
             <ul className={styles.container}>
-                {filteredData.map((ingredient) => {
+                {filteredIngredients.map((ingredient) => {
                     return (
                         <li
                             key={ingredient._id}
                             className={styles.containerElement}
                             onClick={() => {
-                                props.setIngredient(ingredient);
-                                props.setIsModalOpened(true);
+                                handleOpenModal(ingredient);
                             }}
                         >
                             <div className={styles.containerImage}>
@@ -43,12 +55,7 @@ const IngredientCategory = (props) => {
                             <p className="text text_type_main-default">
                                 {ingredient.name}
                             </p>
-                            {ingredient.__v >= 1 ? (
-                                <Counter
-                                    count={ingredient.__v}
-                                    size="default"
-                                />
-                            ) : null}
+                            <Counter count={1} size="default" />
                         </li>
                     );
                 })}
