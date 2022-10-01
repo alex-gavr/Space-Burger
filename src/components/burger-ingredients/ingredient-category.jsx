@@ -8,13 +8,15 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector, useDispatch } from "react-redux";
 import { setDetails } from "../../services/ingredient-details-slice";
+import { addIngredient } from "../../services/constructor-slice";
 
 const IngredientCategory = (props) => {
     const dispatch = useDispatch();
 
     const handleOpenModal = (ingredient) => {
-        dispatch(setDetails(ingredient));
-        props.setIsModalOpened(true);
+        dispatch(addIngredient(ingredient));
+        // dispatch(setDetails(ingredient));
+        // props.setIsModalOpened(true);
     };
 
     const { ingredients, loading, error } = useSelector(
@@ -66,7 +68,6 @@ const IngredientCategory = (props) => {
 IngredientCategory.propTypes = {
     type: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    setIngredient: PropTypes.func.isRequired,
     setIsModalOpened: PropTypes.func.isRequired,
 };
 export default IngredientCategory;

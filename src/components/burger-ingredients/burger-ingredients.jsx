@@ -24,27 +24,31 @@ const BurgerIngredients = () => {
         setIsModalOpened(false);
     };
 
+    // TRACKING SCROLLING FOR
     useEffect(() => {
         const element = document.getElementById("id");
         const onScroll = () => {
-            let bunHeight = bun.current.clientHeight;
-            let sauceHeight = sauce.current.clientHeight;
+            const bunHeight = bun.current.clientHeight;
+            const sauceHeight = sauce.current.clientHeight;
             const gapHeightBetweenDivs = 40;
-            let bunAndSauceAndGap = bunHeight + sauceHeight + gapHeightBetweenDivs;
+            const bunAndSauceAndGap =
+                bunHeight + sauceHeight + gapHeightBetweenDivs;
 
-            if (element.scrollTop >= bunHeight && element.scrollTop <= bunAndSauceAndGap)
-            {
+            if (
+                element.scrollTop >= bunHeight &&
+                element.scrollTop <= bunAndSauceAndGap
+            ) {
                 setCurrent(INGREDIENT_TYPES.SAUCE);
-            } else if (element.scrollTop >= bunAndSauceAndGap){
+            } else if (element.scrollTop >= bunAndSauceAndGap) {
                 setCurrent(INGREDIENT_TYPES.MAIN);
             } else {
                 setCurrent(INGREDIENT_TYPES.BUN);
             }
-        }
-        element.addEventListener("scroll", onScroll );
+        };
+        element.addEventListener("scroll", onScroll);
 
         return () => {
-            element.removeEventListener("scroll", onScroll );
+            element.removeEventListener("scroll", onScroll);
         };
     }, []);
 
@@ -75,7 +79,7 @@ const BurgerIngredients = () => {
                     </Tab>
                 </div>
             </div>
-            <div className={styles.sectionsContainer} id={'id'}>
+            <div className={styles.sectionsContainer} id={"id"}>
                 {/* Булки */}
                 <div ref={bun}>
                     <IngredientCategory
