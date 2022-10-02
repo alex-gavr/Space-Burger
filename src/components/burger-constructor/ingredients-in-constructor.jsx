@@ -9,15 +9,16 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteIngredient } from "../../services/constructor-slice";
+import Card from "./card";
 
-export const ConstructorIngredients = (ingredient) => {
+export const ConstructorIngredients = ({ingredient, index}) => {
     const dispatch = useDispatch();
+
 
     return (
         <>
             {ingredient.type === "bun" ? (
-                <li
-                >
+                <li>
                     <ConstructorElement
                         type={ingredient.side}
                         isLocked={true}
@@ -27,19 +28,23 @@ export const ConstructorIngredients = (ingredient) => {
                     />
                 </li>
             ) : (
-                <li
-                    className={styles.containerRow}
+                <Card 
+                key={ingredient._id} 
+                id={ingredient._id}
+                index={index}
                 >
-                    <DragIcon />
-                    <ConstructorElement
-                        text={ingredient.name}
-                        price={ingredient.price}
-                        thumbnail={ingredient.image}
-                        handleClose={() =>
-                            dispatch(deleteIngredient(ingredient))
-                        }
-                    />
-                </li>
+                    <li className={styles.containerRow}>
+                        <DragIcon />
+                        <ConstructorElement
+                            text={ingredient.name}
+                            price={ingredient.price}
+                            thumbnail={ingredient.image}
+                            handleClose={() =>
+                                dispatch(deleteIngredient(ingredient))
+                            }
+                        />
+                    </li>
+                </Card>
             )}
         </>
     );

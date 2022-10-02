@@ -1,30 +1,19 @@
 import "@ya.praktikum/react-developer-burger-ui-components";
 import React, {
-    useContext,
     useState,
-    useReducer,
     useEffect,
-    useMemo,
-    useCallback,
 } from "react";
 import styles from "./burger-constructor.module.css";
 import {
-    ConstructorElement,
     Button,
     CurrencyIcon,
-    DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { DataContext } from "../../services/create-context";
 import { OrderDetails } from "../order-details/order-details";
 import Modal from "../modal/modal";
-import { useFetch } from "../../utils/hook-fetch";
-import { ORDER_URL } from "../../utils/config";
 import { INGREDIENT_TYPES } from "../../utils/ingredient-types";
 import { useSelector, useDispatch } from "react-redux";
 import { ConstructorIngredients } from "./ingredients-in-constructor";
 import { v4 as uuidv4 } from "uuid";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 import { fetchOrderDetails } from "../../services/order-details-slice";
 import { useDrop } from "react-dnd";
 import { addIngredient } from "../../services/constructor-slice";
@@ -88,13 +77,15 @@ const BurgerConstructor = () => {
 
     // DND
 
-    const [{isOver}, drop] = useDrop (() => ({
-        accept: 'ingredient',
+    const [{ isOver }, drop] = useDrop(() => ({
+        accept: "ingredient",
         drop: (ingredient) => {
-            console.log(ingredient);
-            dispatch(addIngredient(ingredient.ingredient))
+            dispatch(addIngredient(ingredient.ingredient));
+            // console.log('Redux', constructorItems);
         },
-    }))
+    }));
+
+
 
     return (
         <section className={styles.wrapper}>
@@ -102,20 +93,22 @@ const BurgerConstructor = () => {
                 {/* ВЕРХЯЯ БУЛКА */}
                 <div className={styles.paddingRight}>
                     {bun &&
-                        bun.map((ingredient) => (
+                        bun.map((ingredient, index) => (
                             <ConstructorIngredients
                                 side="top"
-                                {...ingredient}
+                                ingredient = {ingredient}
+                                index = {index}
                                 key={uuidv4()}
                             />
                         ))}
                 </div>
                 {/* ОСНОВНЫЕ ИНГРЕДИЕНТЫ */}
-                <div className={styles.ingredients}>
+                <div className={styles.ingredients} >
                     {ingredients &&
-                        ingredients.map((ingredient) => (
+                        ingredients.map((ingredient, index) => (
                             <ConstructorIngredients
-                                {...ingredient}
+                                ingredient = {ingredient}
+                                index = {index}
                                 key={uuidv4()}
                             />
                         ))}
@@ -123,10 +116,11 @@ const BurgerConstructor = () => {
                 {/* НИЖНЯЯ БУЛКА */}
                 <div className={styles.paddingRight}>
                     {bun &&
-                        bun.map((ingredient) => (
+                        bun.map((ingredient, index) => (
                             <ConstructorIngredients
                                 side="bottom"
-                                {...ingredient}
+                                ingredient = {ingredient}
+                                index = {index}
                                 key={uuidv4()}
                             />
                         ))}

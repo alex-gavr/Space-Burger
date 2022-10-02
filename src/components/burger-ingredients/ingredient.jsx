@@ -7,11 +7,11 @@ import {
     Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag } from "react-dnd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addIngredient } from "../../services/constructor-slice";
 import { setDetails } from "../../services/ingredient-details-slice";
 
-const Ingredient = ({ ingredient, setIsModalOpened }) => {
+const Ingredient = ({ ingredient, setIsModalOpened, constructorItems }) => {
     const dispatch = useDispatch();
 
     const handleOpenModal = (ingredient) => {
@@ -28,7 +28,14 @@ const Ingredient = ({ ingredient, setIsModalOpened }) => {
         }),
     }));
 
-    console.log(isDragging ? ingredient : "no");
+
+    let count = 0;
+    if (ingredient.type === 'bun') {
+        count = constructorItems.filter(item => item._id === ingredient._id).length *2;
+    } else {
+        count = constructorItems.filter(item => item._id === ingredient._id).length;
+    }
+
 
     return (
         <li
@@ -46,7 +53,7 @@ const Ingredient = ({ ingredient, setIsModalOpened }) => {
                 <CurrencyIcon type="primary" />
             </div>
             <p className="text text_type_main-default">{ingredient.name}</p>
-            <Counter count={1} size="default" />
+            <Counter count={count} size="default" />
         </li>
     );
 };

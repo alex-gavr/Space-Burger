@@ -20,6 +20,10 @@ const IngredientCategory = (props) => {
         [ingredients]
     );
 
+    const { constructorItems } = useSelector(
+        (state) => state.burgerConstructor
+    );
+
     return (
         <div>
             <h3 className="text text_type_main-medium">{props.title}</h3>
@@ -29,6 +33,7 @@ const IngredientCategory = (props) => {
                         return (
                             <Ingredient
                                 ingredient={ingredient}
+                                constructorItems={constructorItems}
                                 key={ingredient._id}
                                 setIsModalOpened={props.setIsModalOpened}
                             />

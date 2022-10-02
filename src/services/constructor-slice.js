@@ -1,6 +1,8 @@
 import { createSlice, current } from "@reduxjs/toolkit";
 
-const initialState = { constructorItems: [] };
+const initialState = { 
+    constructorItems: [],
+};
 
 const constructorSlice = createSlice({
     name: "burgerConstructor",
@@ -21,8 +23,16 @@ const constructorSlice = createSlice({
         deleteIngredient(state, action) {
             state.constructorItems.splice(state.constructorItems.findIndex((i) => i._id === action.payload._id), 1);
         },
+        // Не получается :( помогите, пожалуйста
+        reorder(state, action) {
+            const dragCard = state.constructorItems[action.payload[0]];
+            const newCards = [...state.constructorItems];
+            newCards.splice(action.payload[0], 1);
+            newCards.splice(action.payload[1], 0, dragCard);
+            state.constructorItems = newCards;
+        }
     },
 });
 
-export const { addIngredient, deleteIngredient } = constructorSlice.actions;
+export const { addIngredient, deleteIngredient, reorder } = constructorSlice.actions;
 export default constructorSlice.reducer;
