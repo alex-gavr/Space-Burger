@@ -42,7 +42,8 @@
     align-content: center;
     gap: 4px;
     position: relative;
-    cursor: pointer;
+    cursor: grab;
+    z-index: 5;
 }
 .containerPrice {
     composes: containerTabs;

@@ -7,18 +7,9 @@ import {
     Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector, useDispatch } from "react-redux";
-import { setDetails } from "../../services/ingredient-details-slice";
-import { addIngredient } from "../../services/constructor-slice";
+import Ingredient from "./ingredient";
 
 const IngredientCategory = (props) => {
-    const dispatch = useDispatch();
-
-    const handleOpenModal = (ingredient) => {
-        dispatch(addIngredient(ingredient));
-        // dispatch(setDetails(ingredient));
-        // props.setIsModalOpened(true);
-    };
-
     const { ingredients, loading, error } = useSelector(
         (state) => state.ingredients
     );
@@ -33,34 +24,16 @@ const IngredientCategory = (props) => {
         <div>
             <h3 className="text text_type_main-medium">{props.title}</h3>
             <ul className={styles.container}>
-                {filteredIngredients.map((ingredient) => {
-                    return (
-                        <li
-                            key={ingredient._id}
-                            className={styles.containerElement}
-                            onClick={() => {
-                                handleOpenModal(ingredient);
-                            }}
-                        >
-                            <div className={styles.containerImage}>
-                                <img
-                                    src={ingredient.image}
-                                    alt={ingredient.name}
-                                />
-                            </div>
-                            <div className={styles.containerPrice}>
-                                <p className="text text_type_digits-default">
-                                    {ingredient.price}
-                                </p>
-                                <CurrencyIcon type="primary" />
-                            </div>
-                            <p className="text text_type_main-default">
-                                {ingredient.name}
-                            </p>
-                            <Counter count={1} size="default" />
-                        </li>
-                    );
-                })}
+                {filteredIngredients &&
+                    filteredIngredients.map((ingredient) => {
+                        return (
+                            <Ingredient
+                                ingredient={ingredient}
+                                key={ingredient._id}
+                                setIsModalOpened={props.setIsModalOpened}
+                            />
+                        );
+                    })}
             </ul>
         </div>
     );

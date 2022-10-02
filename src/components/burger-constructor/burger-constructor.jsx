@@ -1,5 +1,12 @@
 import "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useContext, useState, useReducer, useEffect } from "react";
+import React, {
+    useContext,
+    useState,
+    useReducer,
+    useEffect,
+    useMemo,
+    useCallback,
+} from "react";
 import styles from "./burger-constructor.module.css";
 import {
     ConstructorElement,
@@ -19,6 +26,8 @@ import { v4 as uuidv4 } from "uuid";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { fetchOrderDetails } from "../../services/order-details-slice";
+import { useDrop } from "react-dnd";
+import { addIngredient } from "../../services/constructor-slice";
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
@@ -31,6 +40,7 @@ const BurgerConstructor = () => {
     const bun = constructorItems.filter(
         (ingredient) => ingredient.type === INGREDIENT_TYPES.BUN
     );
+
     // Основные Ингредиенты
     const ingredients = constructorItems.filter(
         (ingredient) => ingredient.type !== INGREDIENT_TYPES.BUN
@@ -41,24 +51,20 @@ const BurgerConstructor = () => {
         (acc, ingredient) => acc + ingredient.price,
         0
     );
+
     const totalBuns = bun.reduce((acc, bun) => acc + bun.price, 0) * 2;
     const totalPrice = totalIngredients + totalBuns;
-
 
     // Айдишички для Поста
     const mainIngredientsIds = ingredients.map((ingredient) => ingredient._id);
     const bunsIds = bun.map((ingredient) => ingredient._id);
-    const allIngredientIds = [
-        ...bunsIds,
-        ...mainIngredientsIds,
-        ...bunsIds,
-    ];
+    const allIngredientIds = [...bunsIds, ...mainIngredientsIds, ...bunsIds];
 
     console.log(allIngredientIds);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(fetchOrderDetails(allIngredientIds))
+        dispatch(fetchOrderDetails(allIngredientIds));
     };
 
     console.log(orderDetails);
@@ -67,7 +73,7 @@ const BurgerConstructor = () => {
         if (orderDetails.success) {
             handleOpen();
         }
-    },[orderDetails]);
+    }, [orderDetails]);
 
     // Модуль
     const [isModalOpened, setIsModalOpened] = useState(false);
@@ -80,9 +86,19 @@ const BurgerConstructor = () => {
         setIsModalOpened(true);
     };
 
+    // DND
+
+    const [{isOver}, drop] = useDrop (() => ({
+        accept: 'ingredient',
+        drop: (ingredient) => {
+            console.log(ingredient);
+            dispatch(addIngredient(ingredient.ingredient))
+        },
+    }))
+
     return (
         <section className={styles.wrapper}>
-            <ul className={styles.container}>
+            <ul className={styles.container} ref={drop}>
                 {/* ВЕРХЯЯ БУЛКА */}
                 <div className={styles.paddingRight}>
                     {bun &&
