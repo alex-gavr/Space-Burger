@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchIngredients } from "../../services/ingredients-slice";
 
 const App = () => {
-    const {ingredients, loading, error} = useSelector((state) => state.ingredients);
+    const {loading} = useSelector((state) => state.ingredients);
 
     const dispatch = useDispatch();
 

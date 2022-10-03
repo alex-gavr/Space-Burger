@@ -8,14 +8,12 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
-import { addIngredient } from "../../services/constructor-slice";
 import { setDetails } from "../../services/ingredient-details-slice";
 
-const Ingredient = ({ ingredient, setIsModalOpened, constructorItems }) => {
+const Ingredient = ({ ingredient, setIsModalOpened, bun, mainIngredients }) => {
     const dispatch = useDispatch();
 
     const handleOpenModal = (ingredient) => {
-        // dispatch(addIngredient(ingredient));
         dispatch(setDetails(ingredient));
         setIsModalOpened(true);
     };
@@ -31,9 +29,9 @@ const Ingredient = ({ ingredient, setIsModalOpened, constructorItems }) => {
 
     let count = 0;
     if (ingredient.type === 'bun') {
-        count = constructorItems.filter(item => item._id === ingredient._id).length *2;
+        count = bun.filter(item => item._id === ingredient._id).length *2;
     } else {
-        count = constructorItems.filter(item => item._id === ingredient._id).length;
+        count = mainIngredients.filter(item => item._id === ingredient._id).length;
     }
 
 

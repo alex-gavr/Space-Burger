@@ -5,13 +5,12 @@ import {
     Button,
     CurrencyIcon,
     ConstructorElement,
-    DragIcon
+    DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { OrderDetails } from "../order-details/order-details";
 import Modal from "../modal/modal";
 import { INGREDIENT_TYPES } from "../../utils/ingredient-types";
 import { useSelector, useDispatch } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
 import { fetchOrderDetails } from "../../services/order-details-slice";
 import { useDrop } from "react-dnd";
 import { addIngredient } from "../../services/constructor-slice";
@@ -20,36 +19,24 @@ import { deleteIngredient } from "../../services/constructor-slice";
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
-    const { constructorItems, mainIngredients } = useSelector(
+    const { bun, mainIngredients } = useSelector(
         (state) => state.burgerConstructor
     );
     const { orderDetails } = useSelector((state) => state.orderDetails);
-
-    console.log("main", mainIngredients);
-
-    // Булочка
-    const bun = constructorItems.filter(
-        (ingredient) => ingredient.type === INGREDIENT_TYPES.BUN
-    );
-
-    // Основные Ингредиенты
-    const ingredients = constructorItems.filter(
-        (ingredient) => ingredient.type !== INGREDIENT_TYPES.BUN
-    );
-
+    
     // Считаем Тотал
-    const totalIngredients = ingredients.reduce(
+    const totalMainIngredients = mainIngredients.reduce(
         (acc, ingredient) => acc + ingredient.price,
         0
     );
-
+    
     const totalBuns = bun.reduce((acc, bun) => acc + bun.price, 0) * 2;
-    const totalPrice = totalIngredients + totalBuns;
+    const totalPrice = totalMainIngredients + totalBuns;
 
     const handleSubmit = (e) => {
         e.preventDefault();
         // Айдишички для Поста считаем только при клике "оформить заказ"
-        const mainIngredientsIds = ingredients.map(
+        const mainIngredientsIds = mainIngredients.map(
             (ingredient) => ingredient._id
         );
         const bunsIds = bun.map((ingredient) => ingredient._id);
@@ -80,23 +67,29 @@ const BurgerConstructor = () => {
     };
 
     // DND
-
-    const [{ isOver }, drop] = useDrop(() => ({
+    const [{ canDrop }, drop] = useDrop(() => ({
         accept: "ingredient",
         drop: (ingredient) => {
             dispatch(addIngredient(ingredient.ingredient));
         },
+        collect: (monitor) => ({
+            canDrop: monitor.canDrop(),
+        }),
     }));
-
 
     return (
         <section className={styles.wrapper}>
-            <ul className={styles.container} ref={drop}>
+            <ul
+                ref={drop}
+                className={`${styles.container} ${
+                    canDrop ? styles.canDrop : null
+                }`}
+            >
                 {/* ВЕРХНЯЯ БУЛКА */}
                 <div className={styles.paddingRight}>
                     {bun &&
-                        bun.map((ingredient) => (
-                            <li key={uuidv4()}>
+                        bun.map((ingredient, index) => (
+                            <li key={index}>
                                 <ConstructorElement
                                     type="top"
                                     isLocked={true}
@@ -109,14 +102,13 @@ const BurgerConstructor = () => {
                 </div>
                 {/* ОСНОВНЫЕ ИНГРЕДИЕНТЫ */}
                 <div className={styles.ingredients}>
-                    {ingredients &&
-                        ingredients.map((ingredient, index) => (
-                            <li className={styles.containerRow} key={uuidv4()}>
+                    {mainIngredients &&
+                        mainIngredients.map((ingredient, index) => (
+                            <li className={styles.containerRow} key={index}>
                                 <Card
                                     key={ingredient._id}
                                     id={ingredient._id}
                                     index={index}
-                                    
                                 >
                                     <DragIcon />
                                     <ConstructorElement
@@ -136,8 +128,8 @@ const BurgerConstructor = () => {
                 {/* НИЖНЯЯ БУЛКА */}
                 <div className={styles.paddingRight}>
                     {bun &&
-                        bun.map((ingredient) => (
-                            <li key={uuidv4()}>
+                        bun.map((ingredient, index) => (
+                            <li key={index}>
                                 <ConstructorElement
                                     type="bottom"
                                     isLocked={true}

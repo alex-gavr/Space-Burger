@@ -70,3 +70,27 @@
         overflow-x: auto;
     }
 }
+
+.ingredientsContainer::-webkit-scrollbar {
+    width: 0.4em;
+}
+.ingredientsContainer::-webkit-scrollbar-track {
+    background: var(--background);
+}
+
+.ingredientsContainer::-webkit-scrollbar-thumb {
+    background: var(--text-inactive-color);
+}
+.ingredientsContainer::-webkit-scrollbar-thumb:hover {
+    background: var(--colors-interface-accent);
+}
+/* @supports (
+    scrollbar-color: var(--text-inactive-color),
+    var(
+        --background,
+    )
+) {
+    * {
+        scrollbar-color: var(--text-inactive-color), var(--background);
+    }
+} */

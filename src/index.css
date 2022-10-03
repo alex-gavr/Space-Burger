@@ -18,6 +18,7 @@ body {
   background-color: var(--background-alt);
   width: 100%;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 button, input[type="submit"], input[type="reset"] {
@@ -32,22 +33,6 @@ button, input[type="submit"], input[type="reset"] {
 
 
 
-
-::-webkit-scrollbar{
-  width: 0.5em;
-}
-::-webkit-scrollbar-track{
-  background: var(--background);
-}
-
-::-webkit-scrollbar-thumb{
-  background: var(--text-inactive-color);
-}
-::-webkit-scrollbar-thumb:hover{
-  background: var(--colors-interface-accent);
-}
-@supports (scrollbar-color: var(--text-inactive-color), var(--background)){
-  * {
-    scrollbar-color: var(--text-inactive-color), var(--background);
-  }
+body::-webkit-scrollbar{
+  display: none;
 }
