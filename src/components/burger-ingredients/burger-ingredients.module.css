@@ -46,7 +46,10 @@
     z-index: 5;
 }
 .containerPrice {
-    composes: containerTabs;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
     gap: 5px;
 }
 
