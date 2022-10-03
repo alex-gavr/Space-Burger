@@ -12,7 +12,7 @@
     flex-flow: column nowrap;
     align-items: flex-end;
     gap: 1rem;
-    min-width: 50%;
+    min-width: 100%;
 }
 .ingredients{
     display: flex;
@@ -32,6 +32,15 @@
 }
 .paddingRight{
     padding-right: 1rem;
+}
+.draggableContainer{
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.4rem;
+    padding-right: 0.5rem;
 }
 
 

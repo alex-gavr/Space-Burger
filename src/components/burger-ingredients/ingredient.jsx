@@ -53,7 +53,7 @@ const Ingredient = ({ ingredient, setIsModalOpened, constructorItems }) => {
                 <CurrencyIcon type="primary" />
             </div>
             <p className="text text_type_main-default">{ingredient.name}</p>
-            <Counter count={count} size="default" />
+            {count === 0 ?  null : <Counter count={count} size="default" />}
         </li>
     );
 };

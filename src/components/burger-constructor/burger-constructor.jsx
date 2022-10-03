@@ -1,29 +1,31 @@
 import "@ya.praktikum/react-developer-burger-ui-components";
-import React, {
-    useState,
-    useEffect,
-} from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./burger-constructor.module.css";
 import {
     Button,
     CurrencyIcon,
+    ConstructorElement,
+    DragIcon
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { OrderDetails } from "../order-details/order-details";
 import Modal from "../modal/modal";
 import { INGREDIENT_TYPES } from "../../utils/ingredient-types";
 import { useSelector, useDispatch } from "react-redux";
-import { ConstructorIngredients } from "./ingredients-in-constructor";
 import { v4 as uuidv4 } from "uuid";
 import { fetchOrderDetails } from "../../services/order-details-slice";
 import { useDrop } from "react-dnd";
 import { addIngredient } from "../../services/constructor-slice";
+import Card from "./card";
+import { deleteIngredient } from "../../services/constructor-slice";
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
-    const { constructorItems } = useSelector(
+    const { constructorItems, mainIngredients } = useSelector(
         (state) => state.burgerConstructor
     );
     const { orderDetails } = useSelector((state) => state.orderDetails);
+
+    console.log("main", mainIngredients);
 
     // Булочка
     const bun = constructorItems.filter(
@@ -44,19 +46,21 @@ const BurgerConstructor = () => {
     const totalBuns = bun.reduce((acc, bun) => acc + bun.price, 0) * 2;
     const totalPrice = totalIngredients + totalBuns;
 
-    // Айдишички для Поста
-    const mainIngredientsIds = ingredients.map((ingredient) => ingredient._id);
-    const bunsIds = bun.map((ingredient) => ingredient._id);
-    const allIngredientIds = [...bunsIds, ...mainIngredientsIds, ...bunsIds];
-
-    console.log(allIngredientIds);
-
     const handleSubmit = (e) => {
         e.preventDefault();
+        // Айдишички для Поста считаем только при клике "оформить заказ"
+        const mainIngredientsIds = ingredients.map(
+            (ingredient) => ingredient._id
+        );
+        const bunsIds = bun.map((ingredient) => ingredient._id);
+        const allIngredientIds = [
+            ...bunsIds,
+            ...mainIngredientsIds,
+            ...bunsIds,
+        ];
+
         dispatch(fetchOrderDetails(allIngredientIds));
     };
-
-    console.log(orderDetails);
 
     useEffect(() => {
         if (orderDetails.success) {
@@ -81,48 +85,67 @@ const BurgerConstructor = () => {
         accept: "ingredient",
         drop: (ingredient) => {
             dispatch(addIngredient(ingredient.ingredient));
-            // console.log('Redux', constructorItems);
         },
     }));
-
 
 
     return (
         <section className={styles.wrapper}>
             <ul className={styles.container} ref={drop}>
-                {/* ВЕРХЯЯ БУЛКА */}
+                {/* ВЕРХНЯЯ БУЛКА */}
                 <div className={styles.paddingRight}>
                     {bun &&
-                        bun.map((ingredient, index) => (
-                            <ConstructorIngredients
-                                side="top"
-                                ingredient = {ingredient}
-                                index = {index}
-                                key={uuidv4()}
-                            />
+                        bun.map((ingredient) => (
+                            <li key={uuidv4()}>
+                                <ConstructorElement
+                                    type="top"
+                                    isLocked={true}
+                                    text={ingredient.name + " (верх)"}
+                                    price={ingredient.price}
+                                    thumbnail={ingredient.image}
+                                />
+                            </li>
                         ))}
                 </div>
                 {/* ОСНОВНЫЕ ИНГРЕДИЕНТЫ */}
-                <div className={styles.ingredients} >
+                <div className={styles.ingredients}>
                     {ingredients &&
                         ingredients.map((ingredient, index) => (
-                            <ConstructorIngredients
-                                ingredient = {ingredient}
-                                index = {index}
-                                key={uuidv4()}
-                            />
+                            <li className={styles.containerRow} key={uuidv4()}>
+                                <Card
+                                    key={ingredient._id}
+                                    id={ingredient._id}
+                                    index={index}
+                                    
+                                >
+                                    <DragIcon />
+                                    <ConstructorElement
+                                        text={ingredient.name}
+                                        price={ingredient.price}
+                                        thumbnail={ingredient.image}
+                                        handleClose={() =>
+                                            dispatch(
+                                                deleteIngredient(ingredient)
+                                            )
+                                        }
+                                    />
+                                </Card>
+                            </li>
                         ))}
                 </div>
                 {/* НИЖНЯЯ БУЛКА */}
                 <div className={styles.paddingRight}>
                     {bun &&
-                        bun.map((ingredient, index) => (
-                            <ConstructorIngredients
-                                side="bottom"
-                                ingredient = {ingredient}
-                                index = {index}
-                                key={uuidv4()}
-                            />
+                        bun.map((ingredient) => (
+                            <li key={uuidv4()}>
+                                <ConstructorElement
+                                    type="bottom"
+                                    isLocked={true}
+                                    text={ingredient.name + " (низ)"}
+                                    price={ingredient.price}
+                                    thumbnail={ingredient.image}
+                                />
+                            </li>
                         ))}
                 </div>
             </ul>

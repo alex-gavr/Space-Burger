@@ -2,6 +2,7 @@ import { createSlice, current } from "@reduxjs/toolkit";
 
 const initialState = { 
     constructorItems: [],
+    
 };
 
 const constructorSlice = createSlice({
@@ -17,6 +18,7 @@ const constructorSlice = createSlice({
                 state.constructorItems.push(action.payload);
             } else {
                 state.constructorItems.push(action.payload);
+                
             }
             
         },

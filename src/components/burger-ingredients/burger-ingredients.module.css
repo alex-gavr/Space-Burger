@@ -24,7 +24,7 @@
     width: 100%;
 }
 
-.sectionsContainer {
+.ingredientsContainer {
     display: flex;
     flex-flow: column nowrap;
     gap: 2.5rem;

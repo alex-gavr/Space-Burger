@@ -20,8 +20,8 @@ const BurgerIngredients = () => {
     const main = useRef();
 
     const handleClose = () => {
-        dispatch(deleteDetails());
         setIsModalOpened(false);
+        dispatch(deleteDetails());
     };
 
     // TRACKING SCROLLING FOR
@@ -79,7 +79,7 @@ const BurgerIngredients = () => {
                     </Tab>
                 </div>
             </div>
-            <div className={styles.sectionsContainer} id={"id"}>
+            <div className={styles.ingredientsContainer} id={"id"}>
                 {/* Булки */}
                 <div ref={bun}>
                     <IngredientCategory

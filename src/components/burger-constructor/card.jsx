@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { reorder } from "../../services/constructor-slice";
 import { useDispatch } from "react-redux";
+import styles from "./burger-constructor.module.css";
 
 const Card = ({ id, children, index }) => {
     const dispatch = useDispatch();
@@ -69,7 +70,7 @@ const Card = ({ id, children, index }) => {
     return (
         <div
             ref={ref}
-            style={{opacity }}
+            className={styles.draggableContainer}
             data-handler-id={handlerId}
         >
             {children}
