@@ -23,13 +23,13 @@ const BurgerConstructor = () => {
         (state) => state.burgerConstructor
     );
     const { orderDetails } = useSelector((state) => state.orderDetails);
-    
+
     // Считаем Тотал
     const totalMainIngredients = mainIngredients.reduce(
         (acc, ingredient) => acc + ingredient.price,
         0
     );
-    
+
     const totalBuns = bun.reduce((acc, bun) => acc + bun.price, 0) * 2;
     const totalPrice = totalMainIngredients + totalBuns;
 
