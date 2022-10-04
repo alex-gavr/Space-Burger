@@ -1,92 +1,59 @@
 import "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useContext, useState, useReducer, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./burger-constructor.module.css";
 import {
-    ConstructorElement,
     Button,
     CurrencyIcon,
+    ConstructorElement,
     DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { DataContext } from "../../services/create-context";
 import { OrderDetails } from "../order-details/order-details";
 import Modal from "../modal/modal";
-import { useFetch } from "../../utils/hook-fetch";
-import { ORDER_URL } from "../../utils/config";
 import { INGREDIENT_TYPES } from "../../utils/ingredient-types";
-import { v4 as uuidv4 } from 'uuid';
+import { useSelector, useDispatch } from "react-redux";
+import { fetchOrderDetails } from "../../services/order-details-slice";
+import { useDrop } from "react-dnd";
+import { addIngredient } from "../../services/constructor-slice";
+import Card from "./card";
+import { deleteIngredient } from "../../services/constructor-slice";
 
 const BurgerConstructor = () => {
-    // Беру все ингредиенты из API
-    const ingredients = useContext(DataContext);
-    // Фильтрую ингредиенты чтобы была только "начинка"
-    const mainIngredients = ingredients.filter(
-        (ingredient) => ingredient.type === INGREDIENT_TYPES.MAIN
+    const dispatch = useDispatch();
+    const { bun, mainIngredients } = useSelector(
+        (state) => state.burgerConstructor
     );
-    // Использую начинку как initialState в useReducer
-    const initialState = mainIngredients;
+    const { orderDetails } = useSelector((state) => state.orderDetails);
 
-    // reducer для useReducer
-    const reducer = (state, action) => {
-        switch (action.type) {
-            case "ADD":
-                return [...state, action.ingredient];
-            case "DELETE":
-                return state.filter(
-                    (ingredient) => ingredient._id !== action.payload
-                );
-            default:
-                return state;
-        }
-    };
-    // useReducer
-    const [state, dispatch] = useReducer(reducer, initialState);
-
-    // Складываю стоимость ингрединов начинки
-    const total = state.reduce((acc, ingredient) => acc + ingredient.price, 0);
-
-    // Считаю общую стоимость с двумя булками
-    const totalPrice = total + ingredients[0].price * 2;
-
-    // Функия добавляет новую начинку. Не используется сейчас.
-    const addAnotherIngredient = (ingredient) => {
-        dispatch({ type: "ADD", ingredient });
-    };
-
-    // Функция удаляет начинку
-    const deleteIngredient = (ingredient) => {
-        dispatch({ type: "DELETE", payload: ingredient._id });
-    };
-
-    // IDs начинок для отправки бэкенду
-    const mainIngredientsIds = state.map((ingredient) => ingredient._id);
-    // Все IDs включая булки для отправки бэкенду
-    const allIngredientIds = [
-        ingredients[0]._id,
-        ...mainIngredientsIds,
-        ingredients[0]._id,
-    ];
-
-    const { isLoading, isError, data, getData } = useFetch(
-        ORDER_URL,
-        "POST",
-        {
-            "Content-Type": "application/json",
-        },
-        {
-            ingredients: allIngredientIds,
-        }
+    // Считаем Тотал
+    const totalMainIngredients = mainIngredients.reduce(
+        (acc, ingredient) => acc + ingredient.price,
+        0
     );
+
+    const totalBuns = bun.reduce((acc, bun) => acc + bun.price, 0) * 2;
+    const totalPrice = totalMainIngredients + totalBuns;
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        getData();
+        // Айдишички для Поста считаем только при клике "оформить заказ"
+        const mainIngredientsIds = mainIngredients.map(
+            (ingredient) => ingredient._id
+        );
+        const bunsIds = bun.map((ingredient) => ingredient._id);
+        const allIngredientIds = [
+            ...bunsIds,
+            ...mainIngredientsIds,
+            ...bunsIds,
+        ];
+
+        dispatch(fetchOrderDetails(allIngredientIds));
     };
 
     useEffect(() => {
-        if (data) {
+        if (orderDetails.success) {
             handleOpen();
         }
-    }, [data]);
+    }, [orderDetails]);
 
     // Модуль
     const [isModalOpened, setIsModalOpened] = useState(false);
@@ -99,51 +66,80 @@ const BurgerConstructor = () => {
         setIsModalOpened(true);
     };
 
+    // DND
+    const [{ canDrop }, drop] = useDrop(() => ({
+        accept: "ingredient",
+        drop: (ingredient) => {
+            dispatch(addIngredient(ingredient.ingredient));
+        },
+        collect: (monitor) => ({
+            canDrop: monitor.canDrop(),
+        }),
+    }));
+
     return (
         <section className={styles.wrapper}>
-            <ul className={styles.container}>
-                {/* Верхняя булка */}
-                <li className={`${styles.containerRow} ${styles.paddingRight}`}>
-                    <ConstructorElement
-                        type="top"
-                        isLocked={true}
-                        text={ingredients[0].name + " (верх)"}
-                        price={ingredients[0].price}
-                        thumbnail={ingredients[0].image}
-                    />
-                </li>
-                {/* Начинка */}
-                <div className={styles.ingredients}>
-                    {state.map((ingredient) => {
-                        return (
-                            <li
-                                className={styles.containerRow}
-                                key={uuidv4()}
-                                onClick={() =>addAnotherIngredient(ingredient)}
-                            >
-                                <DragIcon />
+            <ul
+                ref={drop}
+                className={`${styles.container} ${
+                    canDrop ? styles.canDrop : null
+                }`}
+            >
+                {/* ВЕРХНЯЯ БУЛКА */}
+                <div className={styles.paddingRight}>
+                    {bun &&
+                        bun.map((ingredient, index) => (
+                            <li key={index}>
                                 <ConstructorElement
-                                    text={ingredient.name}
+                                    type="top"
+                                    isLocked={true}
+                                    text={ingredient.name + " (верх)"}
                                     price={ingredient.price}
                                     thumbnail={ingredient.image}
-                                    handleClose={() =>
-                                        deleteIngredient(ingredient)
-                                    }
                                 />
                             </li>
-                        );
-                    })}
+                        ))}
                 </div>
-                {/* Нижняя булка */}
-                <li className={`${styles.containerRow} ${styles.paddingRight}`}>
-                    <ConstructorElement
-                        type="bottom"
-                        isLocked={true}
-                        text={ingredients[0].name + " (низ)"}
-                        price={ingredients[0].price}
-                        thumbnail={ingredients[0].image}
-                    />
-                </li>
+                {/* ОСНОВНЫЕ ИНГРЕДИЕНТЫ */}
+                <div className={styles.ingredients}>
+                    {mainIngredients &&
+                        mainIngredients.map((ingredient, index) => (
+                            <li className={styles.containerRow} key={index}>
+                                <Card
+                                    key={ingredient._id}
+                                    id={ingredient._id}
+                                    index={index}
+                                >
+                                    <DragIcon />
+                                    <ConstructorElement
+                                        text={ingredient.name}
+                                        price={ingredient.price}
+                                        thumbnail={ingredient.image}
+                                        handleClose={() =>
+                                            dispatch(
+                                                deleteIngredient(ingredient)
+                                            )
+                                        }
+                                    />
+                                </Card>
+                            </li>
+                        ))}
+                </div>
+                {/* НИЖНЯЯ БУЛКА */}
+                <div className={styles.paddingRight}>
+                    {bun &&
+                        bun.map((ingredient, index) => (
+                            <li key={index}>
+                                <ConstructorElement
+                                    type="bottom"
+                                    isLocked={true}
+                                    text={ingredient.name + " (низ)"}
+                                    price={ingredient.price}
+                                    thumbnail={ingredient.image}
+                                />
+                            </li>
+                        ))}
+                </div>
             </ul>
             <div className={styles.containerTotal}>
                 <div className={styles.containerRow}>
@@ -156,11 +152,11 @@ const BurgerConstructor = () => {
                     Оформить заказ
                 </Button>
             </div>
-            {data && 
+            {orderDetails.success && (
                 <Modal isOpened={isModalOpened} onClose={handleClose}>
-                    <OrderDetails orderNumber={data.order.number} />
+                    <OrderDetails orderNumber={orderDetails.order.number} />
                 </Modal>
-            }
+            )}
         </section>
     );
 };

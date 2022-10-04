@@ -12,6 +12,7 @@
     flex-flow: column nowrap;
     align-items: flex-end;
     gap: 1rem;
+    min-width: 80%;
 }
 .ingredients{
     display: flex;
@@ -32,7 +33,28 @@
 .paddingRight{
     padding-right: 1rem;
 }
-
+.draggableContainer{
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.4rem;
+    padding-right: 0.5rem;
+    cursor: move;
+}
+.opacityOff{
+    opacity: 0;
+}
+.opacityOn{
+    opacity: 1;
+}
+.canDrop{
+    border: 1px pink solid;
+    border-radius: 0.5rem;
+    box-shadow: 1px 1px 10px 1px rgba(255,255,255, 0.5);
+    padding: 0.5rem;
+}
 
 .containerTotal{
     display: flex;
@@ -46,4 +68,18 @@
     .wrapper {
         margin-bottom: 2rem;
     }
+}
+
+.ingredients::-webkit-scrollbar {
+    width: 0.4em;
+}
+.ingredients::-webkit-scrollbar-track {
+    background: var(--background);
+}
+
+.ingredients::-webkit-scrollbar-thumb {
+    background: var(--text-inactive-color);
+}
+.ingredients::-webkit-scrollbar-thumb:hover {
+    background: var(--colors-interface-accent);
 }

@@ -24,7 +24,7 @@
     width: 100%;
 }
 
-.sectionsContainer {
+.ingredientsContainer {
     display: flex;
     flex-flow: column nowrap;
     gap: 2.5rem;
@@ -42,10 +42,14 @@
     align-content: center;
     gap: 4px;
     position: relative;
-    cursor: pointer;
+    cursor: grab;
+    z-index: 5;
 }
 .containerPrice {
-    composes: containerTabs;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
     gap: 5px;
 }
 
@@ -66,3 +70,27 @@
         overflow-x: auto;
     }
 }
+
+.ingredientsContainer::-webkit-scrollbar {
+    width: 0.4em;
+}
+.ingredientsContainer::-webkit-scrollbar-track {
+    background: var(--background);
+}
+
+.ingredientsContainer::-webkit-scrollbar-thumb {
+    background: var(--text-inactive-color);
+}
+.ingredientsContainer::-webkit-scrollbar-thumb:hover {
+    background: var(--colors-interface-accent);
+}
+/* @supports (
+    scrollbar-color: var(--text-inactive-color),
+    var(
+        --background,
+    )
+) {
+    * {
+        scrollbar-color: var(--text-inactive-color), var(--background);
+    }
+} */
