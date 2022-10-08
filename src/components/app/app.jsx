@@ -11,6 +11,8 @@ import Login from "../registration/login";
 import Registration from "../registration/registration";
 import ForgotPassword from "../registration/forgot-password";
 import ResetPassword from "../registration/password-reset";
+import Profile from "../account/profile/profile";
+import NotFound from "../404/not-found";
 
 const App = () => {
     const {loading} = useSelector((state) => state.ingredients);
@@ -30,7 +32,9 @@ const App = () => {
                         <AppHeader />
                         <main>
                             <Routes>
+                                <Route path='*' element={<NotFound />} />
                                 <Route path="/" element={<Home />} />
+                                <Route path="/profile" element={<Profile />} />
                                 <Route path="/login" element={<Login />} />
                                 <Route path="/registration" element={<Registration />} />
                                 <Route path="/forgot-password" element={<ForgotPassword />} />

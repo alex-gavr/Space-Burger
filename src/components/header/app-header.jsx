@@ -54,7 +54,7 @@ const AppHeader = () => {
                     {/* MAIN NAV */}
                     <ul>
                         <li className={styles.profile}>
-                            <NavLink to="/login" className={classNameToggle}>
+                            <NavLink to="/profile" className={classNameToggle}>
                                 <div className={styles.textIconContainer}>
                                     <ProfileIcon type="primary" />
                                     <p>Личный кабинет</p>
