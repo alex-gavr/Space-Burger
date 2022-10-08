@@ -1,0 +1,38 @@
+.wrapper{
+    display: flex;
+    width: 100%;
+    min-height: 60vh;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+.column{
+    padding: 2rem;
+    width: auto;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+}
+.row{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.row a {
+    text-decoration: none;
+    color: var(--colors-interface-accent);
+}
+
+.helpContainer{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}

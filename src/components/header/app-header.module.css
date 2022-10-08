@@ -1,6 +1,6 @@
 header{
     width: 100vw;
-    height: auto;
+    height: 13vh;
     padding: 2rem;
     background-color: var(--background);
 }

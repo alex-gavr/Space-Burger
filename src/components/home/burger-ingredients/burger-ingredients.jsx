@@ -3,11 +3,11 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientCategory from "./ingredient-category";
-import { IngredientDetails } from "../ingredient-details/ingredient-details";
-import Modal from "../modal/modal";
-import { INGREDIENT_TYPES } from "../../utils/ingredient-types";
+import { IngredientDetails } from "../../ingredient-details/ingredient-details";
+import Modal from "../../modal/modal";
+import { INGREDIENT_TYPES } from "../../../utils/ingredient-types";
 import { useDispatch } from "react-redux";
-import { deleteDetails } from "../../services/ingredient-details-slice";
+import { deleteDetails } from "../../../services/ingredient-details-slice";
 
 const BurgerIngredients = () => {
     const dispatch = useDispatch();

@@ -7,15 +7,15 @@ import {
     ConstructorElement,
     DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { OrderDetails } from "../order-details/order-details";
-import Modal from "../modal/modal";
-import { INGREDIENT_TYPES } from "../../utils/ingredient-types";
+import { OrderDetails } from "../../order-details/order-details";
+import Modal from "../../modal/modal";
+import { INGREDIENT_TYPES } from "../../../utils/ingredient-types";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchOrderDetails } from "../../services/order-details-slice";
+import { fetchOrderDetails } from "../../../services/order-details-slice";
 import { useDrop } from "react-dnd";
-import { addIngredient } from "../../services/constructor-slice";
+import { addIngredient } from "../../../services/constructor-slice";
 import Card from "./card";
-import { deleteIngredient } from "../../services/constructor-slice";
+import { deleteIngredient } from "../../../services/constructor-slice";
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();

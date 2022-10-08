@@ -31,7 +31,12 @@ button, input[type="submit"], input[type="reset"] {
 	outline: inherit;
 }
 
-
+main{
+  min-height: 87vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 body::-webkit-scrollbar{
   display: none;

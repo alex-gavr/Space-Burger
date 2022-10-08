@@ -12,12 +12,19 @@ import {
     CloseIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import logoOnlyBurger from "../../images/logo-only-burger.svg";
+import { NavLink } from "react-router-dom";
 
 const AppHeader = () => {
     const [toggle, setToggle] = useState(true);
     const [openMenu, setOpenMenu] = useState(false);
 
     const useStyle = openMenu ? styles.menuOpen : styles.menuClose;
+
+    // TOGGLE ACTIVE & INACTIVE CLASS
+    const classNameToggle = (navData) =>
+        navData.isActive
+            ? "text text_type_main-small"
+            : "text text_type_main-small text_color_inactive";
 
     return (
         <header>
@@ -47,14 +54,12 @@ const AppHeader = () => {
                     {/* MAIN NAV */}
                     <ul>
                         <li className={styles.profile}>
-                            <a href="/">
+                            <NavLink to="/login" className={classNameToggle}>
                                 <div className={styles.textIconContainer}>
                                     <ProfileIcon type="primary" />
-                                    <p className="text text_type_main-small text_color_inactive">
-                                        Личный кабинет
-                                    </p>
+                                    <p>Личный кабинет</p>
                                 </div>
-                            </a>
+                            </NavLink>
                             <div
                                 className={styles.arrowIcon}
                                 onClick={() => setToggle((prev) => !prev)}
@@ -66,53 +71,43 @@ const AppHeader = () => {
                         {!toggle && (
                             <li>
                                 <div className={styles.subMenu}>
-                                    <a
-                                        href="/"
-                                        className="text text_type_main-small text_color_inactive"
-                                    >
+                                    <NavLink to="/" className={classNameToggle}>
                                         Профиль
-                                    </a>
-                                    <a
-                                        href="/"
-                                        className="text text_type_main-small text_color_inactive"
-                                    >
+                                    </NavLink>
+                                    <NavLink to="/" className={classNameToggle}>
                                         История заказов
-                                    </a>
-                                    <a
-                                        href="/"
-                                        className="text text_type_main-small text_color_inactive"
-                                    >
+                                    </NavLink>
+                                    <NavLink to="/" className={classNameToggle}>
                                         Выход
-                                    </a>
+                                    </NavLink>
                                 </div>
                             </li>
                         )}
                         <li className={styles.burgerConstructor}>
-                            <a href="/">
+                            <NavLink end to="/" className={classNameToggle}>
                                 <div className={styles.textIconContainer}>
                                     <BurgerIcon type="primary" />
-                                    <p className="text text_type_main-small">
-                                        Конструктор Бургеров
-                                    </p>
+                                    <p>Конструктор Бургеров</p>
                                 </div>
-                            </a>
+                            </NavLink>
                         </li>
                         <li className={styles.orders}>
-                            <a href="/">
+                            <NavLink
+                                to="/order-line"
+                                className={classNameToggle}
+                            >
                                 <div className={styles.textIconContainer}>
                                     <ListIcon type="primary" />
-                                    <p className="text text_type_main-small text_color_inactive">
-                                        Лента заказов
-                                    </p>
+                                    <p>Лента заказов</p>
                                 </div>
-                            </a>
+                            </NavLink>
                         </li>
                         <li className={styles.fullLogoThird}>
-                            <a href="/">
+                            <NavLink to="/">
                                 <div className={styles.textIconContainer}>
                                     <Logo />
                                 </div>
-                            </a>
+                            </NavLink>
                         </li>
                     </ul>
                 </div>
