@@ -6,16 +6,40 @@ import {
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { resetPasswordInit } from "../../services/user-slice";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const { initPasswordReset } = useSelector((state) => state.user);
 
     const [email, setEmail] = useState("");
+
+    const handlePasswordReset = (e, email) => {
+        e.preventDefault();
+        if (email) {
+            dispatch(resetPasswordInit(email));
+        }
+    };
+
+    useEffect(() => {
+        if (initPasswordReset) {
+            // redirect
+            navigate("/reset-password", { replace: true });
+        }
+    }, [initPasswordReset]);
+
 
     return (
         <div className={styles.wrapper}>
             <form className={styles.column}>
-                <h1 className="text text_type_main-medium">Восстановление пароля</h1>
-                
+                <h1 className="text text_type_main-medium">
+                    Восстановление пароля
+                </h1>
+
                 <Input
                     placeholder={"Укажите E-mail"}
                     name={"email"}
@@ -26,15 +50,36 @@ const ForgotPassword = () => {
                     errorText={"Ошибка"}
                     size={"default"}
                 />
-                
-                <Button style={{ marginBottom: "3.5rem" }}>
-                    Восстановить
-                </Button>
+                {initPasswordReset === false && (
+                    <>
+                        <p className="text text_type_main-small text_color_inactive">
+                            Такой email в нашей базе не существует
+                        </p>
+                        <Link
+                            to="/registration"
+                            className="text text_type_main-small text_color_inactive"
+                            style={{ textDecoration: "underline" }}
+                        >
+                            Создать аккаунт
+                        </Link>
+                    </>
+                )}
+                <div onClick={(e) => handlePasswordReset(e, email)}>
+                    <Button
+                        style={{ marginBottom: "3.5rem" }}
+                        disabled={email ? false : true}
+                    >
+                        Восстановить
+                    </Button>
+                </div>
+
                 <div className={styles.row}>
                     <p className="text text_type_main-small text_color_inactive">
                         Вспомнили пароль?
                     </p>
-                    <Link to="/login" className="text text_type_main-small">Войти</Link>
+                    <Link to="/login" className="text text_type_main-small">
+                        Войти
+                    </Link>
                 </div>
             </form>
         </div>

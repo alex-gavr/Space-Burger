@@ -13,36 +13,50 @@ import ForgotPassword from "../registration/forgot-password";
 import ResetPassword from "../registration/password-reset";
 import Profile from "../account/profile/profile";
 import NotFound from "../404/not-found";
+import { fetchUserData } from "../../services/user-slice";
+import LoggedInRoutes from "../../utils/private-routes/logged-in-routes";
+import LogInRoutes from "../../utils/private-routes/login-routes";
+import { tokenUpdate } from "../../services/user-slice";
 
 const App = () => {
-    const {loading} = useSelector((state) => state.ingredients);
-
+    const { loading } = useSelector((state) => state.ingredients);
+    const {tokenExpired} = useSelector((state) => state.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchIngredients())
+        dispatch(fetchIngredients());
+        dispatch(fetchUserData());
     }, []);
+
+    useEffect(() => {
+        if (tokenExpired) {
+            dispatch(tokenUpdate());
+        }
+    }, [tokenExpired]);
 
     return (
         <>
             {loading ? (
                 <Preloader />
             ) : (
-                    <div className={styles.wrapper}>
-                        <AppHeader />
-                        <main>
-                            <Routes>
-                                <Route path='*' element={<NotFound />} />
-                                <Route path="/" element={<Home />} />
+                <div className={styles.wrapper}>
+                    <AppHeader />
+                    <main>
+                        <Routes>
+                            <Route path="*" element={<NotFound />} />
+                            <Route path="/" element={<Home />} />
+                            <Route element={<LoggedInRoutes />}>
                                 <Route path="/profile" element={<Profile />} />
+                            </Route>
+                            <Route element={<LogInRoutes />}>
                                 <Route path="/login" element={<Login />} />
                                 <Route path="/registration" element={<Registration />} />
                                 <Route path="/forgot-password" element={<ForgotPassword />} />
                                 <Route path="/reset-password" element={<ResetPassword />} />
-                            </Routes>
-                            
-                        </main>
-                    </div>
+                            </Route>
+                        </Routes>
+                    </main>
+                </div>
             )}
         </>
     );

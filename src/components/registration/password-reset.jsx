@@ -6,10 +6,13 @@ import {
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { newPasswordSave } from "../../services/user-slice";
 
 const ResetPassword = () => {
-    const [name, setName] = useState("");
-    
+    const dispatch = useDispatch();
+    const {passwordChanged, incorrectToken} = useSelector((state) => state.user);
+    const [token, setToken] = useState("");
     const [password, setPassword] = useState("");
     const [passwordType, setPasswordType] = useState("password");
 
@@ -20,6 +23,16 @@ const ResetPassword = () => {
             setPasswordType("password");
         }
     };
+
+    const handleSaveNewPassword = (e, password, token) => {
+        const data = {password: password, token: token}
+        e.preventDefault();
+        if (data) {
+            dispatch(newPasswordSave(data));
+        }
+    };
+
+
     return (
         <div className={styles.wrapper}>
             <form className={styles.column}>
@@ -40,15 +53,19 @@ const ResetPassword = () => {
                     placeholder={"Введите код из письма"}
                     name={"name"}
                     type={"text"}
-                    onChange={(e) => setName(e.target.value)}
-                    value={name}
+                    onChange={(e) => setToken(e.target.value)}
+                    value={token}
                     error={false}
                     errorText={"Ошибка"}
                     size={"default"}
                 />
-                <Button style={{ marginBottom: "3.5rem" }}>
-                    Сохранить
-                </Button>
+                <div onClick={(e) => handleSaveNewPassword(e, password, token)}>
+                    <Button style={{ marginBottom: "3.5rem" }}>
+                        Сохранить
+                    </Button>
+                </div>
+                {passwordChanged && <p className="text text_type_main-small" style={{color:"green"}}>пароль успешно изменён</p> }
+                {incorrectToken && <p className="text text_type_main-small" style={{color:"red"}}>неверный код из письма</p>}
                 <div className={styles.row}>
                     <p className="text text_type_main-small text_color_inactive">
                         Вспомнили пароль?

@@ -6,8 +6,12 @@ import {
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../../services/user-slice";
 
 const Registration = () => {
+    const dispatch = useDispatch();
+    const { accountExists, accountCreated } = useSelector((state) => state.user);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -20,6 +24,15 @@ const Registration = () => {
             setPasswordType("password");
         }
     };
+
+    const handleRegistration = (e, email, password, name) => {
+        e.preventDefault();
+        const userData = { email: email, password: password, name: name };
+        if (name && email && password) {
+            dispatch(registerUser(userData));
+        }
+    };
+
     return (
         <div className={styles.wrapper}>
             <form className={styles.column}>
@@ -57,14 +70,40 @@ const Registration = () => {
                     icon={passwordType === "password" ? "ShowIcon" : "HideIcon"}
                     onIconClick={onIconClick}
                 />
-                <Button style={{ marginBottom: "3.5rem" }}>
-                    Зарегистрироваться
-                </Button>
+                {accountExists && (
+                    <>
+                        <p className="text text_type_main-small text_color_inactive">
+                            У вас уже есть аккаунт. Забли пароль?
+                        </p>
+                        <Link
+                            to="/forgot-password"
+                            className="text text_type_main-small text_color_inactive"
+                            style={{ textDecoration: "underline" }}
+                        >
+                            Восстановить пароль
+                        </Link>
+                    </>
+                )}
+                {accountCreated && <p className="text text_type_main-small text_color_inactive">Поздравляем аккаунт создан</p>}
+                <div
+                    onClick={(e) =>
+                        handleRegistration(e, email, password, name)
+                    }
+                >
+                    <Button
+                        style={{ marginBottom: "3.5rem" }}
+                        disabled={!email && !password && !name}
+                    >
+                        Зарегистрироваться
+                    </Button>
+                </div>
                 <div className={styles.row}>
                     <p className="text text_type_main-small text_color_inactive">
                         Уже зарегистрированы?
                     </p>
-                    <Link to="/login" className="text text_type_main-small">Войти</Link>
+                    <Link to="/login" className="text text_type_main-small">
+                        Войти
+                    </Link>
                 </div>
             </form>
         </div>

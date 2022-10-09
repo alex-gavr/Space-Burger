@@ -3,12 +3,18 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./profile.module.css";
 import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, NavLink } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { getCookie } from "../../../utils/getCookie";
+import { logout } from "../../../services/user-slice";
+
 
 const Profile = () => {
+    const dispatch = useDispatch();
+    const {name: nameRedux, email: emailRedux} = useSelector((state) => state.user);
 
-    const [name, setName] = useState("Марк");
-    const [email, setEmail] = useState("mail@stellar.burgers");
-    const [password, setPassword] = useState("12456");
+    const [name, setName] = useState(nameRedux);
+    const [email, setEmail] = useState(emailRedux);
+    const [password, setPassword] = useState("");
     const [passwordType, setPasswordType] = useState("password");
     const [disabled, setDisabled] = useState(true);
 
@@ -22,12 +28,19 @@ const Profile = () => {
         }
     };
 
+    let cookie = getCookie('token');
+    console.log(cookie);
 
     const classNameToggle = (navData) =>
         navData.isActive
             ? "text text_type_main-medium"
             : "text text_type_main-medium text_color_inactive";
 
+
+    const handleLogout = (e) =>{
+        e.preventDefault();
+        dispatch(logout());
+    }
 
 
     return (
@@ -40,7 +53,7 @@ const Profile = () => {
                     <li>
                         <NavLink to="/profile/orders" className={classNameToggle}>История заказов</NavLink>
                     </li>
-                    <li>
+                    <li onClick={(e) => handleLogout(e)}>
                         <button className="text text_type_main-medium text_color_inactive">Выход</button>
                     </li>
                 </ul>
