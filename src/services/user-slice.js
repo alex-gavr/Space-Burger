@@ -11,6 +11,7 @@ const initialState = {
     accountCreated: null,
     accountExists: null,
     initPasswordReset: null,
+    allowToGoToPasswordReset: false,
     passwordChanged: null,
     incorrectToken: null,
     tokenExpired: null,
@@ -197,6 +198,7 @@ export const userSlice = createSlice({
         [resetPasswordInit.fulfilled]: (state, action) => {
             state.initPasswordReset = action.payload.success;
             state.loading = false;
+            state.allowToGoToPasswordReset = true;
         },
         [resetPasswordInit.rejected]: (state) => {
             state.loading = null;
@@ -215,6 +217,7 @@ export const userSlice = createSlice({
                 state.incorrectToken = true;
             } else {
                 state.passwordChanged = action.payload.success;
+                state.allowToGoToPasswordReset = false;
             }
             state.loading = false;
         },

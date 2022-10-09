@@ -16,6 +16,7 @@ import NotFound from "../404/not-found";
 import { fetchUserData } from "../../services/user-slice";
 import LoggedInRoutes from "../../utils/private-routes/logged-in-routes";
 import LogInRoutes from "../../utils/private-routes/login-routes";
+import ResetPasswordProtectionRoute from "../../utils/private-routes/reset-password-protection";
 import { tokenUpdate } from "../../services/user-slice";
 
 const App = () => {
@@ -52,7 +53,9 @@ const App = () => {
                                 <Route path="/login" element={<Login />} />
                                 <Route path="/registration" element={<Registration />} />
                                 <Route path="/forgot-password" element={<ForgotPassword />} />
-                                <Route path="/reset-password" element={<ResetPassword />} />
+                                <Route element={<ResetPasswordProtectionRoute />} > 
+                                    <Route path="/reset-password" element={<ResetPassword />} />
+                                </Route>
                             </Route>
                         </Routes>
                     </main>
