@@ -16,13 +16,16 @@ import { useDrop } from "react-dnd";
 import { addIngredient } from "../../../services/constructor-slice";
 import Card from "./card";
 import { deleteIngredient } from "../../../services/constructor-slice";
+import { useNavigate } from "react-router-dom";
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { bun, mainIngredients } = useSelector(
         (state) => state.burgerConstructor
     );
     const { orderDetails } = useSelector((state) => state.orderDetails);
+    const {loginSuccess} = useSelector((state) => state.user);
 
     // Считаем Тотал
     const totalMainIngredients = mainIngredients.reduce(
@@ -35,18 +38,22 @@ const BurgerConstructor = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Айдишички для Поста считаем только при клике "оформить заказ"
-        const mainIngredientsIds = mainIngredients.map(
-            (ingredient) => ingredient._id
-        );
-        const bunsIds = bun.map((ingredient) => ingredient._id);
-        const allIngredientIds = [
-            ...bunsIds,
-            ...mainIngredientsIds,
-            ...bunsIds,
-        ];
-
-        dispatch(fetchOrderDetails(allIngredientIds));
+        if (loginSuccess) {
+            // Айдишички для Поста считаем только при клике "оформить заказ"
+            const mainIngredientsIds = mainIngredients.map(
+                (ingredient) => ingredient._id
+            );
+            const bunsIds = bun.map((ingredient) => ingredient._id);
+            const allIngredientIds = [
+                ...bunsIds,
+                ...mainIngredientsIds,
+                ...bunsIds,
+            ];
+    
+            dispatch(fetchOrderDetails(allIngredientIds));
+        } else{
+            navigate('/login');
+        }
     };
 
     useEffect(() => {
