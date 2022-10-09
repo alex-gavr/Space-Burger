@@ -159,7 +159,7 @@ const BurgerConstructor = () => {
                     Оформить заказ
                 </Button>
             </div>
-            {orderDetails.success && (
+            {orderDetails.success && loginSuccess && (
                 <Modal isOpened={isModalOpened} onClose={handleClose}>
                     <OrderDetails orderNumber={orderDetails.order.number} />
                 </Modal>
