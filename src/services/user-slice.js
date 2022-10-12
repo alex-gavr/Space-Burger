@@ -279,6 +279,7 @@ export const userSlice = createSlice({
                 state.tokenExpired = true;
             }
             else if (action.payload.message === "You should be authorised") {
+                state.loading = false;
                 return
             } else{
                 state.name = action.payload.user.name;

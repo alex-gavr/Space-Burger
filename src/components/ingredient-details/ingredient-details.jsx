@@ -1,13 +1,37 @@
 import styles from './ingredient-details.module.css';
 import PropTypes from 'prop-types';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { setDetails } from '../../services/ingredient-details-slice';
+import { useMemo } from 'react';
+
 
 
 
 export const IngredientDetails = () => {
+    const {id} = useParams();
+    const dispatch = useDispatch();
+    const {isModalOpen} = useSelector((state) => state.modal);
+    const {ingredients} = useSelector((state) => state.ingredients);
 
-    const {details} = useSelector((state) => state.details);
+
+    const filteredIngredient = useMemo(
+        () =>
+            ingredients.filter((ingredient) => ingredient._id === id),
+        [ingredients, id]
+    );
+
+
+    useEffect(() => {
+        if (filteredIngredient.length > 0) {
+        dispatch(setDetails(filteredIngredient[0]));
+        }
+    },[]);
+
     
+    
+    const {details} = useSelector((state) => state.details);
     return ( 
         <div className={styles.wrapper}>
             <img src={details.image_large}  alt="hello" />

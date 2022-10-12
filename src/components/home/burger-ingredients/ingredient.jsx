@@ -9,13 +9,17 @@ import {
 import { useDrag } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { setDetails } from "../../../services/ingredient-details-slice";
+import { useNavigate } from "react-router-dom";
+import { onOpenModal } from "../../../services/modal-slice";
 
-const Ingredient = ({ ingredient, setIsModalOpened, bun, mainIngredients }) => {
+const Ingredient = ({ ingredient, bun, mainIngredients }) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleOpenModal = (ingredient) => {
         dispatch(setDetails(ingredient));
-        setIsModalOpened(true);
+        dispatch(onOpenModal("Детали ингредиента"))
+        navigate(`/ingredients/${ingredient._id}`, {state: 'opened'});
     };
 
     const [{ isDragging }, drag] = useDrag(() => ({

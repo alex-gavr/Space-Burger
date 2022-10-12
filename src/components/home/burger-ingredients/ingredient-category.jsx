@@ -2,10 +2,6 @@ import "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import styles from "./burger-ingredients.module.css";
-import {
-    CurrencyIcon,
-    Counter,
-} from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector, useDispatch } from "react-redux";
 import Ingredient from "./ingredient";
 
@@ -36,7 +32,6 @@ const IngredientCategory = (props) => {
                                 bun={bun}
                                 mainIngredients={mainIngredients}
                                 key={ingredient._id}
-                                setIsModalOpened={props.setIsModalOpened}
                             />
                         );
                     })}
@@ -47,6 +42,5 @@ const IngredientCategory = (props) => {
 IngredientCategory.propTypes = {
     type: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    setIsModalOpened: PropTypes.func.isRequired,
 };
 export default IngredientCategory;

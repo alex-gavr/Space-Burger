@@ -1,13 +1,12 @@
 import "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import styles from "./profile.module.css";
 import {
     Button,
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getCookie } from "../../../utils/getCookie";
 import { logout } from "../../../services/user-slice";
 import { profileDataChange } from "../../../services/user-slice";
 

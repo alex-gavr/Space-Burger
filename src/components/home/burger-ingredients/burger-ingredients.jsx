@@ -12,19 +12,13 @@ import { deleteDetails } from "../../../services/ingredient-details-slice";
 const BurgerIngredients = () => {
     const dispatch = useDispatch();
 
-    const [isModalOpened, setIsModalOpened] = useState(false);
     const [current, setCurrent] = useState(INGREDIENT_TYPES.BUN);
 
     const bun = useRef();
     const sauce = useRef();
     const main = useRef();
 
-    const handleClose = () => {
-        setIsModalOpened(false);
-        dispatch(deleteDetails());
-    };
-
-    // TRACKING SCROLLING FOR
+    // TRACKING SCROLLING
     useEffect(() => {
         const element = document.getElementById("id");
         const onScroll = () => {
@@ -85,7 +79,6 @@ const BurgerIngredients = () => {
                     <IngredientCategory
                         title="Булки"
                         type={INGREDIENT_TYPES.BUN}
-                        setIsModalOpened={setIsModalOpened}
                     />
                 </div>
                 {/* Соусы */}
@@ -93,7 +86,6 @@ const BurgerIngredients = () => {
                     <IngredientCategory
                         title="Соусы"
                         type={INGREDIENT_TYPES.SAUCE}
-                        setIsModalOpened={setIsModalOpened}
                     />
                 </div>
                 {/* Начинка */}
@@ -101,15 +93,10 @@ const BurgerIngredients = () => {
                     <IngredientCategory
                         title="Начинка"
                         type={INGREDIENT_TYPES.MAIN}
-                        setIsModalOpened={setIsModalOpened}
                     />
                 </div>
             </div>
-            <Modal
-                title="Детали ингредиента"
-                isOpened={isModalOpened}
-                onClose={handleClose}
-            >
+            <Modal>
                 <IngredientDetails />
             </Modal>
         </section>

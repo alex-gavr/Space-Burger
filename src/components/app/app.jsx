@@ -6,7 +6,7 @@ import Home from "../home/home";
 import { Preloader } from "../preloader/preloader";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchIngredients } from "../../services/ingredients-slice";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Login from "../registration/login";
 import Registration from "../registration/registration";
 import ForgotPassword from "../registration/forgot-password";
@@ -18,11 +18,16 @@ import LoggedInRoutes from "../../utils/private-routes/logged-in-routes";
 import LogInRoutes from "../../utils/private-routes/login-routes";
 import ResetPasswordProtectionRoute from "../../utils/private-routes/reset-password-protection";
 import { tokenUpdate } from "../../services/user-slice";
+import { IngredientDetails } from "../ingredient-details/ingredient-details";
+import Modal from "../modal/modal";
+
+
 
 const App = () => {
     const { loading } = useSelector((state) => state.ingredients);
     const {tokenExpired} = useSelector((state) => state.user);
     const dispatch = useDispatch();
+    const location = useLocation();
 
     useEffect(() => {
         dispatch(fetchIngredients());
@@ -32,7 +37,6 @@ const App = () => {
     useEffect(() => {
         if (tokenExpired) {
             dispatch(tokenUpdate());
-            dispatch(fetchUserData());
         }
     }, [tokenExpired]);
 
@@ -46,7 +50,13 @@ const App = () => {
                     <main>
                         <Routes>
                             <Route path="*" element={<NotFound />} />
-                            <Route path="/" element={<Home />} />
+                            <Route path="/" element={<Home />}>
+                            {
+                                location.state === 'opened' &&
+                                <Route path='/ingredients/:id' element={ <Modal /> } />
+                            }
+                            </Route>
+                            <Route path='/ingredients/:id' element={ <IngredientDetails /> } />
                             <Route element={<LoggedInRoutes />}>
                                 <Route path="/profile" element={<Profile />} />
                             </Route>
