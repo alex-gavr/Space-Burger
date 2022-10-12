@@ -32,6 +32,7 @@ const App = () => {
     useEffect(() => {
         if (tokenExpired) {
             dispatch(tokenUpdate());
+            dispatch(fetchUserData());
         }
     }, [tokenExpired]);
 

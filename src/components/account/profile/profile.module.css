@@ -12,6 +12,14 @@
     align-items: center;
     gap: 1rem;
 }
+.row{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
 
 .profileNavigation{
     width: 100%;

@@ -15,6 +15,7 @@ const initialState = {
     passwordChanged: null,
     incorrectToken: null,
     tokenExpired: null,
+    profileDataChanged: null,
     loading: null,
     error: false,
 };
@@ -135,6 +136,31 @@ export const logout = createAsyncThunk(
         return res.json();
     }
 );
+
+// USER PROFILE DATA CHANGE
+export const profileDataChange = createAsyncThunk(
+    "user/profileDataChange",
+    async (userData) => {
+        const { email, password, name } = userData;
+        const res = await fetch(USER_URL, {
+            method: "PATCH",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: { 
+                "Content-Type": "application/json",
+                Authorization: getCookie("accessToken"),
+            },
+            redirect: "follow",
+            referrerPolicy: "no-referrer",
+            body: JSON.stringify({ email, password, name }),
+        })
+        
+        return res.json();
+    }
+);
+
+
 
 
 export const userSlice = createSlice({
@@ -279,6 +305,27 @@ export const userSlice = createSlice({
             state.loading = false;
         },
         [logout.rejected]: (state) => {
+            state.loading = null;
+            state.error = true;
+        },
+
+        // USER PROFILE DATA CHANGE
+        [profileDataChange.pending]: (state) => {
+            state.error = false;
+            state.loading = true;
+            state.profileDataChanged = null;
+        },
+        [profileDataChange.fulfilled]: (state, action) => {
+            if (action.payload.message === "jwt expired") {
+                state.tokenExpired = true;
+            } else{
+                state.name = action.payload.user.name;
+                state.email = action.payload.user.email;
+                state.profileDataChanged = action.payload.success
+            }
+            state.loading = false;
+        },
+        [profileDataChange.rejected]: (state) => {
             state.loading = null;
             state.error = true;
         },

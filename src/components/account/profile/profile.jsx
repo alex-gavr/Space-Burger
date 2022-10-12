@@ -1,63 +1,113 @@
 import "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./profile.module.css";
-import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+    Button,
+    Input,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getCookie } from "../../../utils/getCookie";
 import { logout } from "../../../services/user-slice";
-
+import { profileDataChange } from "../../../services/user-slice";
 
 const Profile = () => {
     const dispatch = useDispatch();
-    const {name: nameRedux, email: emailRedux} = useSelector((state) => state.user);
+    const { name: nameRedux, email: emailRedux, profileDataChanged } = useSelector(
+        (state) => state.user
+    );
 
     const [name, setName] = useState(nameRedux);
     const [email, setEmail] = useState(emailRedux);
     const [password, setPassword] = useState("");
-    const [passwordType, setPasswordType] = useState("password");
-    const [disabled, setDisabled] = useState(true);
+    const [passwordError, setPasswordError] = useState(false);
+    const [disableNameChange, setDisableNameChange] = useState(true);
+    const [disableEmailChange, setDisableEmailChange] = useState(true);
+    const [disablePasswordChange, setDisablePasswordChange] = useState(true);
 
-    const toggleDisabled = () => setDisabled(!disabled);
+    const toggleDisableNameChange = () => setDisableNameChange(!disableNameChange);
+    const toggleDisableEmailChange = () => setDisableEmailChange(!disableEmailChange);
+    const toggleDisablePasswordChange = () => setDisablePasswordChange(!disablePasswordChange);
 
-    const onIconClick = () => {
-        if (passwordType === "password") {
-            setPasswordType("text");
-        } else {
-            setPasswordType("password");
+    
+
+    const handleClear = (name) => {
+        if (name === "name") {
+            setName("");
+        } else if (name === "password") {
+            setPassword("");
+        } else if (name === "email") {
+            setEmail("");
         }
     };
 
-    let cookie = getCookie('token');
-    console.log(cookie);
+    const handleCancel = () => {
+        setName(nameRedux);
+        setEmail(emailRedux);
+        setDisableNameChange(true);
+        setDisableEmailChange(true);
+        setDisablePasswordChange(true);
+    }
+
 
     const classNameToggle = (navData) =>
         navData.isActive
             ? "text text_type_main-medium"
             : "text text_type_main-medium text_color_inactive";
 
+    
+    const handleProfileDataChange = (e, email, password, name) => {
+        if (password === "") {
+            setPasswordError(true);
+            setDisablePasswordChange(false);
+        } else{
+            e.preventDefault();
+            setPasswordError(false);
+            const userData = { email: email, password: password, name: name };
 
-    const handleLogout = (e) =>{
+            if (name || email || password) {
+                console.log(userData);
+                dispatch(profileDataChange(userData));
+                setDisableEmailChange(true);
+                setDisablePasswordChange(true);
+                setDisableNameChange(true);
+            }
+        }
+        
+    };
+
+    const handleLogout = (e) => {
         e.preventDefault();
         dispatch(logout());
-    }
-
+    };
 
     return (
         <div className={styles.grid}>
             <div className={styles.column}>
                 <ul className={styles.profileNavigation}>
                     <li>
-                        <NavLink to="/profile" className={classNameToggle}>Профиль</NavLink>
+                        <NavLink to="/profile" className={classNameToggle}>
+                            Профиль
+                        </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/profile/orders" className={classNameToggle}>История заказов</NavLink>
+                        <NavLink
+                            to="/profile/orders"
+                            className={classNameToggle}
+                        >
+                            История заказов
+                        </NavLink>
                     </li>
                     <li onClick={(e) => handleLogout(e)}>
-                        <button className="text text_type_main-medium text_color_inactive">Выход</button>
+                        <button className="text text_type_main-medium text_color_inactive">
+                            Выход
+                        </button>
                     </li>
                 </ul>
-                <p style={{marginTop: '4rem', opacity:'0.5'}} className='text text_type_main-small text_color_inactive'>
+                <p
+                    style={{ marginTop: "4rem", opacity: "0.5" }}
+                    className="text text_type_main-small text_color_inactive"
+                >
                     В этом разделе вы можете изменить свои персональные данные
                 </p>
             </div>
@@ -71,9 +121,9 @@ const Profile = () => {
                     error={false}
                     errorText={"Ошибка"}
                     size={"default"}
-                    disabled={disabled}
-                    icon={"EditIcon"}
-                    onIconClick={toggleDisabled}
+                    disabled={disableNameChange}
+                    icon={disableNameChange ? "EditIcon" : "CloseIcon"}
+                    onIconClick={disableNameChange ? toggleDisableNameChange : () => handleClear("name")}
                 />
 
                 <Input
@@ -85,23 +135,36 @@ const Profile = () => {
                     error={false}
                     errorText={"Ошибка"}
                     size={"default"}
-                    disabled={disabled}
-                    icon={"EditIcon"}
-                    onIconClick={toggleDisabled}
+                    disabled={disableEmailChange}
+                    icon={disableEmailChange ? "EditIcon" : "CloseIcon"}
+                    onIconClick={disableEmailChange ? toggleDisableEmailChange : () => handleClear("email")}
                 />
                 <Input
                     placeholder={"Пароль"}
                     name={"password"}
-                    type={passwordType}
+                    type={disablePasswordChange ? "password" : "text"}
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
-                    error={false}
-                    errorText={"Ошибка"}
+                    error={passwordError}
+                    errorText={"поле не должно быть пустым"}
                     size={"default"}
-                    disabled={disabled}
-                    icon={disabled ? "EditIcon" : passwordType === "password" ? "ShowIcon" : "HideIcon"}
-                    onIconClick={disabled ? toggleDisabled : onIconClick}
+                    disabled={disablePasswordChange}
+                    icon={disablePasswordChange ? "EditIcon" : "CloseIcon"}
+                    onIconClick={disablePasswordChange ? toggleDisablePasswordChange : () => handleClear("password")}
                 />
+                {!disableNameChange || !disableEmailChange || !disablePasswordChange ?  (
+                    <div className={styles.row}>
+                        <button className="text text_type_main-default text_color_inactive" onClick={handleCancel}>
+                            Отмена
+                        </button>
+                        <div onClick={(e) => handleProfileDataChange(e, email, password, name)}>
+                            <Button>Сохранить</Button>
+                        </div>
+                    </div>
+                ) :
+                null}
+                {profileDataChanged && <p className="text text_type_main-small text_color_inactive" style={{ color: "green" }}> данные успешно изменены </p>}
+                {profileDataChanged === false && <p className="text text_type_main-small text_color_inactive" style={{ color: "red" }}> произошла ошибка </p>}
             </div>
         </div>
     );
