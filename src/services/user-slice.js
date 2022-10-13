@@ -6,17 +6,24 @@ import { getCookie } from "../utils/getCookie";
 const initialState = {
     name: "",
     email: "",
-    authorize: null,
+
+    authorized: null,
+
     loginSuccess: null,
     logoutSuccess: null,
+
     accountCreated: null,
     accountExists: null,
+
     initPasswordReset: null,
     allowToGoToPasswordReset: false,
     passwordChanged: null,
+
     incorrectToken: null,
     tokenExpired: null,
+
     profileDataChanged: null,
+    
     loading: null,
     error: false,
 };
@@ -208,6 +215,7 @@ export const userSlice = createSlice({
                 setCookie('accessToken', action.payload.accessToken);
                 state.loginSuccess = true;
                 state.logoutSuccess = false;
+                state.authorized = true;
             }
             state.loading = false;
         },
@@ -280,7 +288,7 @@ export const userSlice = createSlice({
                 state.tokenExpired = true;
             }
             else if (action.payload.message === "You should be authorised") {
-                state.authorize = false;
+                state.authorized = false;
                 
             } else{
                 state.name = action.payload.user.name;

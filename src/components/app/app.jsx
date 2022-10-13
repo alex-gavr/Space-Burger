@@ -25,13 +25,15 @@ import Modal from "../modal/modal";
 
 const App = () => {
     const { loading } = useSelector((state) => state.ingredients);
-    const {tokenExpired} = useSelector((state) => state.user);
+    const {tokenExpired, authorized} = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const location = useLocation();
 
     useEffect(() => {
         dispatch(fetchIngredients());
-        dispatch(fetchUserData());
+        if (authorized) {
+            dispatch(fetchUserData());
+        }
     }, []);
 
     useEffect(() => {

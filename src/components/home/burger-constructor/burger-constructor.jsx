@@ -17,6 +17,7 @@ import { addIngredient } from "../../../services/constructor-slice";
 import Card from "./card";
 import { deleteIngredient } from "../../../services/constructor-slice";
 import { useNavigate } from "react-router-dom";
+import { onOpenModal } from "../../../services/modal-slice";
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
@@ -49,7 +50,6 @@ const BurgerConstructor = () => {
                 ...mainIngredientsIds,
                 ...bunsIds,
             ];
-    
             dispatch(fetchOrderDetails(allIngredientIds));
         } else{
             navigate('/login');
@@ -58,20 +58,9 @@ const BurgerConstructor = () => {
 
     useEffect(() => {
         if (orderDetails.success) {
-            handleOpen();
+            dispatch(onOpenModal());
         }
     }, [orderDetails]);
-
-    // Модуль
-    const [isModalOpened, setIsModalOpened] = useState(false);
-
-    const handleClose = () => {
-        setIsModalOpened(false);
-    };
-
-    const handleOpen = () => {
-        setIsModalOpened(true);
-    };
 
     // DND
     const [{ canDrop }, drop] = useDrop(() => ({
@@ -160,7 +149,7 @@ const BurgerConstructor = () => {
                 </Button>
             </div>
             {orderDetails.success && loginSuccess && (
-                <Modal isOpened={isModalOpened} onClose={handleClose}>
+                <Modal>
                     <OrderDetails orderNumber={orderDetails.order.number} />
                 </Modal>
             )}
