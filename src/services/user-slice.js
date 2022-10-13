@@ -6,6 +6,7 @@ import { getCookie } from "../utils/getCookie";
 const initialState = {
     name: "",
     email: "",
+    authorize: null,
     loginSuccess: null,
     logoutSuccess: null,
     accountCreated: null,
@@ -50,7 +51,7 @@ export const login = createAsyncThunk("user/login", async (data) => {
         credentials: "same-origin",
         headers: {
             "Content-Type": "application/json",
-            Authorization: getCookie("token"),
+            Authorization: getCookie("accessToken"),
         },
         redirect: "follow",
         referrerPolicy: "no-referrer",
@@ -279,8 +280,8 @@ export const userSlice = createSlice({
                 state.tokenExpired = true;
             }
             else if (action.payload.message === "You should be authorised") {
-                state.loading = false;
-                return
+                state.authorize = false;
+                
             } else{
                 state.name = action.payload.user.name;
                 state.email = action.payload.user.email;

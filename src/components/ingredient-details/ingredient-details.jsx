@@ -27,15 +27,16 @@ export const IngredientDetails = () => {
         if (filteredIngredient.length > 0) {
         dispatch(setDetails(filteredIngredient[0]));
         }
-    },[]);
+    },[filteredIngredient]);
 
     
     
     const {details} = useSelector((state) => state.details);
     return ( 
         <div className={styles.wrapper}>
+            {!isModalOpen && <h1 className='text text_type_main-large mb-8'>Детали Ингредиента</h1>}
             <img src={details.image_large}  alt="hello" />
-            <p className="text text_type_main-default mb-8">{details.name}</p>
+            <p className="text text_type_main-medium mb-8">{details.name}</p>
             <div className={styles.row}>
                 <div className={styles.column}>
                     <p className="text text_type_main-small text_color_inactive">Калории, ккал</p>
