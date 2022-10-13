@@ -1,18 +1,16 @@
 import "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import styles from "./styles.module.css";
 import {
     Button,
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { useDispatch  } from "react-redux";
 import { login } from "../../services/user-slice";
 
 const Login = () => {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { loginSuccess } = useSelector((state) => state.user);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordType, setPasswordType] = useState("password");
@@ -33,16 +31,6 @@ const Login = () => {
         }
     };
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            if (loginSuccess) {
-                // redirect
-                navigate("/");
-            }
-        }, 2000);
-
-        return () => clearTimeout(timer);
-    }, [loginSuccess]);
 
     return (
         <div className={styles.wrapper}>
@@ -74,23 +62,6 @@ const Login = () => {
                 <div onClick={(e) => handleLogin(e, email, password)}>
                     <Button style={{ marginBottom: "3.5rem" }}> Войти </Button>
                 </div>
-                {loginSuccess && (
-                    <p
-                        className="text text_type_main-small text_color_inactive"
-                        style={{ color: "green" }}
-                    >
-                        выход успешно выполнен 🥳
-                    </p>
-                )}
-                {loginSuccess === false && (
-                    <p
-                        className="text text_type_main-small text_color_inactive"
-                        style={{ color: "red" }}
-                    >
-                        Выход не выполнен. Email или пароль не подходят 😢{" "}
-                    </p>
-                )}
-
                 <div className={styles.helpContainer}>
                     <div className={styles.row}>
                         <p className="text text_type_main-small text_color_inactive">

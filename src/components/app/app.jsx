@@ -20,6 +20,8 @@ import ResetPasswordProtectionRoute from "../../utils/private-routes/reset-passw
 import { tokenUpdate } from "../../services/user-slice";
 import { IngredientDetails } from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
+import Cookies from 'js-cookie';
+import { openModalWithCookie } from "../../services/modal-slice";
 
 
 
@@ -29,9 +31,12 @@ const App = () => {
     const dispatch = useDispatch();
     const location = useLocation();
 
+    const token = Cookies.get('accessToken');
+    const openModal = Cookies.get('isModalOpen');
+
     useEffect(() => {
         dispatch(fetchIngredients());
-        if (authorized) {
+        if (token) {
             dispatch(fetchUserData());
         }
     }, []);
@@ -41,6 +46,12 @@ const App = () => {
             dispatch(tokenUpdate());
         }
     }, [tokenExpired]);
+
+    useEffect(() => {
+        if (openModal) {
+            dispatch(openModalWithCookie());
+        }
+    }, [openModal]);
 
     return (
         <>

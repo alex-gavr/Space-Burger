@@ -15,7 +15,6 @@ const Modal = ({children}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {isModalOpen, title} = useSelector((state) => state.modal);
-    console.log(isModalOpen);
 
     const closeModal = () => {
         dispatch(onCloseModal());

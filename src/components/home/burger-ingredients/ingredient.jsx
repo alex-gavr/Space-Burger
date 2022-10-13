@@ -1,13 +1,12 @@
 import "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useMemo } from "react";
-import PropTypes from "prop-types";
 import styles from "./burger-ingredients.module.css";
 import {
     CurrencyIcon,
     Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag } from "react-dnd";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setDetails } from "../../../services/ingredient-details-slice";
 import { useNavigate } from "react-router-dom";
 import { onOpenModal } from "../../../services/modal-slice";

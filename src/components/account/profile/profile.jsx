@@ -1,5 +1,5 @@
 import "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./profile.module.css";
 import {
     Button,
@@ -9,6 +9,7 @@ import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../../services/user-slice";
 import { profileDataChange } from "../../../services/user-slice";
+import { profileDataChangedToDefault } from "../../../services/user-slice";
 
 const Profile = () => {
     const dispatch = useDispatch();
@@ -27,6 +28,16 @@ const Profile = () => {
     const toggleDisableNameChange = () => setDisableNameChange(!disableNameChange);
     const toggleDisableEmailChange = () => setDisableEmailChange(!disableEmailChange);
     const toggleDisablePasswordChange = () => setDisablePasswordChange(!disablePasswordChange);
+
+    useEffect(() => {
+        if (profileDataChanged) {
+            const timer = setTimeout(() => {
+                dispatch(profileDataChangedToDefault());
+            }, 1000);
+            return () => clearTimeout(timer);
+        }
+        
+    },[profileDataChanged]);
 
     
 

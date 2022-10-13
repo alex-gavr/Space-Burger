@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk, current} from "@reduxjs/toolkit";
 import { LOGIN_URL, REGISTER_URL, PASSWORD_RESET_URL, NEW_PASSWORD_SAVE_URL, TOKEN_URL, USER_URL, LOGOUT_URL} from "../utils/config";
-import { setCookie } from "../utils/setCookie";
-import { getCookie } from "../utils/getCookie";
+import Cookies from 'js-cookie';
 
 const initialState = {
     name: "",
@@ -23,7 +22,7 @@ const initialState = {
     tokenExpired: null,
 
     profileDataChanged: null,
-    
+
     loading: null,
     error: false,
 };
@@ -35,12 +34,7 @@ export const registerUser = createAsyncThunk(
         const { email, password, name } = userData;
         const res = await fetch(REGISTER_URL, {
             method: "POST",
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "same-origin",
             headers: { "Content-Type": "application/json" },
-            redirect: "follow",
-            referrerPolicy: "no-referrer",
             body: JSON.stringify({ email, password, name }),
         })
         
@@ -53,15 +47,9 @@ export const login = createAsyncThunk("user/login", async (data) => {
     const { email, password } = data;
     const res = await fetch(LOGIN_URL, {
         method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
         headers: {
             "Content-Type": "application/json",
-            Authorization: getCookie("accessToken"),
         },
-        redirect: "follow",
-        referrerPolicy: "no-referrer",
         body: JSON.stringify({ email, password }),
     });
 
@@ -100,10 +88,12 @@ export const newPasswordSave = createAsyncThunk(
 export const tokenUpdate = createAsyncThunk(
     "user/newToken",
     async () => {
-        let token = getCookie("refreshToken");
+        let token = Cookies.get("refreshToken");
         const res = await fetch(TOKEN_URL, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json",
+            Authorization: Cookies.get("accessToken"),
+        },
             body: JSON.stringify({ token }),
         });
         return res.json();
@@ -117,15 +107,10 @@ export const fetchUserData = createAsyncThunk(
     async () => {
         const res = await fetch(USER_URL, {
             method: "GET",
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
             headers: { 
                 "Content-Type": "application/json" ,
-                Authorization: getCookie("accessToken"),
+                Authorization: Cookies.get("accessToken"),
             },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer'
         })
         return res.json();
     }
@@ -135,7 +120,7 @@ export const fetchUserData = createAsyncThunk(
 export const logout = createAsyncThunk(
     "user/logout",
     async () => {
-        const token = getCookie("refreshToken");
+        const token = Cookies.get("refreshToken");
         const res = await fetch(LOGOUT_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -152,15 +137,10 @@ export const profileDataChange = createAsyncThunk(
         const { email, password, name } = userData;
         const res = await fetch(USER_URL, {
             method: "PATCH",
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "same-origin",
             headers: { 
                 "Content-Type": "application/json",
-                Authorization: getCookie("accessToken"),
+                Authorization: Cookies.get("accessToken"),
             },
-            redirect: "follow",
-            referrerPolicy: "no-referrer",
             body: JSON.stringify({ email, password, name }),
         })
         
@@ -174,6 +154,11 @@ export const profileDataChange = createAsyncThunk(
 export const userSlice = createSlice({
     name: "user",
     initialState,
+    reducers:{
+        profileDataChangedToDefault(state) {
+            state.profileDataChanged = null;
+        },
+    },
     extraReducers: {
         // USER CREATION
         [registerUser.pending]: (state) => {
@@ -188,8 +173,8 @@ export const userSlice = createSlice({
             } else {
                 state.name = action.payload.user.name;
                 state.email = action.payload.user.email;
-                setCookie('refreshToken', action.payload.refreshToken);
-                setCookie('accessToken', action.payload.accessToken);
+                Cookies.set('refreshToken', action.payload.refreshToken);
+                Cookies.set('accessToken', action.payload.accessToken);
                 state.accountCreated = true;
             }
             state.loading = false;
@@ -211,8 +196,10 @@ export const userSlice = createSlice({
             } else {
                 state.name = action.payload.user.name;
                 state.email = action.payload.user.email;
-                setCookie('refreshToken', action.payload.refreshToken);
-                setCookie('accessToken', action.payload.accessToken);
+                Cookies.remove('refreshToken', { path: '/' });
+                Cookies.remove('accessToken', { path: '/' });
+                Cookies.set('refreshToken', action.payload.refreshToken);
+                Cookies.set('accessToken', action.payload.accessToken);
                 state.loginSuccess = true;
                 state.logoutSuccess = false;
                 state.authorized = true;
@@ -267,8 +254,10 @@ export const userSlice = createSlice({
             state.loading = true;
         },
         [tokenUpdate.fulfilled]: (state, action) => {
-            setCookie('refreshToken', action.payload.refreshToken);
-            setCookie('accessToken', action.payload.accessToken);
+            Cookies.remove('refreshToken', { path: '/' });
+            Cookies.remove('accessToken', { path: '/' });
+            Cookies.set('refreshToken', action.payload.refreshToken);
+            Cookies.set('accessToken', action.payload.accessToken);
             state.loading = false;
         },
         [tokenUpdate.rejected]: (state) => {
@@ -310,6 +299,8 @@ export const userSlice = createSlice({
             state.logoutSuccess = null;
         },
         [logout.fulfilled]: (state, action) => {
+            Cookies.remove('refreshToken', { path: '/' });
+            Cookies.remove('accessToken', { path: '/' });
             state.logoutSuccess = action.payload.success;
             state.loginSuccess = null;
             state.loading = false;
@@ -342,4 +333,5 @@ export const userSlice = createSlice({
     },
 });
 
+export const {profileDataChangedToDefault} = userSlice.actions;
 export default userSlice.reducer;

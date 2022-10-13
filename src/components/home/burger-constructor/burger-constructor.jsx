@@ -17,7 +17,7 @@ import { addIngredient } from "../../../services/constructor-slice";
 import Card from "./card";
 import { deleteIngredient } from "../../../services/constructor-slice";
 import { useNavigate } from "react-router-dom";
-import { onOpenModal } from "../../../services/modal-slice";
+import { openModalOrder } from "../../../services/modal-slice";
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
@@ -27,6 +27,9 @@ const BurgerConstructor = () => {
     );
     const { orderDetails } = useSelector((state) => state.orderDetails);
     const {loginSuccess} = useSelector((state) => state.user);
+    const {modalWasShown} = useSelector((state) => state.modal);
+
+    const [explain, setExplain] = useState(false);
 
     // Считаем Тотал
     const totalMainIngredients = mainIngredients.reduce(
@@ -57,10 +60,24 @@ const BurgerConstructor = () => {
     };
 
     useEffect(() => {
-        if (orderDetails.success) {
-            dispatch(onOpenModal());
+        if (orderDetails.success && loginSuccess && !modalWasShown) {
+            dispatch(openModalOrder());
         }
-    }, [orderDetails]);
+    }, [orderDetails, loginSuccess]);
+
+    const handleExplain = () => {
+        setExplain(true);
+    };
+
+    useEffect(() => {
+        if (explain) {
+            const timer = setTimeout(() => {
+                setExplain(false);
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+        
+    },[explain]);
 
     // DND
     const [{ canDrop }, drop] = useDrop(() => ({
@@ -137,6 +154,7 @@ const BurgerConstructor = () => {
                         ))}
                 </div>
             </ul>
+            {explain && <p className="text text_type_main-small text_color_inactive" style={{color:'green'}}> заказ создан и уже на кухне</p>}
             <div className={styles.containerTotal}>
                 <div className={styles.containerRow}>
                     {/* Цена */}
@@ -144,7 +162,7 @@ const BurgerConstructor = () => {
                     <CurrencyIcon type="primary" />
                 </div>
                 {/* Кнопка оформить заказ */}
-                <Button type="primary" size="large" onClick={handleSubmit}>
+                <Button type="primary" size="large" onClick={ !modalWasShown ? handleSubmit : handleExplain}>
                     Оформить заказ
                 </Button>
             </div>
