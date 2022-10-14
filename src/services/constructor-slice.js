@@ -1,4 +1,4 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice, current } from '@reduxjs/toolkit';
 
 const initialState = {
     bun: [],
@@ -6,15 +6,15 @@ const initialState = {
 };
 
 const constructorSlice = createSlice({
-    name: "burgerConstructor",
+    name: 'burgerConstructor',
     initialState,
     reducers: {
         addIngredient(state, action) {
-            if (action.payload.type === "bun") {
-                const hasBun = state.bun.some((i) => i.type === "bun");
-                
+            if (action.payload.type === 'bun') {
+                const hasBun = state.bun.some((i) => i.type === 'bun');
+
                 if (hasBun) {
-                    let currentBun = state.bun.find((i) => i.type === "bun");
+                    let currentBun = state.bun.find((i) => i.type === 'bun');
                     state.bun.splice(
                         state.bun.findIndex((i) => i._id === currentBun._id),
                         1
@@ -29,9 +29,7 @@ const constructorSlice = createSlice({
         },
         deleteIngredient(state, action) {
             state.mainIngredients.splice(
-                state.mainIngredients.findIndex(
-                    (i) => i._id === action.payload._id
-                ),
+                state.mainIngredients.findIndex((i) => i._id === action.payload._id),
                 1
             );
         },
@@ -43,10 +41,9 @@ const constructorSlice = createSlice({
         emptyConstructor(state) {
             state.bun = [];
             state.mainIngredients = [];
-        }
+        },
     },
 });
 
-export const { addIngredient, deleteIngredient, reorder, emptyConstructor } =
-    constructorSlice.actions;
+export const { addIngredient, deleteIngredient, reorder, emptyConstructor } = constructorSlice.actions;
 export default constructorSlice.reducer;

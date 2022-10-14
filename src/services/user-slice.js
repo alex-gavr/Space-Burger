@@ -1,10 +1,10 @@
-import { createSlice, createAsyncThunk, current} from "@reduxjs/toolkit";
-import { LOGIN_URL, REGISTER_URL, PASSWORD_RESET_URL, NEW_PASSWORD_SAVE_URL, TOKEN_URL, USER_URL, LOGOUT_URL} from "../utils/config";
+import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
+import { LOGIN_URL, REGISTER_URL, PASSWORD_RESET_URL, NEW_PASSWORD_SAVE_URL, TOKEN_URL, USER_URL, LOGOUT_URL } from '../utils/config';
 import Cookies from 'js-cookie';
 
 const initialState = {
-    name: "",
-    email: "",
+    name: '',
+    email: '',
 
     authorized: null,
 
@@ -28,27 +28,24 @@ const initialState = {
 };
 
 // USER CREATION
-export const registerUser = createAsyncThunk(
-    "user/createUser",
-    async (userData) => {
-        const { email, password, name } = userData;
-        const res = await fetch(REGISTER_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password, name }),
-        })
-        
-        return res.json();
-    }
-);
+export const registerUser = createAsyncThunk('user/createUser', async (userData) => {
+    const { email, password, name } = userData;
+    const res = await fetch(REGISTER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, name }),
+    });
+
+    return res.json();
+});
 
 // LOGIN
-export const login = createAsyncThunk("user/login", async (data) => {
+export const login = createAsyncThunk('user/login', async (data) => {
     const { email, password } = data;
     const res = await fetch(LOGIN_URL, {
-        method: "POST",
+        method: 'POST',
         headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
     });
@@ -57,104 +54,79 @@ export const login = createAsyncThunk("user/login", async (data) => {
 });
 
 // PASSWORD CHANGE INITIATION
-export const resetPasswordInit = createAsyncThunk(
-    "user/passwordReset",
-    async (email) => {
-        const res = await fetch(PASSWORD_RESET_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email }),
-        });
-        return res.json();
-    }
-);
+export const resetPasswordInit = createAsyncThunk('user/passwordReset', async (email) => {
+    const res = await fetch(PASSWORD_RESET_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+    });
+    return res.json();
+});
 
 // NEW PASSWORD SET UP AND SAVE
-export const newPasswordSave = createAsyncThunk(
-    "user/newPasswordSave",
-    async (data) => {
-        const { password, token } = data;
-        const res = await fetch(NEW_PASSWORD_SAVE_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ password, token }),
-        });
-        return res.json();
-    }
-);
-
+export const newPasswordSave = createAsyncThunk('user/newPasswordSave', async (data) => {
+    const { password, token } = data;
+    const res = await fetch(NEW_PASSWORD_SAVE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password, token }),
+    });
+    return res.json();
+});
 
 // TOKEN UPDATE
-export const tokenUpdate = createAsyncThunk(
-    "user/newToken",
-    async () => {
-        let token = Cookies.get("refreshToken");
-        const res = await fetch(TOKEN_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json",
-            Authorization: Cookies.get("accessToken"),
-        },
-            body: JSON.stringify({ token }),
-        });
-        return res.json();
-    }
-);
-
+export const tokenUpdate = createAsyncThunk('user/newToken', async () => {
+    let token = Cookies.get('refreshToken');
+    const res = await fetch(TOKEN_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: Cookies.get('accessToken') },
+        body: JSON.stringify({ token }),
+    });
+    return res.json();
+});
 
 // FETCH USER DATA
-export const fetchUserData = createAsyncThunk(
-    "user/userData",
-    async () => {
-        const res = await fetch(USER_URL, {
-            method: "GET",
-            headers: { 
-                "Content-Type": "application/json" ,
-                Authorization: Cookies.get("accessToken"),
-            },
-        })
-        return res.json();
-    }
-);
+export const fetchUserData = createAsyncThunk('user/userData', async () => {
+    const res = await fetch(USER_URL, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: Cookies.get('accessToken'),
+        },
+    });
+    return res.json();
+});
 
 // LOGOUT
-export const logout = createAsyncThunk(
-    "user/logout",
-    async () => {
-        const token = Cookies.get("refreshToken");
-        const res = await fetch(LOGOUT_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token }),
-        });
-        return res.json();
-    }
-);
+export const logout = createAsyncThunk('user/logout', async () => {
+    const token = Cookies.get('refreshToken');
+    const res = await fetch(LOGOUT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token }),
+    });
+    return res.json();
+});
 
 // USER PROFILE DATA CHANGE
-export const profileDataChange = createAsyncThunk(
-    "user/profileDataChange",
-    async (userData) => {
-        const { email, password, name } = userData;
-        const res = await fetch(USER_URL, {
-            method: "PATCH",
-            headers: { 
-                "Content-Type": "application/json",
-                Authorization: Cookies.get("accessToken"),
-            },
-            body: JSON.stringify({ email, password, name }),
-        })
-        
-        return res.json();
-    }
-);
+export const profileDataChange = createAsyncThunk('user/profileDataChange', async (userData) => {
+    const { email, password, name } = userData;
+    const res = await fetch(USER_URL, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: Cookies.get('accessToken'),
+        },
+        body: JSON.stringify({ email, password, name }),
+    });
 
-
-
+    return res.json();
+});
 
 export const userSlice = createSlice({
-    name: "user",
+    name: 'user',
     initialState,
-    reducers:{
+    reducers: {
         profileDataChangedToDefault(state) {
             state.profileDataChanged = null;
         },
@@ -168,7 +140,7 @@ export const userSlice = createSlice({
             state.accountCreated = null;
         },
         [registerUser.fulfilled]: (state, action) => {
-            if (action.payload.message === "User already exists") {
+            if (action.payload.message === 'User already exists') {
                 state.accountExists = true;
             } else {
                 state.name = action.payload.user.name;
@@ -235,7 +207,7 @@ export const userSlice = createSlice({
             state.incorrectToken = null;
         },
         [newPasswordSave.fulfilled]: (state, action) => {
-            if (action.payload.message === "Incorrect reset token") {
+            if (action.payload.message === 'Incorrect reset token') {
                 state.incorrectToken = true;
             } else {
                 state.passwordChanged = action.payload.success;
@@ -273,13 +245,11 @@ export const userSlice = createSlice({
             state.tokenExpired = null;
         },
         [fetchUserData.fulfilled]: (state, action) => {
-            if (action.payload.message === "jwt expired") {
+            if (action.payload.message === 'jwt expired') {
                 state.tokenExpired = true;
-            }
-            else if (action.payload.message === "You should be authorised") {
+            } else if (action.payload.message === 'You should be authorised') {
                 state.authorized = false;
-                
-            } else{
+            } else {
                 state.name = action.payload.user.name;
                 state.email = action.payload.user.email;
                 state.loginSuccess = true;
@@ -317,12 +287,12 @@ export const userSlice = createSlice({
             state.profileDataChanged = null;
         },
         [profileDataChange.fulfilled]: (state, action) => {
-            if (action.payload.message === "jwt expired") {
+            if (action.payload.message === 'jwt expired') {
                 state.tokenExpired = true;
-            } else{
+            } else {
                 state.name = action.payload.user.name;
                 state.email = action.payload.user.email;
-                state.profileDataChanged = action.payload.success
+                state.profileDataChanged = action.payload.success;
             }
             state.loading = false;
         },
@@ -333,5 +303,5 @@ export const userSlice = createSlice({
     },
 });
 
-export const {profileDataChangedToDefault} = userSlice.actions;
+export const { profileDataChangedToDefault } = userSlice.actions;
 export default userSlice.reducer;

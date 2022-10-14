@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 
 const initialState = {
@@ -6,11 +6,10 @@ const initialState = {
     isModalOpen: false,
 };
 
-
 export const modalSlice = createSlice({
-    name: "modal",
+    name: 'modal',
     initialState,
-    reducers:{
+    reducers: {
         onOpenModal(state, action) {
             Cookies.set('isModalOpen', 'True', { path: '/' });
             state.title = action.payload;
@@ -24,12 +23,11 @@ export const modalSlice = createSlice({
         openModalWithCookie(state) {
             state.isModalOpen = true;
         },
-        openModalOrder(state){
+        openModalOrder(state) {
             state.isModalOpen = true;
-        }
-    }
+        },
+    },
 });
 
-
-export const {onOpenModal, onCloseModal, openModalWithCookie, openModalOrder} = modalSlice.actions;
+export const { onOpenModal, onCloseModal, openModalWithCookie, openModalOrder } = modalSlice.actions;
 export default modalSlice.reducer;

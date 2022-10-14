@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { INGREDIENTS_URL } from "../utils/config";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { INGREDIENTS_URL } from '../utils/config';
 
 const initialState = {
     ingredients: [],
@@ -7,16 +7,13 @@ const initialState = {
     error: false,
 };
 
-export const fetchIngredients = createAsyncThunk(
-    "ingredients/getIngredients",
-    async () => {
-        const res = await fetch(INGREDIENTS_URL);
-        return res.json();
-    }
-);
+export const fetchIngredients = createAsyncThunk('ingredients/getIngredients', async () => {
+    const res = await fetch(INGREDIENTS_URL);
+    return res.json();
+});
 
 export const ingredientsSlice = createSlice({
-    name: "ingredients",
+    name: 'ingredients',
     initialState,
     extraReducers: {
         [fetchIngredients.pending]: (state) => {
