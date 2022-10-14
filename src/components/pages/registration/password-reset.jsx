@@ -7,11 +7,13 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { newPasswordSave } from "../../services/user-slice";
+import { newPasswordSave } from "../../../services/user-slice";
 
 const ResetPassword = () => {
     const dispatch = useDispatch();
-    const {passwordChanged, incorrectToken} = useSelector((state) => state.user);
+    const { passwordChanged, incorrectToken } = useSelector(
+        (state) => state.user
+    );
     const [token, setToken] = useState("");
     const [password, setPassword] = useState("");
     const [passwordType, setPasswordType] = useState("password");
@@ -25,18 +27,22 @@ const ResetPassword = () => {
     };
 
     const handleSaveNewPassword = (e, password, token) => {
-        const data = {password: password, token: token}
+        const data = { password: password, token: token };
         e.preventDefault();
         if (data) {
             dispatch(newPasswordSave(data));
         }
     };
 
-
     return (
         <div className={styles.wrapper}>
-            <form className={styles.column}>
-                <h1 className="text text_type_main-medium">Восстановление пароля</h1>
+            <form
+                className={styles.column}
+                onSubmit={(e) => handleSaveNewPassword(e, password, token)}
+            >
+                <h1 className="text text_type_main-medium">
+                    Восстановление пароля
+                </h1>
                 <Input
                     placeholder={"Введите новый пароль"}
                     name={"password"}
@@ -59,18 +65,32 @@ const ResetPassword = () => {
                     errorText={"Ошибка"}
                     size={"default"}
                 />
-                <div onClick={(e) => handleSaveNewPassword(e, password, token)}>
-                    <Button style={{ marginBottom: "3.5rem" }}>
-                        Сохранить
-                    </Button>
+                <div className={styles.marginBottomForButton}>
+                    <Button>Сохранить</Button>
                 </div>
-                {passwordChanged && <p className="text text_type_main-small" style={{color:"green"}}>пароль успешно изменён</p> }
-                {incorrectToken && <p className="text text_type_main-small" style={{color:"red"}}>неверный код из письма</p>}
+                {passwordChanged && (
+                    <p
+                        className="text text_type_main-small"
+                        style={{ color: "green" }}
+                    >
+                        пароль успешно изменён
+                    </p>
+                )}
+                {incorrectToken && (
+                    <p
+                        className="text text_type_main-small"
+                        style={{ color: "red" }}
+                    >
+                        неверный код из письма
+                    </p>
+                )}
                 <div className={styles.row}>
                     <p className="text text_type_main-small text_color_inactive">
                         Вспомнили пароль?
                     </p>
-                    <Link to="/login" className="text text_type_main-small">Войти</Link>
+                    <Link to="/login" className="text text_type_main-small">
+                        Войти
+                    </Link>
                 </div>
             </form>
         </div>

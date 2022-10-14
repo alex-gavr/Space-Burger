@@ -7,9 +7,9 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag } from "react-dnd";
 import { useDispatch } from "react-redux";
-import { setDetails } from "../../../services/ingredient-details-slice";
+import { setDetails } from "../../services/ingredient-details-slice";
 import { useNavigate } from "react-router-dom";
-import { onOpenModal } from "../../../services/modal-slice";
+import { onOpenModal } from "../../services/modal-slice";
 
 const Ingredient = ({ ingredient, bun, mainIngredients }) => {
     const dispatch = useDispatch();

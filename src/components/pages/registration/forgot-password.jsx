@@ -7,7 +7,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { resetPasswordInit } from "../../services/user-slice";
+import { resetPasswordInit } from "../../../services/user-slice";
 import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
@@ -32,10 +32,12 @@ const ForgotPassword = () => {
         }
     }, [initPasswordReset]);
 
-
     return (
         <div className={styles.wrapper}>
-            <form className={styles.column}>
+            <form
+                className={styles.column}
+                onSubmit={(e) => handlePasswordReset(e, email)}
+            >
                 <h1 className="text text_type_main-medium">
                     Восстановление пароля
                 </h1>
@@ -64,11 +66,8 @@ const ForgotPassword = () => {
                         </Link>
                     </>
                 )}
-                <div onClick={(e) => handlePasswordReset(e, email)}>
-                    <Button
-                        style={{ marginBottom: "3.5rem" }}
-                        disabled={email ? false : true}
-                    >
+                <div className={styles.marginBottomForButton}>
+                    <Button disabled={email ? false : true}>
                         Восстановить
                     </Button>
                 </div>

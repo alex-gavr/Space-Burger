@@ -7,11 +7,13 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../../services/user-slice";
+import { registerUser } from "../../../services/user-slice";
 
 const Registration = () => {
     const dispatch = useDispatch();
-    const { accountExists, accountCreated } = useSelector((state) => state.user);
+    const { accountExists, accountCreated } = useSelector(
+        (state) => state.user
+    );
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -35,7 +37,10 @@ const Registration = () => {
 
     return (
         <div className={styles.wrapper}>
-            <form className={styles.column}>
+            <form
+                className={styles.column}
+                onSubmit={(e) => handleRegistration(e, email, password, name)}
+            >
                 <h1 className="text text_type_main-medium">Регистрация</h1>
                 <Input
                     placeholder={"Имя"}
@@ -84,16 +89,13 @@ const Registration = () => {
                         </Link>
                     </>
                 )}
-                {accountCreated && <p className="text text_type_main-small text_color_inactive">Поздравляем аккаунт создан</p>}
-                <div
-                    onClick={(e) =>
-                        handleRegistration(e, email, password, name)
-                    }
-                >
-                    <Button
-                        style={{ marginBottom: "3.5rem" }}
-                        disabled={!email && !password && !name}
-                    >
+                {accountCreated && (
+                    <p className="text text_type_main-small text_color_inactive">
+                        Поздравляем аккаунт создан
+                    </p>
+                )}
+                <div className={styles.marginBottomForButton}>
+                    <Button disabled={!email && !password && !name}>
                         Зарегистрироваться
                     </Button>
                 </div>

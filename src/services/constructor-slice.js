@@ -40,9 +40,13 @@ const constructorSlice = createSlice({
             state.mainIngredients.splice(action.payload[0], 1);
             state.mainIngredients.splice(action.payload[1], 0, dragCard);
         },
+        emptyConstructor(state) {
+            state.bun = [];
+            state.mainIngredients = [];
+        }
     },
 });
 
-export const { addIngredient, deleteIngredient, reorder } =
+export const { addIngredient, deleteIngredient, reorder, emptyConstructor } =
     constructorSlice.actions;
 export default constructorSlice.reducer;

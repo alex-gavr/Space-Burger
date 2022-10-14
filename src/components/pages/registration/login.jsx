@@ -5,12 +5,14 @@ import {
     Button,
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
-import { useDispatch  } from "react-redux";
-import { login } from "../../services/user-slice";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../../../services/user-slice";
 
 const Login = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordType, setPasswordType] = useState("password");
@@ -28,15 +30,21 @@ const Login = () => {
         const data = { email: email, password: password };
         if (email && password) {
             dispatch(login(data));
+            if (location.state?.from) {
+                console.log("i ran" + location.state.from);
+                navigate(location.state.from);
+            }
         }
     };
-
+    console.log(location.state);
 
     return (
         <div className={styles.wrapper}>
-            <form className={styles.column}>
+            <form
+                className={styles.column}
+                onSubmit={(e) => handleLogin(e, email, password)}
+            >
                 <h1 className="text text_type_main-medium">Вход</h1>
-
                 <Input
                     placeholder={"E-mail"}
                     name={"email"}
@@ -59,8 +67,8 @@ const Login = () => {
                     icon={passwordType === "password" ? "ShowIcon" : "HideIcon"}
                     onIconClick={onIconClick}
                 />
-                <div onClick={(e) => handleLogin(e, email, password)}>
-                    <Button style={{ marginBottom: "3.5rem" }}> Войти </Button>
+                <div className={styles.marginBottomForButton}>
+                    <Button> Войти </Button>
                 </div>
                 <div className={styles.helpContainer}>
                     <div className={styles.row}>

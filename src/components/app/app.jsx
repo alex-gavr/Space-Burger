@@ -2,16 +2,16 @@ import "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useEffect } from "react";
 import styles from "./app.module.css";
 import AppHeader from "../header/app-header";
-import Home from "../home/home";
+import Home from "../pages/home/home";
 import { Preloader } from "../preloader/preloader";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchIngredients } from "../../services/ingredients-slice";
 import { Route, Routes, useLocation } from "react-router-dom";
-import Login from "../registration/login";
-import Registration from "../registration/registration";
-import ForgotPassword from "../registration/forgot-password";
-import ResetPassword from "../registration/password-reset";
-import Profile from "../account/profile/profile";
+import Login from "../pages/registration/login";
+import Registration from "../pages/registration/registration";
+import ForgotPassword from "../pages/registration/forgot-password";
+import ResetPassword from "../pages/registration/password-reset";
+import Profile from "../pages/account/profile/profile";
 import NotFound from "../404/not-found";
 import { fetchUserData } from "../../services/user-slice";
 import LoggedInRoutes from "../../utils/private-routes/logged-in-routes";
@@ -30,6 +30,7 @@ const App = () => {
     const {tokenExpired, authorized} = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const location = useLocation();
+
 
     const token = Cookies.get('accessToken');
     const openModal = Cookies.get('isModalOpen');

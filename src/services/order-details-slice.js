@@ -20,6 +20,11 @@ export const fetchOrderDetails = createAsyncThunk( "orderDetails/getOrderDetails
 export const orderDetailsSlice = createSlice({
     name: "orderDetails",
     initialState,
+    reducers: {
+        deleteOrderDetails(state){
+            state.orderDetails = [];
+        }
+    },
     extraReducers: {
         [fetchOrderDetails.pending]: (state) => {
             state.error = false;
@@ -36,4 +41,5 @@ export const orderDetailsSlice = createSlice({
     },
 });
 
+export const {deleteOrderDetails} = orderDetailsSlice.actions;
 export default orderDetailsSlice.reducer;

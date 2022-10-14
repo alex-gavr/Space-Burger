@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import { reorder } from "../../../services/constructor-slice";
+import { reorder } from "../../services/constructor-slice";
 import { useDispatch } from "react-redux";
 import styles from "./burger-constructor.module.css";
 

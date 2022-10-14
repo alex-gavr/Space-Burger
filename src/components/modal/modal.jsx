@@ -5,27 +5,13 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { createPortal } from "react-dom";
 import { ModalOverlay } from "../modal-overlay/modal-overlay";
 import { useDispatch, useSelector } from "react-redux";
-import { onCloseModal } from "../../services/modal-slice";
-import { deleteDetails } from "../../services/ingredient-details-slice";
-import { useNavigate } from "react-router-dom";
 
-
-const Modal = ({children}) => {
-
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const {isModalOpen, title} = useSelector((state) => state.modal);
-
-    const closeModal = () => {
-        dispatch(onCloseModal());
-        dispatch(deleteDetails());
-        navigate('/');
-    }
-
+const Modal = ({ children, onClose }) => {
+    const { isModalOpen, title } = useSelector((state) => state.modal);
     // CLOSE IF ESCAPE KEY PRESSED
 
     useEffect(() => {
-        const closeOnEscapeKey = (e) => (e.key === "Escape" ? closeModal() : null);
+        const closeOnEscapeKey = (e) => (e.key === "Escape" ? onClose() : null);
 
         if (isModalOpen) {
             document.body.addEventListener("keydown", closeOnEscapeKey);
@@ -38,7 +24,7 @@ const Modal = ({children}) => {
     if (!isModalOpen) return null;
 
     return createPortal(
-        <ModalOverlay>
+        <ModalOverlay onClose={onClose}>
             <div
                 className={styles.container}
                 onClick={(e) => {
@@ -47,7 +33,7 @@ const Modal = ({children}) => {
             >
                 <div className={styles.rowBetween}>
                     <h1>{title}</h1>
-                    <div onClick={() => closeModal()} className={styles.iconContainer}>
+                    <div onClick={onClose} className={styles.iconContainer}>
                         <CloseIcon />
                     </div>
                 </div>
@@ -61,5 +47,6 @@ const Modal = ({children}) => {
 export default Modal;
 
 ModalOverlay.propTypes = {
-    children: PropTypes.node.isRequired
-}
+    children: PropTypes.node.isRequired,
+    onClose: PropTypes.func.isRequired,
+};

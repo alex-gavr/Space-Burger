@@ -3,14 +3,23 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientCategory from "./ingredient-category";
-import { IngredientDetails } from "../../ingredient-details/ingredient-details";
-import Modal from "../../modal/modal";
-import { INGREDIENT_TYPES } from "../../../utils/ingredient-types";
+import { IngredientDetails } from "../ingredient-details/ingredient-details";
+import Modal from "../modal/modal";
+import { INGREDIENT_TYPES } from "../../utils/ingredient-types";
 import { useDispatch } from "react-redux";
-import { deleteDetails } from "../../../services/ingredient-details-slice";
+import { deleteDetails } from "../../services/ingredient-details-slice";
+import { onCloseModal } from "../../services/modal-slice";
+import { useNavigate } from "react-router-dom";
 
 const BurgerIngredients = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleCloseModal = () => {
+        dispatch(onCloseModal());
+        dispatch(deleteDetails());
+        navigate('/');
+    }
 
     const [current, setCurrent] = useState(INGREDIENT_TYPES.BUN);
 
@@ -96,7 +105,7 @@ const BurgerIngredients = () => {
                     />
                 </div>
             </div>
-            <Modal>
+            <Modal onClose={handleCloseModal}>
                 <IngredientDetails />
             </Modal>
         </section>

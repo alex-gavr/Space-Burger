@@ -7,15 +7,17 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../../../services/user-slice";
-import { profileDataChange } from "../../../services/user-slice";
-import { profileDataChangedToDefault } from "../../../services/user-slice";
+import { logout } from "../../../../services/user-slice";
+import { profileDataChange } from "../../../../services/user-slice";
+import { profileDataChangedToDefault } from "../../../../services/user-slice";
 
 const Profile = () => {
     const dispatch = useDispatch();
-    const { name: nameRedux, email: emailRedux, profileDataChanged } = useSelector(
-        (state) => state.user
-    );
+    const {
+        name: nameRedux,
+        email: emailRedux,
+        profileDataChanged,
+    } = useSelector((state) => state.user);
 
     const [name, setName] = useState(nameRedux);
     const [email, setEmail] = useState(emailRedux);
@@ -25,9 +27,14 @@ const Profile = () => {
     const [disableEmailChange, setDisableEmailChange] = useState(true);
     const [disablePasswordChange, setDisablePasswordChange] = useState(true);
 
-    const toggleDisableNameChange = () => setDisableNameChange(!disableNameChange);
-    const toggleDisableEmailChange = () => setDisableEmailChange(!disableEmailChange);
-    const toggleDisablePasswordChange = () => setDisablePasswordChange(!disablePasswordChange);
+    const smallInactive = "text text_type_main-small text_color_inactive";
+
+    const toggleDisableNameChange = () =>
+        setDisableNameChange(!disableNameChange);
+    const toggleDisableEmailChange = () =>
+        setDisableEmailChange(!disableEmailChange);
+    const toggleDisablePasswordChange = () =>
+        setDisablePasswordChange(!disablePasswordChange);
 
     useEffect(() => {
         if (profileDataChanged) {
@@ -36,10 +43,7 @@ const Profile = () => {
             }, 1000);
             return () => clearTimeout(timer);
         }
-        
-    },[profileDataChanged]);
-
-    
+    }, [profileDataChanged]);
 
     const handleClear = (name) => {
         if (name === "name") {
@@ -57,21 +61,19 @@ const Profile = () => {
         setDisableNameChange(true);
         setDisableEmailChange(true);
         setDisablePasswordChange(true);
-    }
-
+    };
 
     const classNameToggle = (navData) =>
         navData.isActive
             ? "text text_type_main-medium"
             : "text text_type_main-medium text_color_inactive";
 
-    
     const handleProfileDataChange = (e, email, password, name) => {
+        e.preventDefault();
         if (password === "") {
             setPasswordError(true);
             setDisablePasswordChange(false);
-        } else{
-            e.preventDefault();
+        } else {
             setPasswordError(false);
             const userData = { email: email, password: password, name: name };
 
@@ -83,7 +85,6 @@ const Profile = () => {
                 setDisableNameChange(true);
             }
         }
-        
     };
 
     const handleLogout = (e) => {
@@ -121,7 +122,12 @@ const Profile = () => {
                     В этом разделе вы можете изменить свои персональные данные
                 </p>
             </div>
-            <div className={styles.column}>
+            <form
+                className={styles.column}
+                onSubmit={(e) =>
+                    handleProfileDataChange(e, email, password, name)
+                }
+            >
                 <Input
                     placeholder={"Имя"}
                     name={"name"}
@@ -133,7 +139,11 @@ const Profile = () => {
                     size={"default"}
                     disabled={disableNameChange}
                     icon={disableNameChange ? "EditIcon" : "CloseIcon"}
-                    onIconClick={disableNameChange ? toggleDisableNameChange : () => handleClear("name")}
+                    onIconClick={
+                        disableNameChange
+                            ? toggleDisableNameChange
+                            : () => handleClear("name")
+                    }
                 />
 
                 <Input
@@ -147,7 +157,11 @@ const Profile = () => {
                     size={"default"}
                     disabled={disableEmailChange}
                     icon={disableEmailChange ? "EditIcon" : "CloseIcon"}
-                    onIconClick={disableEmailChange ? toggleDisableEmailChange : () => handleClear("email")}
+                    onIconClick={
+                        disableEmailChange
+                            ? toggleDisableEmailChange
+                            : () => handleClear("email")
+                    }
                 />
                 <Input
                     placeholder={"Пароль"}
@@ -160,22 +174,33 @@ const Profile = () => {
                     size={"default"}
                     disabled={disablePasswordChange}
                     icon={disablePasswordChange ? "EditIcon" : "CloseIcon"}
-                    onIconClick={disablePasswordChange ? toggleDisablePasswordChange : () => handleClear("password")}
+                    onIconClick={
+                        disablePasswordChange
+                            ? toggleDisablePasswordChange
+                            : () => handleClear("password")
+                    }
                 />
-                {!disableNameChange || !disableEmailChange || !disablePasswordChange ?  (
+                {!disableNameChange ||
+                !disableEmailChange ||
+                !disablePasswordChange ? (
                     <div className={styles.row}>
-                        <button className="text text_type_main-default text_color_inactive" onClick={handleCancel}>
+                        <Button type="secondary" onClick={handleCancel}>
                             Отмена
-                        </button>
-                        <div onClick={(e) => handleProfileDataChange(e, email, password, name)}>
-                            <Button>Сохранить</Button>
-                        </div>
+                        </Button>
+                        <Button>Сохранить</Button>
                     </div>
-                ) :
-                null}
-                {profileDataChanged && <p className="text text_type_main-small text_color_inactive" style={{ color: "green" }}> данные успешно изменены </p>}
-                {profileDataChanged === false && <p className="text text_type_main-small text_color_inactive" style={{ color: "red" }}> произошла ошибка </p>}
-            </div>
+                ) : null}
+            </form>
+            {profileDataChanged && (
+                <p className={smallInactive} style={{ color: "green" }}>
+                    данные успешно изменены
+                </p>
+            )}
+            {profileDataChanged === false && (
+                <p className={smallInactive} style={{ color: "red" }}>
+                    произошла ошибка
+                </p>
+            )}
         </div>
     );
 };

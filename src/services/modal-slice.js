@@ -4,7 +4,6 @@ import Cookies from 'js-cookie';
 const initialState = {
     title: '',
     isModalOpen: false,
-    modalWasShown: false,
 };
 
 
@@ -27,7 +26,6 @@ export const modalSlice = createSlice({
         },
         openModalOrder(state){
             state.isModalOpen = true;
-            state.modalWasShown = true;
         }
     }
 });
