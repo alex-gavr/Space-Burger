@@ -84,7 +84,12 @@ const BurgerConstructor = () => {
                             <li className={styles.containerRow} key={index}>
                                 <Card key={ingredient._id} id={ingredient._id} index={index}>
                                     <DragIcon />
-                                    <ConstructorElement text={ingredient.name} price={ingredient.price} thumbnail={ingredient.image} handleClose={() => dispatch(deleteIngredient(ingredient))} />
+                                    <ConstructorElement
+                                        text={ingredient.name}
+                                        price={ingredient.price}
+                                        thumbnail={ingredient.image}
+                                        handleClose={() => dispatch(deleteIngredient(ingredient))}
+                                    />
                                 </Card>
                             </li>
                         ))}
@@ -94,7 +99,13 @@ const BurgerConstructor = () => {
                     {bun &&
                         bun.map((ingredient, index) => (
                             <li key={index}>
-                                <ConstructorElement type='bottom' isLocked={true} text={ingredient.name + ' (низ)'} price={ingredient.price} thumbnail={ingredient.image} />
+                                <ConstructorElement
+                                    type='bottom'
+                                    isLocked={true}
+                                    text={ingredient.name + ' (низ)'}
+                                    price={ingredient.price}
+                                    thumbnail={ingredient.image}
+                                />
                             </li>
                         ))}
                 </div>

@@ -62,7 +62,7 @@ const Login = () => {
                     onIconClick={onIconClick}
                 />
                 <div className={styles.marginBottomForButton}>
-                    <Button> Войти </Button>
+                    <Button disabled={!email || !password}> Войти </Button>
                 </div>
                 <div className={styles.helpContainer}>
                     <div className={styles.row}>

@@ -152,12 +152,12 @@ const Profile = () => {
                 ) : null}
             </form>
             {profileDataChanged && (
-                <p className={smallInactive} style={{ color: 'green' }}>
+                <p className={smallInactive}>
                     данные успешно изменены
                 </p>
             )}
             {profileDataChanged === false && (
-                <p className={smallInactive} style={{ color: 'red' }}>
+                <p className={smallInactive}>
                     произошла ошибка
                 </p>
             )}

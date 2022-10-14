@@ -59,12 +59,12 @@ const ResetPassword = () => {
                     <Button>Сохранить</Button>
                 </div>
                 {passwordChanged && (
-                    <p className='text text_type_main-small' style={{ color: 'green' }}>
+                    <p className='text text_type_main-small'>
                         пароль успешно изменён
                     </p>
                 )}
                 {incorrectToken && (
-                    <p className='text text_type_main-small' style={{ color: 'red' }}>
+                    <p className='text text_type_main-small'>
                         неверный код из письма
                     </p>
                 )}

@@ -68,15 +68,17 @@ const Registration = () => {
                 />
                 {accountExists && (
                     <>
-                        <p className='text text_type_main-small text_color_inactive'>У вас уже есть аккаунт. Забли пароль?</p>
-                        <Link to='/forgot-password' className='text text_type_main-small text_color_inactive' style={{ textDecoration: 'underline' }}>
-                            Восстановить пароль
+                        <p className='text text_type_main-default text_color_inactive'>У вас уже есть аккаунт. Забли пароль?</p>
+                        <Link to='/forgot-password' className='text text_type_main-default text_color_inactive'>
+                            <Button>Восстановить пароль</Button>
                         </Link>
                     </>
                 )}
-                <div className={styles.marginBottomForButton}>
-                    <Button disabled={!email && !password && !name}>Зарегистрироваться</Button>
-                </div>
+                {!accountExists && (
+                    <div className={styles.marginBottomForButton}>
+                        <Button disabled={!email || !password || !name}>Зарегистрироваться</Button>
+                    </div>
+                )}
                 <div className={styles.row}>
                     <p className='text text_type_main-small text_color_inactive'>Уже зарегистрированы?</p>
                     <Link to='/login' className='text text_type_main-small'>
