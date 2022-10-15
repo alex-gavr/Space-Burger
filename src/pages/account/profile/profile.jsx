@@ -7,10 +7,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../../services/user-slice';
 import { profileDataChange } from '../../../services/user-slice';
 import { profileDataChangedToDefault } from '../../../services/user-slice';
+import { PreloaderSmall } from '../../../components/preloader/preloader-small';
 
 const Profile = () => {
     const dispatch = useDispatch();
-    const { name: nameRedux, email: emailRedux, profileDataChanged } = useSelector((state) => state.user);
+    const { name: nameRedux, email: emailRedux, profileDataChanged, loading } = useSelector((state) => state.user);
 
     const [name, setName] = useState(nameRedux);
     const [email, setEmail] = useState(emailRedux);
@@ -93,8 +94,8 @@ const Profile = () => {
                             История заказов
                         </NavLink>
                     </li>
-                    <li onClick={(e) => handleLogout(e)}>
-                        <p className='text text_type_main-medium text_color_inactive'>Выход</p>
+                    <li onClick={(e) => handleLogout(e)} className={styles.pointer}>
+                        <p className='text text_type_main-medium text_color_inactive'>{loading ? <PreloaderSmall /> : 'Выход'}</p>
                     </li>
                 </ul>
                 <div className={styles.marginAndOpacity}>
@@ -147,20 +148,14 @@ const Profile = () => {
                         <Button htmlType='button' type='secondary' onClick={handleCancel}>
                             Отмена
                         </Button>
-                        <Button htmlType='submit' type='primary'>Сохранить</Button>
+                        <Button htmlType='submit' type='primary'>
+                            {loading ? <PreloaderSmall /> : 'Сохранить'}
+                        </Button>
                     </div>
                 ) : null}
             </form>
-            {profileDataChanged && (
-                <p className={smallInactive}>
-                    данные успешно изменены
-                </p>
-            )}
-            {profileDataChanged === false && (
-                <p className={smallInactive}>
-                    произошла ошибка
-                </p>
-            )}
+            {profileDataChanged && <p className={smallInactive}>данные успешно изменены</p>}
+            {profileDataChanged === false && <p className={smallInactive}>произошла ошибка</p>}
         </div>
     );
 };

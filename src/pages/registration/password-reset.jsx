@@ -5,10 +5,11 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { newPasswordSave } from '../../services/user-slice';
+import { PreloaderSmall } from '../../components/preloader/preloader-small';
 
 const ResetPassword = () => {
     const dispatch = useDispatch();
-    const { passwordChanged, incorrectToken } = useSelector((state) => state.user);
+    const { passwordChanged, incorrectToken, loading } = useSelector((state) => state.user);
     const [token, setToken] = useState('');
     const [password, setPassword] = useState('');
     const [passwordType, setPasswordType] = useState('password');
@@ -56,7 +57,7 @@ const ResetPassword = () => {
                     size={'default'}
                 />
                 <div className={styles.marginBottomForButton}>
-                    <Button htmlType='submit' type='primary'>Сохранить</Button>
+                    <Button htmlType='submit' type='primary' disabled={!token || !password}>{loading ? <PreloaderSmall /> : 'Сохранить'}</Button>
                 </div>
                 {passwordChanged && (
                     <p className='text text_type_main-small'>

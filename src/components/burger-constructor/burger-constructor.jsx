@@ -14,12 +14,13 @@ import { useNavigate } from 'react-router-dom';
 import { openModalOrder } from '../../services/modal-slice';
 import { onCloseModal } from '../../services/modal-slice';
 import { v4 as uuidv4 } from 'uuid';
+import { PreloaderSmall } from '../preloader/preloader-small';
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { bun, mainIngredients } = useSelector((state) => state.burgerConstructor);
-    const { orderDetails } = useSelector((state) => state.orderDetails);
+    const { orderDetails, loading } = useSelector((state) => state.orderDetails);
     const { loginSuccess } = useSelector((state) => state.user);
 
     // Считаем Тотал
@@ -120,7 +121,7 @@ const BurgerConstructor = () => {
                 </div>
                 {/* Кнопка оформить заказ */}
                 <Button htmlType='submit' type='primary' size='large' onClick={handleSubmit} disabled={bun.length === 0 || mainIngredients.length === 0 ? true : false}>
-                    Оформить заказ
+                    {loading ? <PreloaderSmall /> :  "Оформить заказ"}
                 </Button>
             </div>
             {orderDetails.success && loginSuccess && (

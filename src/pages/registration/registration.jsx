@@ -5,10 +5,11 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../../services/user-slice';
+import { PreloaderSmall } from '../../components/preloader/preloader-small';
 
 const Registration = () => {
     const dispatch = useDispatch();
-    const { accountExists, accountCreated } = useSelector((state) => state.user);
+    const { accountExists, accountCreated, loading } = useSelector((state) => state.user);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -76,7 +77,7 @@ const Registration = () => {
                 )}
                 {!accountExists && (
                     <div className={styles.marginBottomForButton}>
-                        <Button htmlType='submit' type='primary' disabled={!email || !password || !name}>Зарегистрироваться</Button>
+                        <Button htmlType='submit' type='primary' disabled={!email || !password || !name}>{loading ? <PreloaderSmall /> : 'Зарегистрироваться'}</Button>
                     </div>
                 )}
                 <div className={styles.row}>

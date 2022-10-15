@@ -6,12 +6,13 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetPasswordInit } from '../../services/user-slice';
 import { useNavigate } from 'react-router-dom';
+import { PreloaderSmall } from '../../components/preloader/preloader-small';
 
 const ForgotPassword = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const { initPasswordReset } = useSelector((state) => state.user);
+    const { initPasswordReset, loading } = useSelector((state) => state.user);
 
     const [email, setEmail] = useState('');
 
@@ -53,7 +54,9 @@ const ForgotPassword = () => {
                     </>
                 )}
                 <div className={styles.marginBottomForButton}>
-                    <Button htmlType='submit' type='secondary' disabled={email ? false : true}>Восстановить</Button>
+                    <Button htmlType='submit' type='primary' disabled={!email}>
+                        {loading ? <PreloaderSmall /> : 'Восстановить'}
+                    </Button>
                 </div>
 
                 <div className={styles.row}>

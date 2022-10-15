@@ -3,13 +3,15 @@ import React, { useState } from 'react';
 import styles from './styles.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../services/user-slice';
+import { PreloaderSmall } from '../../components/preloader/preloader-small';
 
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
+    const { loading } = useSelector((state) => state.user);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordType, setPasswordType] = useState('password');
@@ -32,7 +34,6 @@ const Login = () => {
             }
         }
     };
-    
 
     return (
         <div className={styles.wrapper}>
@@ -61,7 +62,9 @@ const Login = () => {
                     onIconClick={onIconClick}
                 />
                 <div className={styles.marginBottomForButton}>
-                    <Button htmlType='submit' type='primary' disabled={!email || !password}> Войти </Button>
+                    <Button htmlType='submit' type='primary' disabled={!email || !password}>
+                        {loading ? <PreloaderSmall /> : 'Войти'}
+                    </Button>
                 </div>
                 <div className={styles.helpContainer}>
                     <div className={styles.row}>
