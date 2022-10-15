@@ -118,7 +118,7 @@ const BurgerConstructor = () => {
                     <CurrencyIcon type='primary' />
                 </div>
                 {/* Кнопка оформить заказ */}
-                <Button type='primary' size='large' onClick={handleSubmit} disabled={bun.length === 0 || mainIngredients.length === 0 ? true : false}>
+                <Button htmlType='submit' type='primary' size='large' onClick={handleSubmit} disabled={bun.length === 0 || mainIngredients.length === 0 ? true : false}>
                     Оформить заказ
                 </Button>
             </div>

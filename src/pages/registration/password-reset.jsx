@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { newPasswordSave } from '../../../services/user-slice';
+import { newPasswordSave } from '../../services/user-slice';
 
 const ResetPassword = () => {
     const dispatch = useDispatch();
@@ -56,7 +56,7 @@ const ResetPassword = () => {
                     size={'default'}
                 />
                 <div className={styles.marginBottomForButton}>
-                    <Button type='primary'>Сохранить</Button>
+                    <Button htmlType='submit' type='primary'>Сохранить</Button>
                 </div>
                 {passwordChanged && (
                     <p className='text text_type_main-small'>

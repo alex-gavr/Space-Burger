@@ -4,9 +4,9 @@ import styles from './profile.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../../../../services/user-slice';
-import { profileDataChange } from '../../../../services/user-slice';
-import { profileDataChangedToDefault } from '../../../../services/user-slice';
+import { logout } from '../../../services/user-slice';
+import { profileDataChange } from '../../../services/user-slice';
+import { profileDataChangedToDefault } from '../../../services/user-slice';
 
 const Profile = () => {
     const dispatch = useDispatch();
@@ -144,10 +144,10 @@ const Profile = () => {
                 />
                 {!disableNameChange || !disableEmailChange || !disablePasswordChange ? (
                     <div className={styles.row}>
-                        <Button type='secondary' onClick={handleCancel}>
+                        <Button htmlType='button' type='secondary' onClick={handleCancel}>
                             Отмена
                         </Button>
-                        <Button type='primary'>Сохранить</Button>
+                        <Button htmlType='submit' type='primary'>Сохранить</Button>
                     </div>
                 ) : null}
             </form>

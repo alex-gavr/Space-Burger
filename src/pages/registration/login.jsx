@@ -4,8 +4,7 @@ import styles from './styles.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { login } from '../../../services/user-slice';
-import { useForm } from '../../../utils/hook-useForm';
+import { login } from '../../services/user-slice';
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -62,7 +61,7 @@ const Login = () => {
                     onIconClick={onIconClick}
                 />
                 <div className={styles.marginBottomForButton}>
-                    <Button type='primary' disabled={!email || !password}> Войти </Button>
+                    <Button htmlType='submit' type='primary' disabled={!email || !password}> Войти </Button>
                 </div>
                 <div className={styles.helpContainer}>
                     <div className={styles.row}>

@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetPasswordInit } from '../../../services/user-slice';
+import { resetPasswordInit } from '../../services/user-slice';
 import { useNavigate } from 'react-router-dom';
 
 const ForgotPassword = () => {
@@ -47,13 +47,13 @@ const ForgotPassword = () => {
                 {initPasswordReset === false && (
                     <>
                         <p className='text text_type_main-small text_color_inactive'>Такой email в нашей базе не существует</p>
-                        <Link to='/registration' className='text text_type_main-small text_color_inactive' style={{ textDecoration: 'underline' }}>
+                        <Link to='/registration' className='text text_type_main-small text_color_inactive'>
                             Создать аккаунт
                         </Link>
                     </>
                 )}
                 <div className={styles.marginBottomForButton}>
-                    <Button type='secondary' disabled={email ? false : true}>Восстановить</Button>
+                    <Button htmlType='submit' type='secondary' disabled={email ? false : true}>Восстановить</Button>
                 </div>
 
                 <div className={styles.row}>

@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUser } from '../../../services/user-slice';
+import { registerUser } from '../../services/user-slice';
 
 const Registration = () => {
     const dispatch = useDispatch();
@@ -70,13 +70,13 @@ const Registration = () => {
                     <>
                         <p className='text text_type_main-default text_color_inactive'>У вас уже есть аккаунт. Забли пароль?</p>
                         <Link to='/forgot-password' className='text text_type_main-default text_color_inactive'>
-                            <Button type='primary'>Восстановить пароль</Button>
+                            <Button htmlType='button' type='primary'>Восстановить пароль</Button>
                         </Link>
                     </>
                 )}
                 {!accountExists && (
                     <div className={styles.marginBottomForButton}>
-                        <Button type='primary' disabled={!email || !password || !name}>Зарегистрироваться</Button>
+                        <Button htmlType='submit' type='primary' disabled={!email || !password || !name}>Зарегистрироваться</Button>
                     </div>
                 )}
                 <div className={styles.row}>
