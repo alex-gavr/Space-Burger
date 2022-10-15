@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
 import { LOGIN_URL, REGISTER_URL, PASSWORD_RESET_URL, NEW_PASSWORD_SAVE_URL, TOKEN_URL, USER_URL, LOGOUT_URL } from '../utils/config';
 import Cookies from 'js-cookie';
+import { checkResponse } from '../utils/checkResponse';
+import { request } from '../utils/request';
 
 const initialState = {
     name: '',
@@ -30,88 +32,74 @@ const initialState = {
 // USER CREATION
 export const registerUser = createAsyncThunk('user/createUser', async (userData) => {
     const { email, password, name } = userData;
-    const res = await fetch(REGISTER_URL, {
+    return await request(REGISTER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, name }),
     });
-
-    return res.json();
 });
 
 // LOGIN
 export const login = createAsyncThunk('user/login', async (data) => {
     const { email, password } = data;
-    const res = await fetch(LOGIN_URL, {
+    return await request(LOGIN_URL, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
     });
-
-    return res.json();
 });
 
 // PASSWORD CHANGE INITIATION
 export const resetPasswordInit = createAsyncThunk('user/passwordReset', async (email) => {
-    const res = await fetch(PASSWORD_RESET_URL, {
+    return await request(PASSWORD_RESET_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
     });
-    return res.json();
 });
 
 // NEW PASSWORD SET UP AND SAVE
 export const newPasswordSave = createAsyncThunk('user/newPasswordSave', async (data) => {
     const { password, token } = data;
-    const res = await fetch(NEW_PASSWORD_SAVE_URL, {
+    return await request(NEW_PASSWORD_SAVE_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password, token }),
     });
-    return res.json();
 });
 
 // TOKEN UPDATE
 export const tokenUpdate = createAsyncThunk('user/newToken', async () => {
     let token = Cookies.get('refreshToken');
-    const res = await fetch(TOKEN_URL, {
+    return await request(TOKEN_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: Cookies.get('accessToken') },
         body: JSON.stringify({ token }),
     });
-    return res.json();
 });
 
 // FETCH USER DATA
 export const fetchUserData = createAsyncThunk('user/userData', async () => {
-    const res = await fetch(USER_URL, {
+    return await request(USER_URL, {
         method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: Cookies.get('accessToken'),
-        },
+        headers: { 'Content-Type': 'application/json', Authorization: Cookies.get('accessToken') },
     });
-    return res.json();
 });
 
 // LOGOUT
 export const logout = createAsyncThunk('user/logout', async () => {
     const token = Cookies.get('refreshToken');
-    const res = await fetch(LOGOUT_URL, {
+    return await request(LOGOUT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token }),
     });
-    return res.json();
 });
 
 // USER PROFILE DATA CHANGE
 export const profileDataChange = createAsyncThunk('user/profileDataChange', async (userData) => {
     const { email, password, name } = userData;
-    const res = await fetch(USER_URL, {
+    return await request(USER_URL, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
@@ -119,8 +107,6 @@ export const profileDataChange = createAsyncThunk('user/profileDataChange', asyn
         },
         body: JSON.stringify({ email, password, name }),
     });
-
-    return res.json();
 });
 
 export const userSlice = createSlice({
