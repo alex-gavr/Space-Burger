@@ -14,7 +14,6 @@ import ResetPassword from '../pages/registration/password-reset';
 import Profile from '../pages/account/profile/profile';
 import NotFound from '../404/not-found';
 import { fetchUserData } from '../../services/user-slice';
-import LoggedInRoutes from '../../utils/private-routes/logged-in-routes';
 import LogInRoutes from '../../utils/private-routes/login-routes';
 import ResetPasswordProtectionRoute from '../../utils/private-routes/reset-password-protection';
 import { tokenUpdate } from '../../services/user-slice';
@@ -22,6 +21,7 @@ import { IngredientDetails } from '../ingredient-details/ingredient-details';
 import Cookies from 'js-cookie';
 import { openModalWithCookie } from '../../services/modal-slice';
 import { setDetails } from '../../services/ingredient-details-slice';
+import ProtectedRoutes from '../../utils/private-routes/protected-routes';
 
 const App = () => {
     const { loading } = useSelector((state) => state.ingredients);
@@ -67,7 +67,7 @@ const App = () => {
                             <Route path='*' element={<NotFound />} />
                             <Route path='/' element={<Home />} />
                             <Route path='/ingredients/:id' element={<IngredientDetails />} />
-                            <Route element={<LoggedInRoutes />}>
+                            <Route element={<ProtectedRoutes />}>
                                 <Route path='/profile' element={<Profile />} />
                             </Route>
                             <Route element={<LogInRoutes />}>

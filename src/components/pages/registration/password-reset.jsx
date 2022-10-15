@@ -56,7 +56,7 @@ const ResetPassword = () => {
                     size={'default'}
                 />
                 <div className={styles.marginBottomForButton}>
-                    <Button>Сохранить</Button>
+                    <Button type='primary'>Сохранить</Button>
                 </div>
                 {passwordChanged && (
                     <p className='text text_type_main-small'>

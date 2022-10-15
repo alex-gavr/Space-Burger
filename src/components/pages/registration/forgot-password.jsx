@@ -53,7 +53,7 @@ const ForgotPassword = () => {
                     </>
                 )}
                 <div className={styles.marginBottomForButton}>
-                    <Button disabled={email ? false : true}>Восстановить</Button>
+                    <Button type='secondary' disabled={email ? false : true}>Восстановить</Button>
                 </div>
 
                 <div className={styles.row}>

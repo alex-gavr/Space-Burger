@@ -5,6 +5,7 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../../../services/user-slice';
+import { useForm } from '../../../utils/hook-useForm';
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -28,12 +29,11 @@ const Login = () => {
         if (email && password) {
             dispatch(login(data));
             if (location.state?.from) {
-                console.log('i ran' + location.state.from);
                 navigate(location.state.from);
             }
         }
     };
-    console.log(location.state);
+    
 
     return (
         <div className={styles.wrapper}>
@@ -62,7 +62,7 @@ const Login = () => {
                     onIconClick={onIconClick}
                 />
                 <div className={styles.marginBottomForButton}>
-                    <Button disabled={!email || !password}> Войти </Button>
+                    <Button type='primary' disabled={!email || !password}> Войти </Button>
                 </div>
                 <div className={styles.helpContainer}>
                     <div className={styles.row}>

@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { setDetails } from '../../services/ingredient-details-slice';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { onOpenModal } from '../../services/modal-slice';
+import PropTypes from 'prop-types';
 
 const Ingredient = ({ ingredient, bun, mainIngredients }) => {
     const dispatch = useDispatch();
@@ -47,6 +48,11 @@ const Ingredient = ({ ingredient, bun, mainIngredients }) => {
             {count === 0 ? null : <Counter count={count} size='default' />}
         </li>
     );
+};
+Ingredient.propTypes = {
+    ingredient: PropTypes.object.isRequired,
+    bun: PropTypes.array.isRequired,
+    mainIngredients: PropTypes.array.isRequired,
 };
 
 export default Ingredient;

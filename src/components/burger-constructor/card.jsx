@@ -3,6 +3,7 @@ import { useDrag, useDrop } from 'react-dnd';
 import { reorder } from '../../services/constructor-slice';
 import { useDispatch } from 'react-redux';
 import styles from './burger-constructor.module.css';
+import PropTypes from 'prop-types';
 
 const Card = ({ id, children, index }) => {
     const dispatch = useDispatch();
@@ -64,6 +65,11 @@ const Card = ({ id, children, index }) => {
             {children}
         </div>
     );
+};
+Card.propTypes = {
+    id: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
+    index: PropTypes.number.isRequired,
 };
 
 export default Card;

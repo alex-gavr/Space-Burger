@@ -70,13 +70,13 @@ const Registration = () => {
                     <>
                         <p className='text text_type_main-default text_color_inactive'>У вас уже есть аккаунт. Забли пароль?</p>
                         <Link to='/forgot-password' className='text text_type_main-default text_color_inactive'>
-                            <Button>Восстановить пароль</Button>
+                            <Button type='primary'>Восстановить пароль</Button>
                         </Link>
                     </>
                 )}
                 {!accountExists && (
                     <div className={styles.marginBottomForButton}>
-                        <Button disabled={!email || !password || !name}>Зарегистрироваться</Button>
+                        <Button type='primary' disabled={!email || !password || !name}>Зарегистрироваться</Button>
                     </div>
                 )}
                 <div className={styles.row}>

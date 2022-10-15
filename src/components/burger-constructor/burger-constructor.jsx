@@ -13,6 +13,7 @@ import { deleteIngredient } from '../../services/constructor-slice';
 import { useNavigate } from 'react-router-dom';
 import { openModalOrder } from '../../services/modal-slice';
 import { onCloseModal } from '../../services/modal-slice';
+import { v4 as uuidv4 } from 'uuid';
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
@@ -82,7 +83,7 @@ const BurgerConstructor = () => {
                     {mainIngredients &&
                         mainIngredients.map((ingredient, index) => (
                             <li className={styles.containerRow} key={index}>
-                                <Card key={ingredient._id} id={ingredient._id} index={index}>
+                                <Card key={uuidv4()} id={ingredient._id} index={index}>
                                     <DragIcon />
                                     <ConstructorElement
                                         text={ingredient.name}

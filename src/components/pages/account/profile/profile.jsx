@@ -94,7 +94,7 @@ const Profile = () => {
                         </NavLink>
                     </li>
                     <li onClick={(e) => handleLogout(e)}>
-                        <button className='text text_type_main-medium text_color_inactive'>Выход</button>
+                        <p className='text text_type_main-medium text_color_inactive'>Выход</p>
                     </li>
                 </ul>
                 <div className={styles.marginAndOpacity}>
@@ -147,7 +147,7 @@ const Profile = () => {
                         <Button type='secondary' onClick={handleCancel}>
                             Отмена
                         </Button>
-                        <Button>Сохранить</Button>
+                        <Button type='primary'>Сохранить</Button>
                     </div>
                 ) : null}
             </form>

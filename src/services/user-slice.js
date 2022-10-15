@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
 import { LOGIN_URL, REGISTER_URL, PASSWORD_RESET_URL, NEW_PASSWORD_SAVE_URL, TOKEN_URL, USER_URL, LOGOUT_URL } from '../utils/config';
 import Cookies from 'js-cookie';
-import { checkResponse } from '../utils/checkResponse';
 import { request } from '../utils/request';
 
 const initialState = {
@@ -259,6 +258,7 @@ export const userSlice = createSlice({
             Cookies.remove('accessToken', { path: '/' });
             state.logoutSuccess = action.payload.success;
             state.loginSuccess = null;
+            state.authorized = null;
             state.loading = false;
         },
         [logout.rejected]: (state) => {
