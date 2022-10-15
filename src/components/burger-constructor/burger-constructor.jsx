@@ -59,7 +59,8 @@ const BurgerConstructor = () => {
     const [{ canDrop }, drop] = useDrop(() => ({
         accept: 'ingredient',
         drop: (ingredient) => {
-            dispatch(addIngredient(ingredient.ingredient));
+            const item = {...ingredient.ingredient, uuid: uuidv4()}
+            dispatch(addIngredient(item));
         },
         collect: (monitor) => ({
             canDrop: monitor.canDrop(),
@@ -82,8 +83,8 @@ const BurgerConstructor = () => {
                 <div className={styles.ingredients}>
                     {mainIngredients &&
                         mainIngredients.map((ingredient, index) => (
-                            <li className={styles.containerRow} key={index}>
-                                <Card key={uuidv4()} id={ingredient._id} index={index}>
+                            <li className={styles.containerRow} key={ingredient.uuid}>
+                                <Card id={ingredient._id} index={index}>
                                     <DragIcon />
                                     <ConstructorElement
                                         text={ingredient.name}
