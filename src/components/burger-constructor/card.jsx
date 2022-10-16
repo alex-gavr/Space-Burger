@@ -1,15 +1,16 @@
-import { useRef } from "react";
-import { useDrag, useDrop } from "react-dnd";
-import { reorder } from "../../services/constructor-slice";
-import { useDispatch } from "react-redux";
-import styles from "./burger-constructor.module.css";
+import { useRef } from 'react';
+import { useDrag, useDrop } from 'react-dnd';
+import { reorder } from '../../services/constructor-slice';
+import { useDispatch } from 'react-redux';
+import styles from './burger-constructor.module.css';
+import PropTypes from 'prop-types';
 
 const Card = ({ id, children, index }) => {
     const dispatch = useDispatch();
 
     const ref = useRef(null);
     const [{ handlerId }, drop] = useDrop({
-        accept: "card",
+        accept: 'card',
         collect(monitor) {
             return {
                 handlerId: monitor.getHandlerId(),
@@ -28,11 +29,10 @@ const Card = ({ id, children, index }) => {
 
             const hoverBoundingRect = ref.current?.getBoundingClientRect();
 
-            const hoverMiddleY =
-                (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+            const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 
             const clientOffset = monitor.getClientOffset();
-            
+
             const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
@@ -49,7 +49,7 @@ const Card = ({ id, children, index }) => {
         },
     });
     const [{ isDragging }, drag] = useDrag({
-        type: "card",
+        type: 'card',
         item: () => {
             return { id, index };
         },
@@ -61,16 +61,15 @@ const Card = ({ id, children, index }) => {
     drag(drop(ref));
 
     return (
-        <div
-            ref={ref}
-            className={`${styles.draggableContainer} ${
-                isDragging ? styles.opacityOff : styles.opacityOn
-            }`}
-            data-handler-id={handlerId}
-        >
+        <div ref={ref} className={`${styles.draggableContainer} ${isDragging ? styles.opacityOff : styles.opacityOn}`} data-handler-id={handlerId}>
             {children}
         </div>
     );
+};
+Card.propTypes = {
+    id: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
+    index: PropTypes.number.isRequired,
 };
 
 export default Card;

@@ -15,9 +15,27 @@
 .logContainer > h1{
     font-size: 1.5rem;
 }
+
 .logo{
     width: 150px;
     height: 150px;
+    -webkit-animation:spin 3.5s linear infinite;
+    -moz-animation:spin 3.5s linear infinite;
+    animation:spin 3.5s linear infinite;
+}
+
+
+/* PRELOADER SMALL */
+.containerSmall{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+.logoSmall{
+    width: 30px;
+    height: 30px;
     -webkit-animation:spin 3.5s linear infinite;
     -moz-animation:spin 3.5s linear infinite;
     animation:spin 3.5s linear infinite;

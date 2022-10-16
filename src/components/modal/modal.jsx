@@ -1,34 +1,35 @@
-import React, { useEffect } from "react";
-import styles from "./modal.module.css";
-import PropTypes from "prop-types";
-import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { createPortal } from "react-dom";
-import { ModalOverlay } from "../modal-overlay/modal-overlay";
+import React, { useEffect } from 'react';
+import styles from './modal.module.css';
+import PropTypes from 'prop-types';
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { createPortal } from 'react-dom';
+import { ModalOverlay } from '../modal-overlay/modal-overlay';
+import { useSelector } from 'react-redux';
 
-const Modal = ({ isOpened, onClose, title, children }) => {
+const Modal = ({ children, onClose }) => {
+    const { isModalOpen, title } = useSelector((state) => state.modal);
     // CLOSE IF ESCAPE KEY PRESSED
 
     useEffect(() => {
-        const closeOnEscapeKey = (e) => (e.key === "Escape" ? onClose() : null);
+        const closeOnEscapeKey = (e) => (e.key === 'Escape' ? onClose() : null);
 
-        if (isOpened) {
-            document.body.addEventListener("keydown", closeOnEscapeKey);
+        if (isModalOpen) {
+            document.body.addEventListener('keydown', closeOnEscapeKey);
             return () => {
-                document.body.removeEventListener("keydown", closeOnEscapeKey);
+                document.body.removeEventListener('keydown', closeOnEscapeKey);
             };
         }
-    }, [isOpened]);
+    }, [isModalOpen]);
 
-    if (!isOpened) return null;
+    if (!isModalOpen) return null;
 
     return createPortal(
-        <ModalOverlay onClick={onClose}>
+        <ModalOverlay onClose={onClose}>
             <div
                 className={styles.container}
                 onClick={(e) => {
                     e.stopPropagation();
-                }}
-            >
+                }}>
                 <div className={styles.rowBetween}>
                     <h1>{title}</h1>
                     <div onClick={onClose} className={styles.iconContainer}>
@@ -38,14 +39,13 @@ const Modal = ({ isOpened, onClose, title, children }) => {
                 {children}
             </div>
         </ModalOverlay>,
-        document.getElementById("react-modals")
+        document.getElementById('react-modals')
     );
-};
-Modal.propTypes = {
-    isOpened: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-    title: PropTypes.string,
-    children: PropTypes.node.isRequired,
 };
 
 export default Modal;
+
+ModalOverlay.propTypes = {
+    children: PropTypes.node.isRequired,
+    onClose: PropTypes.func.isRequired,
+};

@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
-import { ORDER_URL } from "../utils/config";
+import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
+import { ORDER_URL } from '../utils/config';
 
 const initialState = {
     orderDetails: [],
@@ -7,19 +7,23 @@ const initialState = {
     error: false,
 };
 
-export const fetchOrderDetails = createAsyncThunk( "orderDetails/getOrderDetails", async (ids) => {
-        const res = await fetch( ORDER_URL, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({"ingredients": ids})
-        });
-        return res.json();
-    }
-);
+export const fetchOrderDetails = createAsyncThunk('orderDetails/getOrderDetails', async (ids) => {
+    const res = await fetch(ORDER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ingredients: ids }),
+    });
+    return res.json();
+});
 
 export const orderDetailsSlice = createSlice({
-    name: "orderDetails",
+    name: 'orderDetails',
     initialState,
+    reducers: {
+        deleteOrderDetails(state) {
+            state.orderDetails = [];
+        },
+    },
     extraReducers: {
         [fetchOrderDetails.pending]: (state) => {
             state.error = false;
@@ -36,4 +40,5 @@ export const orderDetailsSlice = createSlice({
     },
 });
 
+export const { deleteOrderDetails } = orderDetailsSlice.actions;
 export default orderDetailsSlice.reducer;

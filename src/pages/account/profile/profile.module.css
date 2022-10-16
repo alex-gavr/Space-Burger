@@ -1,0 +1,41 @@
+.grid{
+    width: 80%;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 3.75rem;
+}
+
+.column{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+}
+.row{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.profileNavigation{
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+.profileNavigation li{
+    width: 100%;
+    padding: 1rem 0;
+}
+.marginAndOpacity{
+    margin-top: 4rem;
+    opacity: 0.5;
+}
+.pointer{
+    cursor: pointer;
+}

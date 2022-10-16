@@ -1,76 +1,67 @@
-import "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useState, useEffect } from "react";
-import styles from "./burger-constructor.module.css";
-import {
-    Button,
-    CurrencyIcon,
-    ConstructorElement,
-    DragIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import { OrderDetails } from "../order-details/order-details";
-import Modal from "../modal/modal";
-import { INGREDIENT_TYPES } from "../../utils/ingredient-types";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchOrderDetails } from "../../services/order-details-slice";
-import { useDrop } from "react-dnd";
-import { addIngredient } from "../../services/constructor-slice";
-import Card from "./card";
-import { deleteIngredient } from "../../services/constructor-slice";
+import '@ya.praktikum/react-developer-burger-ui-components';
+import React, { useState, useEffect } from 'react';
+import styles from './burger-constructor.module.css';
+import { Button, CurrencyIcon, ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { OrderDetails } from '../order-details/order-details';
+import Modal from '../modal/modal';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteOrderDetails, fetchOrderDetails } from '../../services/order-details-slice';
+import { useDrop } from 'react-dnd';
+import { addIngredient, emptyConstructor } from '../../services/constructor-slice';
+import Card from './card';
+import { deleteIngredient } from '../../services/constructor-slice';
+import { useNavigate } from 'react-router-dom';
+import { openModalOrder } from '../../services/modal-slice';
+import { onCloseModal } from '../../services/modal-slice';
+import { v4 as uuidv4 } from 'uuid';
+import { PreloaderSmall } from '../preloader/preloader-small';
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
-    const { bun, mainIngredients } = useSelector(
-        (state) => state.burgerConstructor
-    );
-    const { orderDetails } = useSelector((state) => state.orderDetails);
+    const navigate = useNavigate();
+    const { bun, mainIngredients } = useSelector((state) => state.burgerConstructor);
+    const { orderDetails, loading } = useSelector((state) => state.orderDetails);
+    const { loginSuccess } = useSelector((state) => state.user);
 
     // Считаем Тотал
-    const totalMainIngredients = mainIngredients.reduce(
-        (acc, ingredient) => acc + ingredient.price,
-        0
-    );
+    const totalMainIngredients = mainIngredients.reduce((acc, ingredient) => acc + ingredient.price, 0);
 
     const totalBuns = bun.reduce((acc, bun) => acc + bun.price, 0) * 2;
     const totalPrice = totalMainIngredients + totalBuns;
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Айдишички для Поста считаем только при клике "оформить заказ"
-        const mainIngredientsIds = mainIngredients.map(
-            (ingredient) => ingredient._id
-        );
-        const bunsIds = bun.map((ingredient) => ingredient._id);
-        const allIngredientIds = [
-            ...bunsIds,
-            ...mainIngredientsIds,
-            ...bunsIds,
-        ];
+        if (loginSuccess) {
+            // Айдишички для Поста считаем только при клике "оформить заказ"
+            const mainIngredientsIds = mainIngredients.map((ingredient) => ingredient._id);
+            const bunsIds = bun.map((ingredient) => ingredient._id);
+            const allIngredientIds = [...bunsIds, ...mainIngredientsIds, ...bunsIds];
+            dispatch(fetchOrderDetails(allIngredientIds));
+        } else {
+            navigate('/login');
+        }
+    };
 
-        dispatch(fetchOrderDetails(allIngredientIds));
+    const handleCloseModal = () => {
+        dispatch(onCloseModal());
+        // delete order details
+        dispatch(deleteOrderDetails());
+        // delete ingredients from constructor
+        dispatch(emptyConstructor());
     };
 
     useEffect(() => {
-        if (orderDetails.success) {
-            handleOpen();
+        if (orderDetails.success && loginSuccess) {
+            dispatch(openModalOrder());
         }
-    }, [orderDetails]);
-
-    // Модуль
-    const [isModalOpened, setIsModalOpened] = useState(false);
-
-    const handleClose = () => {
-        setIsModalOpened(false);
-    };
-
-    const handleOpen = () => {
-        setIsModalOpened(true);
-    };
+    }, [orderDetails, loginSuccess]);
 
     // DND
     const [{ canDrop }, drop] = useDrop(() => ({
-        accept: "ingredient",
+        accept: 'ingredient',
         drop: (ingredient) => {
-            dispatch(addIngredient(ingredient.ingredient));
+            const item = {...ingredient.ingredient, uuid: uuidv4()}
+            dispatch(addIngredient(item));
         },
         collect: (monitor) => ({
             canDrop: monitor.canDrop(),
@@ -79,24 +70,13 @@ const BurgerConstructor = () => {
 
     return (
         <section className={styles.wrapper}>
-            <ul
-                ref={drop}
-                className={`${styles.container} ${
-                    canDrop ? styles.canDrop : null
-                }`}
-            >
+            <ul ref={drop} className={`${styles.container} ${canDrop ? styles.canDrop : null}`}>
                 {/* ВЕРХНЯЯ БУЛКА */}
                 <div className={styles.paddingRight}>
                     {bun &&
                         bun.map((ingredient, index) => (
                             <li key={index}>
-                                <ConstructorElement
-                                    type="top"
-                                    isLocked={true}
-                                    text={ingredient.name + " (верх)"}
-                                    price={ingredient.price}
-                                    thumbnail={ingredient.image}
-                                />
+                                <ConstructorElement type='top' isLocked={true} text={ingredient.name + ' (верх)'} price={ingredient.price} thumbnail={ingredient.image} />
                             </li>
                         ))}
                 </div>
@@ -104,22 +84,14 @@ const BurgerConstructor = () => {
                 <div className={styles.ingredients}>
                     {mainIngredients &&
                         mainIngredients.map((ingredient, index) => (
-                            <li className={styles.containerRow} key={index}>
-                                <Card
-                                    key={ingredient._id}
-                                    id={ingredient._id}
-                                    index={index}
-                                >
+                            <li className={styles.containerRow} key={ingredient.uuid}>
+                                <Card id={ingredient._id} index={index}>
                                     <DragIcon />
                                     <ConstructorElement
                                         text={ingredient.name}
                                         price={ingredient.price}
                                         thumbnail={ingredient.image}
-                                        handleClose={() =>
-                                            dispatch(
-                                                deleteIngredient(ingredient)
-                                            )
-                                        }
+                                        handleClose={() => dispatch(deleteIngredient(ingredient))}
                                     />
                                 </Card>
                             </li>
@@ -131,9 +103,9 @@ const BurgerConstructor = () => {
                         bun.map((ingredient, index) => (
                             <li key={index}>
                                 <ConstructorElement
-                                    type="bottom"
+                                    type='bottom'
                                     isLocked={true}
-                                    text={ingredient.name + " (низ)"}
+                                    text={ingredient.name + ' (низ)'}
                                     price={ingredient.price}
                                     thumbnail={ingredient.image}
                                 />
@@ -144,16 +116,16 @@ const BurgerConstructor = () => {
             <div className={styles.containerTotal}>
                 <div className={styles.containerRow}>
                     {/* Цена */}
-                    <p className="text text_type_digits-medium">{totalPrice}</p>
-                    <CurrencyIcon type="primary" />
+                    <p className='text text_type_digits-medium'>{totalPrice}</p>
+                    <CurrencyIcon type='primary' />
                 </div>
                 {/* Кнопка оформить заказ */}
-                <Button type="primary" size="large" onClick={handleSubmit}>
-                    Оформить заказ
+                <Button htmlType='submit' type='primary' size='large' onClick={handleSubmit} disabled={bun.length === 0 || mainIngredients.length === 0 ? true : false}>
+                    {loading ? <PreloaderSmall /> :  "Оформить заказ"}
                 </Button>
             </div>
-            {orderDetails.success && (
-                <Modal isOpened={isModalOpened} onClose={handleClose}>
+            {orderDetails.success && loginSuccess && (
+                <Modal onClose={handleCloseModal}>
                     <OrderDetails orderNumber={orderDetails.order.number} />
                 </Modal>
             )}

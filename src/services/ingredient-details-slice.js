@@ -1,23 +1,21 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     details: {},
 };
 
-
 export const ingredientDetailsSlice = createSlice({
-    name: "details",
+    name: 'details',
     initialState,
-    reducers:{
+    reducers: {
         setDetails(state, action) {
             state.details = action.payload;
         },
         deleteDetails(state) {
             state.details = {};
-        }
-    }
+        },
+    },
 });
 
-
-export const {setDetails, deleteDetails} = ingredientDetailsSlice.actions;
+export const { setDetails, deleteDetails } = ingredientDetailsSlice.actions;
 export default ingredientDetailsSlice.reducer;
