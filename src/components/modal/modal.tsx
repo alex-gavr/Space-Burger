@@ -1,6 +1,5 @@
 import React, { useEffect, ReactNode, FC, KeyboardEvent } from 'react';
 import styles from './modal.module.css';
-import PropTypes from 'prop-types';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { createPortal } from 'react-dom';
 import { ModalOverlay } from '../modal-overlay/modal-overlay';
@@ -12,10 +11,10 @@ interface Props {
     onClose: () => void;
 }
 
-const Modal:FC<Props> = ({ children, onClose }) => {
+const Modal:FC<Props> = ({ children, onClose }): JSX.Element | null => {
     const { isModalOpen, title } = useSelector((state: RootState) => state.modal);
-    // CLOSE IF ESCAPE KEY PRESSED
 
+    // CLOSE IF ESCAPE KEY PRESSED
     useEffect(() => {
         const closeOnEscapeKey = (e: KeyboardEvent) => (e.key === 'Escape' ? onClose() : null);
 
@@ -50,8 +49,3 @@ const Modal:FC<Props> = ({ children, onClose }) => {
 };
 
 export default Modal;
-
-ModalOverlay.propTypes = {
-    children: PropTypes.node.isRequired,
-    onClose: PropTypes.func.isRequired,
-};
