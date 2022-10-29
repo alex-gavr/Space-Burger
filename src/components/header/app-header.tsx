@@ -1,18 +1,25 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import styles from './app-header.module.css';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon, MenuIcon, ArrowDownIcon, ArrowUpIcon, CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import logoOnlyBurger from '../../images/logo-only-burger.svg';
 import { NavLink } from 'react-router-dom';
 
-const AppHeader = () => {
+const AppHeader:FC = (): JSX.Element => {
     const [toggle, setToggle] = useState(true);
     const [openMenu, setOpenMenu] = useState(false);
 
     const useStyle = openMenu ? styles.menuOpen : styles.menuClose;
 
+    interface INavData {
+        isActive: boolean;
+        isPending: boolean;
+    };
+
     // TOGGLE ACTIVE & INACTIVE CLASS
-    const classNameToggle = (navData) => (navData.isActive ? 'text text_type_main-small' : 'text text_type_main-small text_color_inactive');
+    const classNameToggle = (navData: INavData): string => {
+        return navData.isActive ? 'text text_type_main-small' : 'text text_type_main-small text_color_inactive'
+    };
 
     return (
         <header>
@@ -20,7 +27,7 @@ const AppHeader = () => {
                 <div className={styles.menuCloseIconContainer}>
                     <img src={logoOnlyBurger} alt='Логотип Бургерной' className={styles.onlyBurgerLogo} />
                     <div className={styles.burgerIcon}>
-                        <MenuIcon onClick={() => setOpenMenu((prev) => !prev)} />
+                        <MenuIcon type="primary" onClick={() => setOpenMenu((prev) => !prev)} />
                     </div>
                 </div>
                 <div className={useStyle}>
@@ -28,7 +35,7 @@ const AppHeader = () => {
                     <div className={styles.menuCloseIconContainer}>
                         <h1 className='text text_type_main-large'>Меню</h1>
                         <div className={styles.closeIcon}>
-                            <CloseIcon onClick={() => setOpenMenu((prev) => !prev)} />
+                            <CloseIcon type="primary" onClick={() => setOpenMenu((prev) => !prev)} />
                         </div>
                     </div>
                     {/* MAIN NAV */}

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styles from './preloader.module.css';
 import logo from '../../images/logo-only-burger.svg';
 
-export const Preloader = () => {
+export const Preloader:FC = (): JSX.Element => {
     return (
         <div className={styles.container}>
             <div className={styles.logContainer}>

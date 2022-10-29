@@ -1,7 +1,8 @@
 import styles from './404.module.css';
 import { Link } from 'react-router-dom';
+import { FC } from 'react';
 
-const NotFound = () => {
+const NotFound:FC = (): JSX.Element => {
     return (
         <div className={styles.container}>
             <div className={styles.logContainer}>
