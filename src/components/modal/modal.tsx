@@ -1,22 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, ReactNode, FC, KeyboardEvent } from 'react';
 import styles from './modal.module.css';
 import PropTypes from 'prop-types';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { createPortal } from 'react-dom';
 import { ModalOverlay } from '../modal-overlay/modal-overlay';
 import { useSelector } from 'react-redux';
+import { RootState } from '../../types';
 
-const Modal = ({ children, onClose }) => {
-    const { isModalOpen, title } = useSelector((state) => state.modal);
+interface Props {
+    children: ReactNode;
+    onClose: () => void;
+}
+
+const Modal:FC<Props> = ({ children, onClose }) => {
+    const { isModalOpen, title } = useSelector((state: RootState) => state.modal);
     // CLOSE IF ESCAPE KEY PRESSED
 
     useEffect(() => {
-        const closeOnEscapeKey = (e) => (e.key === 'Escape' ? onClose() : null);
+        const closeOnEscapeKey = (e: KeyboardEvent) => (e.key === 'Escape' ? onClose() : null);
 
         if (isModalOpen) {
-            document.body.addEventListener('keydown', closeOnEscapeKey);
+            document.body.addEventListener('keydown', closeOnEscapeKey as () => void);
             return () => {
-                document.body.removeEventListener('keydown', closeOnEscapeKey);
+                document.body.removeEventListener('keydown', closeOnEscapeKey as () => void);
             };
         }
     }, [isModalOpen]);
@@ -33,13 +39,13 @@ const Modal = ({ children, onClose }) => {
                 <div className={styles.rowBetween}>
                     <h1>{title}</h1>
                     <div onClick={onClose} className={styles.iconContainer}>
-                        <CloseIcon />
+                        <CloseIcon type='primary' />
                     </div>
                 </div>
                 {children}
             </div>
         </ModalOverlay>,
-        document.getElementById('react-modals')
+        document.getElementById('react-modals') as HTMLElement
     );
 };
 
