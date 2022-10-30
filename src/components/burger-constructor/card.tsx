@@ -1,14 +1,24 @@
-import { useRef } from 'react';
+import { FC, ReactNode, useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { reorder } from '../../services/constructor-slice';
 import { useDispatch } from 'react-redux';
 import styles from './burger-constructor.module.css';
-import PropTypes from 'prop-types';
+import { AppDispatch } from '../../types';
 
-const Card = ({ id, children, index }) => {
-    const dispatch = useDispatch();
+interface Props {
+    id: string;
+    index: number;
+    children: ReactNode;
+}
 
-    const ref = useRef(null);
+// Тип для item в hover -- строка 30. 
+// type Item = Omit<Props, 'children'>;
+
+
+const Card: FC<Props> = ({ id, children, index }): JSX.Element => {
+    const dispatch: AppDispatch = useDispatch();
+
+    const ref = useRef<HTMLDivElement>(null);
     const [{ handlerId }, drop] = useDrop({
         accept: 'card',
         collect(monitor) {
@@ -16,12 +26,14 @@ const Card = ({ id, children, index }) => {
                 handlerId: monitor.getHandlerId(),
             };
         },
-        hover(item, monitor) {
+        // hover (item: Item, monitor) -- выдает ошибку, что unknown не может быть Item. Почему так? Как исправить? 
+        hover(item: any, monitor) {
+            console.log(item);
             if (!ref.current) {
                 return;
             }
-            const dragIndex = item.index;
-            const hoverIndex = index;
+            const dragIndex: number = item.index;
+            const hoverIndex: number = index;
 
             if (dragIndex === hoverIndex) {
                 return;
@@ -33,19 +45,21 @@ const Card = ({ id, children, index }) => {
 
             const clientOffset = monitor.getClientOffset();
 
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+            if (clientOffset) {
+                const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
-            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-                return;
+                if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+                    return;
+                }
+
+                if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+                    return;
+                }
+
+                dispatch(reorder([dragIndex, hoverIndex]));
+
+                item.index = hoverIndex;
             }
-
-            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-                return;
-            }
-
-            dispatch(reorder([dragIndex, hoverIndex]));
-
-            item.index = hoverIndex;
         },
     });
     const [{ isDragging }, drag] = useDrag({
@@ -65,11 +79,6 @@ const Card = ({ id, children, index }) => {
             {children}
         </div>
     );
-};
-Card.propTypes = {
-    id: PropTypes.string.isRequired,
-    children: PropTypes.node.isRequired,
-    index: PropTypes.number.isRequired,
 };
 
 export default Card;

@@ -1,5 +1,5 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, FC, SyntheticEvent } from 'react';
 import styles from './burger-constructor.module.css';
 import { Button, CurrencyIcon, ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { OrderDetails } from '../order-details/order-details';
@@ -10,18 +10,19 @@ import { useDrop } from 'react-dnd';
 import { addIngredient, emptyConstructor } from '../../services/constructor-slice';
 import Card from './card';
 import { deleteIngredient } from '../../services/constructor-slice';
-import { useNavigate } from 'react-router-dom';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { openModalOrder } from '../../services/modal-slice';
 import { onCloseModal } from '../../services/modal-slice';
 import { v4 as uuidv4 } from 'uuid';
 import { PreloaderSmall } from '../preloader/preloader-small';
+import { AppDispatch, RootState } from '../../types';
 
-const BurgerConstructor = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const { bun, mainIngredients } = useSelector((state) => state.burgerConstructor);
-    const { orderDetails, loading } = useSelector((state) => state.orderDetails);
-    const { loginSuccess } = useSelector((state) => state.user);
+const BurgerConstructor: FC = (): JSX.Element => {
+    const dispatch: AppDispatch = useDispatch();
+    const navigate: NavigateFunction = useNavigate();
+    const { bun, mainIngredients } = useSelector((state: RootState) => state.burgerConstructor);
+    const { orderDetails, loading } = useSelector((state: RootState) => state.orderDetails);
+    const { loginSuccess } = useSelector((state: RootState) => state.user);
 
     // Считаем Тотал
     const totalMainIngredients = mainIngredients.reduce((acc, ingredient) => acc + ingredient.price, 0);
@@ -29,7 +30,7 @@ const BurgerConstructor = () => {
     const totalBuns = bun.reduce((acc, bun) => acc + bun.price, 0) * 2;
     const totalPrice = totalMainIngredients + totalBuns;
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
         if (loginSuccess) {
             // Айдишички для Поста считаем только при клике "оформить заказ"
@@ -59,7 +60,7 @@ const BurgerConstructor = () => {
     // DND
     const [{ canDrop }, drop] = useDrop(() => ({
         accept: 'ingredient',
-        drop: (ingredient) => {
+        drop: (ingredient: any) => {
             const item = {...ingredient.ingredient, uuid: uuidv4()}
             dispatch(addIngredient(item));
         },
@@ -86,7 +87,7 @@ const BurgerConstructor = () => {
                         mainIngredients.map((ingredient, index) => (
                             <li className={styles.containerRow} key={ingredient.uuid}>
                                 <Card id={ingredient._id} index={index}>
-                                    <DragIcon />
+                                    <DragIcon type='primary' />
                                     <ConstructorElement
                                         text={ingredient.name}
                                         price={ingredient.price}

@@ -4,18 +4,22 @@ interface ILoadingAndError {
 }
 
 export interface IIngredient {
-    calories: number | undefined;
-    carbohydrates: number | undefined;
-    fat: number | undefined;
-    image: string | undefined;
-    image_large: string | undefined;
-    image_mobile: string | undefined;
-    name: string | undefined;
-    price: number | undefined;
-    proteins: number | undefined;
-    type: string | undefined;
-    __v: number | undefined;
-    _id: string | undefined;
+    calories: number;
+    carbohydrates: number;
+    fat: number;
+    image: string;
+    image_large: string;
+    image_mobile: string;
+    name: string;
+    price: number;
+    proteins: number;
+    type: string;
+    __v: number;
+    _id: string;
+}
+
+export interface IMainIngredients extends IIngredient {
+    uuid: string;
 }
 
 export interface IIngredientsState extends ILoadingAndError{
@@ -26,11 +30,16 @@ export interface IDetailsState {
 }
 export interface IBurgerConstructorState {
     bun: Array<IIngredient>;
-    mainIngredients: Array<IIngredient>;
+    mainIngredients: Array<IMainIngredients>;
 }
 
+interface IOrderDetails {
+    name: string ;
+    order: {number: number} ;
+    success: boolean | null;
+}
 export interface IOrderDetailsState extends ILoadingAndError{
-    orderDetails: Array<IIngredient> | undefined;
+    orderDetails: IOrderDetails;
 }
 
 export interface IUserState{
