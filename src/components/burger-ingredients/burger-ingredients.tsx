@@ -1,5 +1,5 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { RefObject, useEffect, useRef, useState } from 'react';
 import styles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCategory from './ingredient-category';
@@ -9,60 +9,69 @@ import { INGREDIENT_TYPES } from '../../utils/ingredient-types';
 import { useDispatch } from 'react-redux';
 import { deleteDetails } from '../../services/ingredient-details-slice';
 import { onCloseModal } from '../../services/modal-slice';
-import { useNavigate } from 'react-router-dom';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { AppDispatch } from '../../types';
 
 const BurgerIngredients = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const dispatch: AppDispatch = useDispatch();
+    const navigate: NavigateFunction = useNavigate();
 
-    const handleCloseModal = () => {
+    const handleCloseModal = (): void => {
         dispatch(onCloseModal());
         dispatch(deleteDetails());
         navigate('/');
     };
 
-    const [current, setCurrent] = useState(INGREDIENT_TYPES.BUN);
+    const [current, setCurrent] = useState<string>(INGREDIENT_TYPES.BUN);
 
-    const bun = useRef();
-    const sauce = useRef();
-    const main = useRef();
+    const bun = useRef<HTMLDivElement>(null);
+    const sauce = useRef<HTMLDivElement>(null);
+    const main = useRef<HTMLDivElement>(null);
 
     // TRACKING SCROLLING
     useEffect(() => {
         const element = document.getElementById('id');
-        const onScroll = () => {
-            const bunHeight = bun.current.clientHeight;
-            const sauceHeight = sauce.current.clientHeight;
-            const gapHeightBetweenDivs = 40;
-            const bunAndSauceAndGap = bunHeight + sauceHeight + gapHeightBetweenDivs;
+        if (element !== null) {
+            const onScroll = () => {
+                const bunHeight = bun.current?.clientHeight;
+                const sauceHeight = sauce.current?.clientHeight;
+                const gapHeightBetweenDivs = 40;
+                if (bunHeight && sauceHeight) {
+                    const bunAndSauceAndGap = bunHeight + sauceHeight + gapHeightBetweenDivs;
 
-            if (element.scrollTop >= bunHeight && element.scrollTop <= bunAndSauceAndGap) {
-                setCurrent(INGREDIENT_TYPES.SAUCE);
-            } else if (element.scrollTop >= bunAndSauceAndGap) {
-                setCurrent(INGREDIENT_TYPES.MAIN);
-            } else {
-                setCurrent(INGREDIENT_TYPES.BUN);
-            }
-        };
-        element.addEventListener('scroll', onScroll);
+                    if (element.scrollTop >= bunHeight && element.scrollTop <= bunAndSauceAndGap) {
+                        setCurrent(INGREDIENT_TYPES.SAUCE);
+                    } else if (element.scrollTop >= bunAndSauceAndGap) {
+                        setCurrent(INGREDIENT_TYPES.MAIN);
+                    } else {
+                        setCurrent(INGREDIENT_TYPES.BUN);
+                    }
+                }
+            };
+            element.addEventListener('scroll', onScroll);
 
-        return () => {
-            element.removeEventListener('scroll', onScroll);
-        };
+            return () => {
+                element.removeEventListener('scroll', onScroll);
+            };
+        }
     }, []);
+
+    const executeScroll = (ref: RefObject<HTMLDivElement>): void => {
+        ref.current?.scrollIntoView()
+    }
 
     return (
         <section className={styles.wrapper}>
             <div className='mt-10'>
                 <h1 className='text text_type_main-large mb-5'>Собери бургер</h1>
                 <div className={styles.containerTabs}>
-                    <Tab value={INGREDIENT_TYPES.BUN} active={current === INGREDIENT_TYPES.BUN}>
+                    <Tab value={INGREDIENT_TYPES.BUN} active={current === INGREDIENT_TYPES.BUN} onClick={() => executeScroll(bun)}>
                         Булки
                     </Tab>
-                    <Tab value={INGREDIENT_TYPES.SAUCE} active={current === INGREDIENT_TYPES.SAUCE}>
+                    <Tab value={INGREDIENT_TYPES.SAUCE} active={current === INGREDIENT_TYPES.SAUCE} onClick={() => executeScroll(sauce)}>
                         Соусы
                     </Tab>
-                    <Tab value={INGREDIENT_TYPES.MAIN} active={current === INGREDIENT_TYPES.MAIN}>
+                    <Tab value={INGREDIENT_TYPES.MAIN} active={current === INGREDIENT_TYPES.MAIN} onClick={() => executeScroll(main)}>
                         Начинка
                     </Tab>
                 </div>

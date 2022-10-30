@@ -1,20 +1,27 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import styles from './burger-ingredients.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag } from 'react-dnd';
 import { useDispatch } from 'react-redux';
 import { setDetails } from '../../services/ingredient-details-slice';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Location, NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
 import { onOpenModal } from '../../services/modal-slice';
-import PropTypes from 'prop-types';
+import { IIngredient } from '../../types/data';
+import { AppDispatch } from '../../types/index'
 
-const Ingredient = ({ ingredient, bun, mainIngredients }) => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const location = useLocation();
+interface Props {
+    ingredient: IIngredient;
+    bun: Array<IIngredient>;
+    mainIngredients: Array<IIngredient>;
+}
 
-    const handleOpenModal = (ingredient) => {
+const Ingredient: FC<Props> = ({ ingredient, bun, mainIngredients }):JSX.Element => {
+    const dispatch: AppDispatch = useDispatch();
+    const navigate: NavigateFunction = useNavigate();
+    const location: Location = useLocation();
+
+    const handleOpenModal = (ingredient: IIngredient): void => {
         dispatch(setDetails(ingredient));
         dispatch(onOpenModal('Детали ингредиента'));
         navigate(`/ingredients/${ingredient._id}`, { state: { background: location, ingredient: ingredient } });
@@ -28,7 +35,7 @@ const Ingredient = ({ ingredient, bun, mainIngredients }) => {
         }),
     }));
 
-    let count = 0;
+    let count:number = 0;
     if (ingredient.type === 'bun') {
         count = bun.filter((item) => item._id === ingredient._id).length * 2;
     } else {
@@ -48,11 +55,6 @@ const Ingredient = ({ ingredient, bun, mainIngredients }) => {
             {count === 0 ? null : <Counter count={count} size='default' />}
         </li>
     );
-};
-Ingredient.propTypes = {
-    ingredient: PropTypes.object.isRequired,
-    bun: PropTypes.array.isRequired,
-    mainIngredients: PropTypes.array.isRequired,
 };
 
 export default Ingredient;

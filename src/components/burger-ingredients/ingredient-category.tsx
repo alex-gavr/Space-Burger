@@ -1,16 +1,22 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
+import React, { FC, useMemo } from 'react';
 import styles from './burger-ingredients.module.css';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Ingredient from './ingredient';
+import { RootState } from '../../types';
+import { IIngredient } from '../../types/data';
 
-const IngredientCategory = ({type , title}) => {
-    const { ingredients, loading, error } = useSelector((state) => state.ingredients);
+interface Props {
+    type: string;
+    title: string;
+}
 
-    const filteredIngredients = useMemo(() => ingredients.filter((ingredient) => ingredient.type === type), [ingredients]);
+const IngredientCategory: FC<Props> = ({type , title}): JSX.Element => {
+    const { ingredients } = useSelector((state: RootState) => state.ingredients);
 
-    const { bun, mainIngredients } = useSelector((state) => state.burgerConstructor);
+    const filteredIngredients = useMemo(() => ingredients.filter((ingredient: IIngredient) => ingredient.type === type), [ingredients]);
+
+    const { bun, mainIngredients } = useSelector((state: RootState) => state.burgerConstructor);
 
     return (
         <div>
@@ -24,8 +30,5 @@ const IngredientCategory = ({type , title}) => {
         </div>
     );
 };
-IngredientCategory.propTypes = {
-    type: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-};
+
 export default IngredientCategory;

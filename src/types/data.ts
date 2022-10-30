@@ -1,3 +1,8 @@
+interface ILoadingAndError {
+    loading: boolean | null;
+    error: boolean;
+}
+
 export interface IIngredient {
     calories: number | undefined;
     carbohydrates: number | undefined;
@@ -13,21 +18,18 @@ export interface IIngredient {
     _id: string | undefined;
 }
 
-export interface IIngredientsState {
-    ingredients: Array<IIngredient> | undefined;
-    loading: boolean | null;
-    error: boolean;
+export interface IIngredientsState extends ILoadingAndError{
+    ingredients: Array<IIngredient>;
 }
 export interface IDetailsState {
     details: IIngredient | undefined;
 }
-
 export interface IBurgerConstructorState {
-    bun: Array<IIngredient> | undefined;
-    mainIngredients: Array<IIngredient> | undefined;
+    bun: Array<IIngredient>;
+    mainIngredients: Array<IIngredient>;
 }
 
-export interface IOrderDetailsState extends Omit<IIngredientsState, 'ingredients'>{
+export interface IOrderDetailsState extends ILoadingAndError{
     orderDetails: Array<IIngredient> | undefined;
 }
 
