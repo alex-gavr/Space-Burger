@@ -11,7 +11,7 @@ interface Props {
     children: ReactNode;
 }
 
-// Тип для item в hover -- строка 30. 
+// Ниже тип для item в hover -- строка 30. 
 // type Item = Omit<Props, 'children'>;
 
 
