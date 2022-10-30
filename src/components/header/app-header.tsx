@@ -4,17 +4,13 @@ import styles from './app-header.module.css';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon, MenuIcon, ArrowDownIcon, ArrowUpIcon, CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import logoOnlyBurger from '../../images/logo-only-burger.svg';
 import { NavLink } from 'react-router-dom';
+import { INavData } from '../../types/data';
 
 const AppHeader:FC = (): JSX.Element => {
     const [toggle, setToggle] = useState(true);
     const [openMenu, setOpenMenu] = useState(false);
 
     const useStyle = openMenu ? styles.menuOpen : styles.menuClose;
-
-    interface INavData {
-        isActive: boolean;
-        isPending: boolean;
-    };
 
     // TOGGLE ACTIVE & INACTIVE CLASS
     const classNameToggle = (navData: INavData): string => {

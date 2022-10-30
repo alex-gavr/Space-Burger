@@ -22,9 +22,8 @@ export const IngredientDetails: FC = (): JSX.Element => {
         }
     }, [filteredIngredient]);
 
-
     const { details } = useSelector((state: RootState) => state.details);
-    console.log(details);
+
     return (
         <div className={styles.wrapper}>
             {!isModalOpen && <h1 className='text text_type_main-large mb-8'>Детали Ингредиента</h1>}

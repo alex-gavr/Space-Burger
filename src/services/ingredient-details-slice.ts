@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { IDetailsState } from '../types/store-states';
 
-const initialState = {
-    details: {},
+const initialState: IDetailsState = {
+    details: null,
 };
 
 export const ingredientDetailsSlice = createSlice({
@@ -12,7 +13,7 @@ export const ingredientDetailsSlice = createSlice({
             state.details = action.payload;
         },
         deleteDetails(state) {
-            state.details = {};
+            state.details = null;
         },
     },
 });

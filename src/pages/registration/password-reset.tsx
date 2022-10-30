@@ -1,18 +1,19 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { FC, SyntheticEvent, useState } from 'react';
 import styles from './styles.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { newPasswordSave } from '../../services/user-slice';
 import { PreloaderSmall } from '../../components/preloader/preloader-small';
+import { AppDispatch, RootState } from '../../types';
 
-const ResetPassword = () => {
-    const dispatch = useDispatch();
-    const { passwordChanged, incorrectToken, loading } = useSelector((state) => state.user);
-    const [token, setToken] = useState('');
-    const [password, setPassword] = useState('');
-    const [passwordType, setPasswordType] = useState('password');
+const ResetPassword: FC = (): JSX.Element => {
+    const dispatch: AppDispatch = useDispatch();
+    const { passwordChanged, incorrectToken, loading } = useSelector((state: RootState) => state.user);
+    const [token, setToken] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [passwordType, setPasswordType] = useState<'text' | 'password'>('password');
 
     const onIconClick = () => {
         if (passwordType === 'password') {
@@ -22,7 +23,7 @@ const ResetPassword = () => {
         }
     };
 
-    const handleSaveNewPassword = (e, password, token) => {
+    const handleSaveNewPassword = (e: SyntheticEvent, password: string, token: string) => {
         const data = { password: password, token: token };
         e.preventDefault();
         if (data) {

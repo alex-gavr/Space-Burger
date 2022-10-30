@@ -1,5 +1,5 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, SyntheticEvent, FC } from 'react';
 import styles from './profile.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { NavLink } from 'react-router-dom';
@@ -8,18 +8,20 @@ import { logout } from '../../../services/user-slice';
 import { profileDataChange } from '../../../services/user-slice';
 import { profileDataChangedToDefault } from '../../../services/user-slice';
 import { PreloaderSmall } from '../../../components/preloader/preloader-small';
+import { AppDispatch, RootState } from '../../../types';
+import { INavData } from '../../../types/data';
 
-const Profile = () => {
-    const dispatch = useDispatch();
-    const { name: nameRedux, email: emailRedux, profileDataChanged, loading } = useSelector((state) => state.user);
+const Profile: FC = (): JSX.Element => {
+    const dispatch: AppDispatch = useDispatch();
+    const { name: nameRedux, email: emailRedux, profileDataChanged, loading } = useSelector((state: RootState) => state.user);
 
-    const [name, setName] = useState(nameRedux);
-    const [email, setEmail] = useState(emailRedux);
-    const [password, setPassword] = useState('');
-    const [passwordError, setPasswordError] = useState(false);
-    const [disableNameChange, setDisableNameChange] = useState(true);
-    const [disableEmailChange, setDisableEmailChange] = useState(true);
-    const [disablePasswordChange, setDisablePasswordChange] = useState(true);
+    const [name, setName] = useState<string>(nameRedux);
+    const [email, setEmail] = useState<string>(emailRedux);
+    const [password, setPassword] = useState<string>('');
+    const [passwordError, setPasswordError] = useState<boolean>(false);
+    const [disableNameChange, setDisableNameChange] = useState<boolean>(true);
+    const [disableEmailChange, setDisableEmailChange] = useState<boolean>(true);
+    const [disablePasswordChange, setDisablePasswordChange] = useState<boolean>(true);
 
     const smallInactive = 'text text_type_main-small text_color_inactive';
 
@@ -36,7 +38,7 @@ const Profile = () => {
         }
     }, [profileDataChanged]);
 
-    const handleClear = (name) => {
+    const handleClear = (name: string) => {
         if (name === 'name') {
             setName('');
         } else if (name === 'password') {
@@ -54,9 +56,9 @@ const Profile = () => {
         setDisablePasswordChange(true);
     };
 
-    const classNameToggle = (navData) => (navData.isActive ? 'text text_type_main-medium' : 'text text_type_main-medium text_color_inactive');
+    const classNameToggle = (navData: INavData) => (navData.isActive ? 'text text_type_main-medium' : 'text text_type_main-medium text_color_inactive');
 
-    const handleProfileDataChange = (e, email, password, name) => {
+    const handleProfileDataChange = (e: SyntheticEvent, email: string, password: string, name: string) => {
         e.preventDefault();
         if (password === '') {
             setPasswordError(true);
@@ -75,7 +77,7 @@ const Profile = () => {
         }
     };
 
-    const handleLogout = (e) => {
+    const handleLogout = (e: SyntheticEvent) => {
         e.preventDefault();
         dispatch(logout());
     };
@@ -95,8 +97,9 @@ const Profile = () => {
                         </NavLink>
                     </li>
                     <li onClick={(e) => handleLogout(e)} className={styles.pointer}>
-                        <p className='text text_type_main-medium text_color_inactive'>{loading ? <PreloaderSmall /> : 'Выход'}</p>
+                        <p className='text text_type_main-medium text_color_inactive'>Выход</p>
                     </li>
+                    {loading && <PreloaderSmall />}
                 </ul>
                 <div className={styles.marginAndOpacity}>
                     <p className='text text_type_main-small text_color_inactive'>В этом разделе вы можете изменить свои персональные данные</p>

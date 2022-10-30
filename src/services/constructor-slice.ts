@@ -1,6 +1,7 @@
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { IBurgerConstructorState } from '../types/store-states';
 
-const initialState = {
+const initialState: IBurgerConstructorState = {
     bun: [],
     mainIngredients: [],
 };
@@ -16,7 +17,7 @@ const constructorSlice = createSlice({
                 if (hasBun) {
                     let currentBun = state.bun.find((i) => i.type === 'bun');
                     state.bun.splice(
-                        state.bun.findIndex((i) => i._id === currentBun._id),
+                        state.bun.findIndex((i) => i._id === currentBun?._id),
                         1
                     );
                     state.bun.push(action.payload);

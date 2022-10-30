@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
+import { IModalState } from '../types/store-states';
 
-const initialState = {
+const initialState: IModalState = {
     title: '',
     isModalOpen: false,
 };
@@ -20,7 +21,8 @@ export const modalSlice = createSlice({
             state.title = '';
             state.isModalOpen = false;
         },
-        openModalWithCookie(state) {
+        openModalWithCookie(state, action) {
+            state.title = action.payload;
             state.isModalOpen = true;
         },
         openModalOrder(state) {

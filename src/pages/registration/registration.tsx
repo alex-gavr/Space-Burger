@@ -1,19 +1,20 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { FC, SyntheticEvent, useState } from 'react';
 import styles from './styles.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../../services/user-slice';
 import { PreloaderSmall } from '../../components/preloader/preloader-small';
+import { AppDispatch, RootState } from '../../types';
 
-const Registration = () => {
-    const dispatch = useDispatch();
-    const { accountExists, accountCreated, loading } = useSelector((state) => state.user);
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [passwordType, setPasswordType] = useState('password');
+const Registration: FC = (): JSX.Element => {
+    const dispatch: AppDispatch = useDispatch();
+    const { accountExists, loading } = useSelector((state: RootState) => state.user);
+    const [name, setName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [passwordType, setPasswordType] = useState<'text' | 'password'>('password');
 
     const onIconClick = () => {
         if (passwordType === 'password') {
@@ -23,7 +24,7 @@ const Registration = () => {
         }
     };
 
-    const handleRegistration = (e, email, password, name) => {
+    const handleRegistration = (e: SyntheticEvent, email: string, password: string, name: string) => {
         e.preventDefault();
         const userData = { email: email, password: password, name: name };
         if (name && email && password) {

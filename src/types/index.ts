@@ -1,5 +1,5 @@
 import store from "../services/store";
-import { IIngredientsState, IDetailsState, IBurgerConstructorState, IOrderDetailsState, IUserState, IModalState } from "./data";
+import { IIngredientsState, IDetailsState, IBurgerConstructorState, IOrderDetailsState, IUserState, IModalState } from "./store-states";
 
 
 export type AppDispatch = typeof store.dispatch;

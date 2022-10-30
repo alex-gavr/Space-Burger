@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { IOrderDetailsState } from '../types/data';
+import { IOrderDetailsState } from '../types/store-states';
 import { ORDER_URL } from '../utils/config';
 
 const initialState: IOrderDetailsState = {

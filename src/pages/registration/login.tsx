@@ -1,20 +1,21 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useState } from 'react';
+import React, { FC, SyntheticEvent, useState } from 'react';
 import styles from './styles.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation, NavigateFunction, Location } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../services/user-slice';
 import { PreloaderSmall } from '../../components/preloader/preloader-small';
+import { AppDispatch, RootState } from '../../types';
 
-const Login = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const location = useLocation();
-    const { loading } = useSelector((state) => state.user);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [passwordType, setPasswordType] = useState('password');
+const Login: FC = (): JSX.Element => {
+    const dispatch: AppDispatch = useDispatch();
+    const navigate: NavigateFunction = useNavigate();
+    const location: Location = useLocation();
+    const { loading } = useSelector((state: RootState) => state.user);
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [passwordType, setPasswordType] = useState<'text' | 'password'>('password');
 
     const onIconClick = () => {
         if (passwordType === 'password') {
@@ -24,7 +25,7 @@ const Login = () => {
         }
     };
 
-    const handleLogin = (e, email, password) => {
+    const handleLogin = (e: SyntheticEvent, email: string, password: string) => {
         e.preventDefault();
         const data = { email: email, password: password };
         if (email && password) {

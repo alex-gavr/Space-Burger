@@ -52,7 +52,7 @@ const App:FC = ():JSX.Element => {
     useEffect(() => {
         if (openModal) {
             dispatch(setDetails(location.state.ingredient));
-            dispatch(openModalWithCookie());
+            dispatch(openModalWithCookie('Детали ингредиента'));
         }
     }, [openModal]);
 

@@ -2,8 +2,9 @@ import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
 import { LOGIN_URL, REGISTER_URL, PASSWORD_RESET_URL, NEW_PASSWORD_SAVE_URL, TOKEN_URL, USER_URL, LOGOUT_URL } from '../utils/config';
 import Cookies from 'js-cookie';
 import { request } from '../utils/request';
+import { IUserState } from '../types/store-states';
 
-const initialState = {
+const initialState: IUserState = {
     name: '',
     email: '',
 
@@ -28,8 +29,15 @@ const initialState = {
     error: false,
 };
 
+interface IUserData {
+    email: string;
+    name: string;
+    password: string;
+    token: string;
+}
+
 // USER CREATION
-export const registerUser = createAsyncThunk('user/createUser', async (userData) => {
+export const registerUser = createAsyncThunk<any, Omit<IUserData, 'token'>>('user/createUser', async (userData) => {
     const { email, password, name } = userData;
     return await request(REGISTER_URL, {
         method: 'POST',
@@ -39,7 +47,7 @@ export const registerUser = createAsyncThunk('user/createUser', async (userData)
 });
 
 // LOGIN
-export const login = createAsyncThunk('user/login', async (data) => {
+export const login = createAsyncThunk<any, Omit<IUserData, 'name' | 'token'>>('user/login', async (data) => {
     const { email, password } = data;
     return await request(LOGIN_URL, {
         method: 'POST',
@@ -49,7 +57,7 @@ export const login = createAsyncThunk('user/login', async (data) => {
 });
 
 // PASSWORD CHANGE INITIATION
-export const resetPasswordInit = createAsyncThunk('user/passwordReset', async (email) => {
+export const resetPasswordInit = createAsyncThunk<any, string>('user/passwordReset', async (email) => {
     return await request(PASSWORD_RESET_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -58,7 +66,7 @@ export const resetPasswordInit = createAsyncThunk('user/passwordReset', async (e
 });
 
 // NEW PASSWORD SET UP AND SAVE
-export const newPasswordSave = createAsyncThunk('user/newPasswordSave', async (data) => {
+export const newPasswordSave = createAsyncThunk<any, Omit<IUserData, 'name' | 'email'>>('user/newPasswordSave', async (data) => {
     const { password, token } = data;
     return await request(NEW_PASSWORD_SAVE_URL, {
         method: 'POST',
@@ -68,7 +76,7 @@ export const newPasswordSave = createAsyncThunk('user/newPasswordSave', async (d
 });
 
 // TOKEN UPDATE
-export const tokenUpdate = createAsyncThunk('user/newToken', async () => {
+export const tokenUpdate = createAsyncThunk<any>('user/newToken', async () => {
     let token = Cookies.get('refreshToken');
     return await request(TOKEN_URL, {
         method: 'POST',
@@ -78,7 +86,7 @@ export const tokenUpdate = createAsyncThunk('user/newToken', async () => {
 });
 
 // FETCH USER DATA
-export const fetchUserData = createAsyncThunk('user/userData', async () => {
+export const fetchUserData = createAsyncThunk<any>('user/userData', async () => {
     return await request(USER_URL, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json', Authorization: Cookies.get('accessToken') },
@@ -86,7 +94,7 @@ export const fetchUserData = createAsyncThunk('user/userData', async () => {
 });
 
 // LOGOUT
-export const logout = createAsyncThunk('user/logout', async () => {
+export const logout = createAsyncThunk<any>('user/logout', async () => {
     const token = Cookies.get('refreshToken');
     return await request(LOGOUT_URL, {
         method: 'POST',
@@ -96,7 +104,7 @@ export const logout = createAsyncThunk('user/logout', async () => {
 });
 
 // USER PROFILE DATA CHANGE
-export const profileDataChange = createAsyncThunk('user/profileDataChange', async (userData) => {
+export const profileDataChange = createAsyncThunk<any, Omit<IUserData, 'token'>>('user/profileDataChange', async (userData) => {
     const { email, password, name } = userData;
     return await request(USER_URL, {
         method: 'PATCH',
@@ -116,15 +124,15 @@ export const userSlice = createSlice({
             state.profileDataChanged = null;
         },
     },
-    extraReducers: {
+    extraReducers: (builder) => {
         // USER CREATION
-        [registerUser.pending]: (state) => {
+        builder.addCase(registerUser.pending, (state) => {
             state.error = false;
             state.loading = true;
             state.accountExists = null;
             state.accountCreated = null;
-        },
-        [registerUser.fulfilled]: (state, action) => {
+        });
+        builder.addCase(registerUser.fulfilled, (state, action) => {
             if (action.payload.message === 'User already exists') {
                 state.accountExists = true;
             } else {
@@ -135,19 +143,19 @@ export const userSlice = createSlice({
                 state.accountCreated = true;
             }
             state.loading = false;
-        },
-        [registerUser.rejected]: (state) => {
+        });
+        builder.addCase(registerUser.rejected, (state) => {
             state.loading = null;
             state.error = true;
-        },
+        });
 
         // LOGIN
-        [login.pending]: (state) => {
+        builder.addCase(login.pending, (state) => {
             state.error = false;
             state.loading = true;
             state.loginSuccess = null;
-        },
-        [login.fulfilled]: (state, action) => {
+        });
+        builder.addCase(login.fulfilled, (state, action) => {
             if (!action.payload.success) {
                 state.loginSuccess = false;
             } else {
@@ -162,36 +170,36 @@ export const userSlice = createSlice({
                 state.authorized = true;
             }
             state.loading = false;
-        },
-        [login.rejected]: (state) => {
+        });
+        builder.addCase(login.rejected, (state) => {
             state.loading = null;
             state.error = true;
-        },
+        });
 
         // PASSWORD CHANGE INITIATION
-        [resetPasswordInit.pending]: (state) => {
+        builder.addCase(resetPasswordInit.pending, (state) => {
             state.error = false;
             state.initPasswordReset = null;
             state.loading = true;
-        },
-        [resetPasswordInit.fulfilled]: (state, action) => {
+        });
+        builder.addCase(resetPasswordInit.fulfilled, (state, action) => {
             state.initPasswordReset = action.payload.success;
             state.loading = false;
             state.allowToGoToPasswordReset = true;
-        },
-        [resetPasswordInit.rejected]: (state) => {
+        });
+        builder.addCase(resetPasswordInit.rejected, (state) => {
             state.loading = null;
             state.error = true;
-        },
+        });
 
         //  NEW PASSWORD SET UP AND SAVE
-        [newPasswordSave.pending]: (state) => {
+        builder.addCase(newPasswordSave.pending, (state) => {
             state.error = false;
             state.loading = true;
             state.passwordChanged = null;
             state.incorrectToken = null;
-        },
-        [newPasswordSave.fulfilled]: (state, action) => {
+        });
+        builder.addCase(newPasswordSave.fulfilled, (state, action) => {
             if (action.payload.message === 'Incorrect reset token') {
                 state.incorrectToken = true;
             } else {
@@ -199,37 +207,37 @@ export const userSlice = createSlice({
                 state.allowToGoToPasswordReset = false;
             }
             state.loading = false;
-        },
-        [newPasswordSave.rejected]: (state) => {
+        });
+        builder.addCase(newPasswordSave.rejected, (state) => {
             state.loading = null;
             state.error = true;
-        },
+        });
 
         // TOKEN UPDATE
-        [tokenUpdate.pending]: (state) => {
+        builder.addCase(tokenUpdate.pending, (state) => {
             state.error = false;
             state.loading = true;
-        },
-        [tokenUpdate.fulfilled]: (state, action) => {
+        });
+        builder.addCase(tokenUpdate.fulfilled, (state, action) => {
             Cookies.remove('refreshToken', { path: '/' });
             Cookies.remove('accessToken', { path: '/' });
             Cookies.set('refreshToken', action.payload.refreshToken);
             Cookies.set('accessToken', action.payload.accessToken);
             state.loading = false;
-        },
-        [tokenUpdate.rejected]: (state) => {
+        });
+        builder.addCase(tokenUpdate.rejected, (state) => {
             state.loading = null;
             state.error = true;
-        },
+        });
 
         // FETCH USER DATA
-        [fetchUserData.pending]: (state) => {
+        builder.addCase(fetchUserData.pending, (state) => {
             state.error = false;
             state.loading = true;
             state.loginSuccess = null;
             state.tokenExpired = null;
-        },
-        [fetchUserData.fulfilled]: (state, action) => {
+        });
+        builder.addCase(fetchUserData.fulfilled, (state, action) => {
             if (action.payload.message === 'jwt expired') {
                 state.tokenExpired = true;
             } else if (action.payload.message === 'You should be authorised') {
@@ -241,38 +249,38 @@ export const userSlice = createSlice({
                 state.logoutSuccess = null;
             }
             state.loading = false;
-        },
-        [fetchUserData.rejected]: (state) => {
+        });
+        builder.addCase(fetchUserData.rejected, (state) => {
             state.loading = null;
             state.error = true;
-        },
+        });
 
         // LOGOUT
-        [logout.pending]: (state) => {
+        builder.addCase(logout.pending, (state) => {
             state.error = false;
             state.loading = true;
             state.logoutSuccess = null;
-        },
-        [logout.fulfilled]: (state, action) => {
+        });
+        builder.addCase(logout.fulfilled, (state, action) => {
             Cookies.remove('refreshToken', { path: '/' });
             Cookies.remove('accessToken', { path: '/' });
             state.logoutSuccess = action.payload.success;
             state.loginSuccess = null;
             state.authorized = null;
             state.loading = false;
-        },
-        [logout.rejected]: (state) => {
+        });
+        builder.addCase(logout.rejected, (state) => {
             state.loading = null;
             state.error = true;
-        },
+        });
 
         // USER PROFILE DATA CHANGE
-        [profileDataChange.pending]: (state) => {
+        builder.addCase(profileDataChange.pending, (state) => {
             state.error = false;
             state.loading = true;
             state.profileDataChanged = null;
-        },
-        [profileDataChange.fulfilled]: (state, action) => {
+        });
+        builder.addCase(profileDataChange.fulfilled, (state, action) => {
             if (action.payload.message === 'jwt expired') {
                 state.tokenExpired = true;
             } else {
@@ -281,11 +289,11 @@ export const userSlice = createSlice({
                 state.profileDataChanged = action.payload.success;
             }
             state.loading = false;
-        },
-        [profileDataChange.rejected]: (state) => {
+        });
+        builder.addCase(profileDataChange.rejected, (state) => {
             state.loading = null;
             state.error = true;
-        },
+        });
     },
 });
 
