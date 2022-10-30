@@ -3,6 +3,9 @@ header{
     height: 13vh;
     padding: 2rem;
     background-color: var(--background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 nav{
@@ -11,6 +14,7 @@ nav{
     grid-template-rows: auto;
     position: relative;
     gap: 2rem;
+    width: 100%;
 }
 nav ul{
     display: flex;
