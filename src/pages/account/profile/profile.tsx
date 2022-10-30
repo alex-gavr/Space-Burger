@@ -1,5 +1,5 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import { useState, useEffect, SyntheticEvent, FC } from 'react';
+import { useState, useEffect, FC } from 'react';
 import styles from './profile.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { NavLink } from 'react-router-dom';
@@ -58,7 +58,7 @@ const Profile: FC = (): JSX.Element => {
 
     const classNameToggle = (navData: INavData) => (navData.isActive ? 'text text_type_main-medium' : 'text text_type_main-medium text_color_inactive');
 
-    const handleProfileDataChange = (e: SyntheticEvent, email: string, password: string, name: string) => {
+    const handleProfileDataChange = (e: React.FormEvent<HTMLFormElement>, email: string, password: string, name: string) => {
         e.preventDefault();
         if (password === '') {
             setPasswordError(true);
@@ -77,7 +77,7 @@ const Profile: FC = (): JSX.Element => {
         }
     };
 
-    const handleLogout = (e: SyntheticEvent) => {
+    const handleLogout = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
         e.preventDefault();
         dispatch(logout());
     };

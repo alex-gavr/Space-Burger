@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { IOrderDetailsState } from '../types/store-states';
 import { ORDER_URL } from '../utils/config';
+import { request } from '../utils/request';
 
 const initialState: IOrderDetailsState = {
     orderDetails: {
@@ -15,12 +16,11 @@ const initialState: IOrderDetailsState = {
 };
 
 export const fetchOrderDetails = createAsyncThunk<any, Array<string>>('orderDetails/getOrderDetails', async (ids) => {
-    const res = await fetch(ORDER_URL, {
+    return await request(ORDER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ingredients: ids }),
     });
-    return res.json();
 });
 
 export const orderDetailsSlice = createSlice({

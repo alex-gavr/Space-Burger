@@ -1,5 +1,5 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import React, { FC, useMemo } from 'react';
+import { FC } from 'react';
 import styles from './burger-ingredients.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag } from 'react-dnd';

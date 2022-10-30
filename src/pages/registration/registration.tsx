@@ -1,5 +1,5 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import React, { FC, SyntheticEvent, useState } from 'react';
+import React, { FC, useState } from 'react';
 import styles from './styles.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
@@ -24,7 +24,7 @@ const Registration: FC = (): JSX.Element => {
         }
     };
 
-    const handleRegistration = (e: SyntheticEvent, email: string, password: string, name: string) => {
+    const handleRegistration = (e: React.FormEvent<HTMLFormElement>, email: string, password: string, name: string) => {
         e.preventDefault();
         const userData = { email: email, password: password, name: name };
         if (name && email && password) {

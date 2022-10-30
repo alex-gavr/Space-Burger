@@ -11,10 +11,6 @@ interface Props {
     children: ReactNode;
 }
 
-// Ниже тип для item в hover -- строка 30. 
-// type Item = Omit<Props, 'children'>;
-
-
 const Card: FC<Props> = ({ id, children, index }): JSX.Element => {
     const dispatch: AppDispatch = useDispatch();
 
@@ -26,9 +22,7 @@ const Card: FC<Props> = ({ id, children, index }): JSX.Element => {
                 handlerId: monitor.getHandlerId(),
             };
         },
-        // hover (item: Item, monitor) -- выдает ошибку, что unknown не может быть Item. Почему так? Как исправить? 
         hover(item: any, monitor) {
-            console.log(item);
             if (!ref.current) {
                 return;
             }

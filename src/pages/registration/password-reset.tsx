@@ -1,5 +1,5 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import React, { FC, SyntheticEvent, useState } from 'react';
+import React, { FC, useState } from 'react';
 import styles from './styles.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
@@ -23,7 +23,7 @@ const ResetPassword: FC = (): JSX.Element => {
         }
     };
 
-    const handleSaveNewPassword = (e: SyntheticEvent, password: string, token: string) => {
+    const handleSaveNewPassword = (e:  React.FormEvent<HTMLFormElement>, password: string, token: string) => {
         const data = { password: password, token: token };
         e.preventDefault();
         if (data) {

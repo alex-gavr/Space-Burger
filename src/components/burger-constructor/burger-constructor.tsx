@@ -1,5 +1,5 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useEffect, FC, SyntheticEvent } from 'react';
+import { useEffect, FC, SyntheticEvent } from 'react';
 import styles from './burger-constructor.module.css';
 import { Button, CurrencyIcon, ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { OrderDetails } from '../order-details/order-details';

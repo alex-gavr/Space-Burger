@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { IIngredientsState } from '../types/store-states';
 import { INGREDIENTS_URL } from '../utils/config';
+import { request } from '../utils/request';
 
 const initialState: IIngredientsState = {
     ingredients: [],

@@ -1,5 +1,5 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import React, { FC, SyntheticEvent, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styles from './styles.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, NavigateFunction } from 'react-router-dom';
@@ -17,7 +17,7 @@ const ForgotPassword: FC = (): JSX.Element => {
 
     const [email, setEmail] = useState<string>('');
 
-    const handlePasswordReset = (e: SyntheticEvent, email: string) => {
+    const handlePasswordReset = (e: React.FormEvent<HTMLFormElement>, email: string) => {
         e.preventDefault();
         if (email) {
             dispatch(resetPasswordInit(email));

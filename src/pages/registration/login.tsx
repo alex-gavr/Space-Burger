@@ -1,5 +1,5 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import React, { FC, SyntheticEvent, useState } from 'react';
+import React, { FC, useState } from 'react';
 import styles from './styles.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate, useLocation, NavigateFunction, Location } from 'react-router-dom';
@@ -25,7 +25,7 @@ const Login: FC = (): JSX.Element => {
         }
     };
 
-    const handleLogin = (e: SyntheticEvent, email: string, password: string) => {
+    const handleLogin = (e: React.FormEvent<HTMLFormElement>, email: string, password: string) => {
         e.preventDefault();
         const data = { email: email, password: password };
         if (email && password) {

@@ -1,5 +1,5 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import React, { FC, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import styles from './app.module.css';
 import AppHeader from '../header/app-header';
 import Home from '../../pages/home/home';
