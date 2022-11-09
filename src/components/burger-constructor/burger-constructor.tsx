@@ -15,7 +15,7 @@ import { openModalOrder } from '../../services/modal-slice';
 import { onCloseModal } from '../../services/modal-slice';
 import { v4 as uuidv4 } from 'uuid';
 import { PreloaderSmall } from '../preloader/preloader-small';
-import { AppDispatch, RootState } from '../../types';
+import { AppDispatch, RootState } from '../../services/store';
 
 const BurgerConstructor: FC = (): JSX.Element => {
     const dispatch: AppDispatch = useDispatch();

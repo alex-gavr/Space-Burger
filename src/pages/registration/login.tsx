@@ -6,7 +6,7 @@ import { Link, useNavigate, useLocation, NavigateFunction, Location } from 'reac
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../services/user-slice';
 import { PreloaderSmall } from '../../components/preloader/preloader-small';
-import { AppDispatch, RootState } from '../../types';
+import { AppDispatch, RootState } from '../../services/store';
 
 const Login: FC = (): JSX.Element => {
     const dispatch: AppDispatch = useDispatch();

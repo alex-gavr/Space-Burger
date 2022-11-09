@@ -7,7 +7,7 @@ import userReducer from './user-slice';
 import modalReducer from './modal-slice';
 
 
-export default configureStore({
+export const store = configureStore({
     reducer:{
         ingredients: ingredientsReducer,
         details: ingredientDetailsReducer,
@@ -17,3 +17,6 @@ export default configureStore({
         modal: modalReducer,
     },
 });
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

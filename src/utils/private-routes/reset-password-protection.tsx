@@ -1,7 +1,8 @@
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { Outlet, Navigate, useLocation, Location } from 'react-router-dom';
-import { RootState } from '../../types';
+import { RootState } from '../../services/store';
+
 
 const ResetPasswordProtectionRoute:FC = (): JSX.Element => {
     const { allowToGoToPasswordReset } = useSelector((state: RootState) => state.user);

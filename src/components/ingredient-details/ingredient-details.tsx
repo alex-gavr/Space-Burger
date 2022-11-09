@@ -5,7 +5,7 @@ import { FC, useEffect } from 'react';
 import { setDetails } from '../../services/ingredient-details-slice';
 import { useMemo } from 'react';
 import { IIngredient } from '../../types/data';
-import { RootState, AppDispatch } from '../../types';
+import { AppDispatch, RootState } from '../../services/store';
 
 export const IngredientDetails: FC = (): JSX.Element => {
     const { id } = useParams();

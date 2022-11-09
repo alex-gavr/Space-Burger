@@ -22,7 +22,7 @@ import Cookies from 'js-cookie';
 import { openModalWithCookie } from '../../services/modal-slice';
 import { setDetails } from '../../services/ingredient-details-slice';
 import ProtectedRoutes from '../../utils/private-routes/protected-routes';
-import { AppDispatch, RootState } from '../../types';
+import { AppDispatch, RootState } from '../../services/store';
 
 const App:FC = ():JSX.Element => {
     const { loading } = useSelector((state: RootState) => state.ingredients);

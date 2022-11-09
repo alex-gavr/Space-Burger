@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../../services/user-slice';
 import { PreloaderSmall } from '../../components/preloader/preloader-small';
-import { AppDispatch, RootState } from '../../types';
+import { AppDispatch, RootState } from '../../services/store';
 
 const Registration: FC = (): JSX.Element => {
     const dispatch: AppDispatch = useDispatch();

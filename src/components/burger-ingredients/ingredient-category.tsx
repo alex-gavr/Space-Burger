@@ -3,7 +3,7 @@ import { FC, useMemo } from 'react';
 import styles from './burger-ingredients.module.css';
 import { useSelector } from 'react-redux';
 import Ingredient from './ingredient';
-import { RootState } from '../../types';
+import { RootState } from '../../services/store';
 import { IIngredient } from '../../types/data';
 
 interface Props {

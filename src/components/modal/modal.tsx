@@ -4,7 +4,7 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { createPortal } from 'react-dom';
 import { ModalOverlay } from '../modal-overlay/modal-overlay';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../types';
+import { RootState } from '../../services/store';
 
 interface Props {
     children: ReactNode;

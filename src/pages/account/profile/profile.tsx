@@ -8,8 +8,8 @@ import { logout } from '../../../services/user-slice';
 import { profileDataChange } from '../../../services/user-slice';
 import { profileDataChangedToDefault } from '../../../services/user-slice';
 import { PreloaderSmall } from '../../../components/preloader/preloader-small';
-import { AppDispatch, RootState } from '../../../types';
 import { INavData } from '../../../types/data';
+import { AppDispatch, RootState } from '../../../services/store';
 
 const Profile: FC = (): JSX.Element => {
     const dispatch: AppDispatch = useDispatch();

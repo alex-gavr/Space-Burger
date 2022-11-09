@@ -3,7 +3,7 @@ import { useDrag, useDrop } from 'react-dnd';
 import { reorder } from '../../services/constructor-slice';
 import { useDispatch } from 'react-redux';
 import styles from './burger-constructor.module.css';
-import { AppDispatch } from '../../types';
+import { AppDispatch } from '../../services/store';
 
 interface Props {
     id: string;

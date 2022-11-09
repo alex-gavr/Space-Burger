@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { resetPasswordInit } from '../../services/user-slice';
 import { useNavigate } from 'react-router-dom';
 import { PreloaderSmall } from '../../components/preloader/preloader-small';
-import { AppDispatch, RootState } from '../../types';
+import { AppDispatch, RootState } from '../../services/store';
+
 
 const ForgotPassword: FC = (): JSX.Element => {
     const dispatch: AppDispatch = useDispatch();

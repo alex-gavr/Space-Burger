@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import { deleteDetails } from '../../services/ingredient-details-slice';
 import { onCloseModal } from '../../services/modal-slice';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
-import { AppDispatch } from '../../types';
+import { AppDispatch } from '../../services/store';
 
 const BurgerIngredients = () => {
     const dispatch: AppDispatch = useDispatch();

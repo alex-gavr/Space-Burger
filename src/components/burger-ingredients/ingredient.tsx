@@ -8,7 +8,7 @@ import { setDetails } from '../../services/ingredient-details-slice';
 import { Location, NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
 import { onOpenModal } from '../../services/modal-slice';
 import { IIngredient } from '../../types/data';
-import { AppDispatch } from '../../types/index'
+import { AppDispatch } from '../../services/store';
 
 interface Props {
     ingredient: IIngredient;
