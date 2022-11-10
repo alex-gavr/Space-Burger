@@ -72,7 +72,7 @@ const AppHeader:FC = (): JSX.Element => {
                             </NavLink>
                         </li>
                         <li className={styles.orders}>
-                            <NavLink to='/order-line' className={classNameToggle}>
+                            <NavLink to='/feed' className={classNameToggle}>
                                 <div className={styles.textIconContainer}>
                                     <ListIcon type='primary' />
                                     <p>Лента заказов</p>

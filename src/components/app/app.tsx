@@ -23,6 +23,8 @@ import { openModalWithCookie } from '../../services/modal-slice';
 import { setDetails } from '../../services/ingredient-details-slice';
 import ProtectedRoutes from '../../utils/private-routes/protected-routes';
 import { AppDispatch, RootState } from '../../services/store';
+import Feed from '../../pages/feed/feed';
+import Orders from '../../pages/account/profile/orders/orders';
 
 const App:FC = ():JSX.Element => {
     const { loading } = useSelector((state: RootState) => state.ingredients);
@@ -67,9 +69,11 @@ const App:FC = ():JSX.Element => {
                         <Routes location={background ?? location}>
                             <Route path='*' element={<NotFound />} />
                             <Route path='/' element={<Home />} />
+                            <Route path='/feed' element={<Feed />} />
                             <Route path='/ingredients/:id' element={<IngredientDetails />} />
                             <Route element={<ProtectedRoutes />}>
                                 <Route path='/profile' element={<Profile />} />
+                                <Route path='/profile/orders' element={<Orders />} />
                             </Route>
                             <Route element={<LogInRoutes />}>
                                 <Route path='/login' element={<Login />} />
