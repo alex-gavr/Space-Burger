@@ -73,8 +73,8 @@ const OrderCard: FC<IProps> = ({ order }): JSX.Element => {
     const statusName = status === 'done' ? 'Выполнен' : status === 'pending' ? 'Готовится' : 'Создан';
     const statusClass = status === 'done' ? styles.statusDone : styles.status;
 
-    // TODO: check
-    
+    // TODO: check modal
+
     // МОДАЛЬКА
     const handleOpenModal = (order: IOrder, orderWithData: IOrderWithData[], price: number): void => {
         const data = {
