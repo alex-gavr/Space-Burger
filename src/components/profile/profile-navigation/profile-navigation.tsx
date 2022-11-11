@@ -1,10 +1,10 @@
 import styles from './profile-navigation.module.css';
 import { NavLink, useLocation } from 'react-router-dom';
-import { AppDispatch, RootState } from '../../services/store';
+import { AppDispatch, RootState } from '../../../services/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { INavData } from '../../types/data';
-import { logout } from '../../services/user-slice';
-import { PreloaderSmall } from '../preloader/preloader-small';
+import { INavData } from '../../../types/data';
+import { logout } from '../../../services/user-slice';
+import { PreloaderSmall } from '../../preloader/preloader-small';
 import { FC } from 'react';
 
 export const ProfileNavigation: FC = (): JSX.Element => {

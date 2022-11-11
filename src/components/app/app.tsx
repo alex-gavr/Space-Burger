@@ -1,5 +1,5 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import styles from './app.module.css';
 import AppHeader from '../header/app-header';
 import Home from '../../pages/home/home';
@@ -17,7 +17,7 @@ import { fetchUserData } from '../../services/user-slice';
 import LogInRoutes from '../../utils/private-routes/login-routes';
 import ResetPasswordProtectionRoute from '../../utils/private-routes/reset-password-protection';
 import { tokenUpdate } from '../../services/user-slice';
-import { IngredientDetails } from '../ingredient-details/ingredient-details';
+import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
 import Cookies from 'js-cookie';
 import { openModalWithCookie } from '../../services/modal-slice';
 import { setDetails } from '../../services/ingredient-details-slice';
@@ -25,14 +25,19 @@ import ProtectedRoutes from '../../utils/private-routes/protected-routes';
 import { AppDispatch, RootState } from '../../services/store';
 import Feed from '../../pages/feed/feed';
 import Orders from '../../pages/account/profile/orders/orders';
+import OrderInfo from '../order-full-description/order-info';
+import { FEED_ORDERS_URL } from '../../utils/config';
+import { onCloseWSFeed, onErrorWSFeed, onMessageWSFeed, onOpenWSFeed } from '../../services/feed-orders-slice';
+import { setOrderDescription } from '../../services/order-description-slice';
 
-const App:FC = ():JSX.Element => {
+const App: FC = (): JSX.Element => {
     const { loading } = useSelector((state: RootState) => state.ingredients);
     const { tokenExpired } = useSelector((state: RootState) => state.user);
+    const token = Cookies.get('accessToken');
     const dispatch: AppDispatch = useDispatch();
     const location: Location = useLocation();
 
-    const background: Location = location.state?.background;
+    const background = location.state?.background;
 
     useEffect(() => {
         dispatch(fetchIngredients());
@@ -48,15 +53,49 @@ const App:FC = ():JSX.Element => {
     }, [tokenExpired]);
 
     // Modal Opening Magic After Page Refresh
-    const token = Cookies.get('accessToken');
+
     const openModal = Cookies.get('isModalOpen');
 
     useEffect(() => {
-        if (openModal) {
+        if (openModal && location.state?.ingredient) {
             dispatch(setDetails(location.state.ingredient));
             dispatch(openModalWithCookie('Детали ингредиента'));
+        } else if (openModal && location.state?.order) {
+            console.log(location.state);
+            const data = {
+                order: location.state.order,
+                filteredIngredients: location.state.filteredIngredients,
+                price: location.state.price,
+            };
+            dispatch(setOrderDescription(data));
+            dispatch(openModalWithCookie(''));
         }
     }, [openModal]);
+
+    //  SOCKET ДЛЯ ЛЕНТЫ
+    let socketFeed: any = useRef();
+
+    useEffect(() => {
+        socketFeed.current = new WebSocket(FEED_ORDERS_URL);
+        socketFeed.current.onopen = (event: Event) => {
+            dispatch(onOpenWSFeed(event.type));
+        };
+        socketFeed.current.onmessage = (event: MessageEvent) => {
+            const { data } = event;
+            const parsedData = JSON.parse(data);
+            dispatch(onMessageWSFeed(parsedData));
+        };
+        socketFeed.current.onclose = (event: CloseEvent) => {
+            if (event.wasClean) {
+                dispatch(onCloseWSFeed(event.type));
+            } else if (!event.wasClean) {
+                dispatch(onErrorWSFeed(event));
+            }
+        };
+        socketFeed.current.onerror = (event: Error) => {
+            dispatch(onErrorWSFeed(event));
+        };
+    }, []);
 
     return (
         <>
@@ -70,10 +109,12 @@ const App:FC = ():JSX.Element => {
                             <Route path='*' element={<NotFound />} />
                             <Route path='/' element={<Home />} />
                             <Route path='/feed' element={<Feed />} />
+                            <Route path='/feed/:id' element={<OrderInfo />} />
                             <Route path='/ingredients/:id' element={<IngredientDetails />} />
                             <Route element={<ProtectedRoutes />}>
                                 <Route path='/profile' element={<Profile />} />
                                 <Route path='/profile/orders' element={<Orders />} />
+                                <Route path='/profile/orders/:id' element={<OrderInfo />} />
                             </Route>
                             <Route element={<LogInRoutes />}>
                                 <Route path='/login' element={<Login />} />

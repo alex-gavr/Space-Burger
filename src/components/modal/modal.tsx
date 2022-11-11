@@ -2,9 +2,9 @@ import React, { useEffect, ReactNode, FC, KeyboardEvent } from 'react';
 import styles from './modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { createPortal } from 'react-dom';
-import { ModalOverlay } from '../modal-overlay/modal-overlay';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../services/store';
+import { ModalOverlay } from './modal-overlay/modal-overlay';
 
 interface Props {
     children: ReactNode;

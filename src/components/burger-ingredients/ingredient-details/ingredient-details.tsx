@@ -2,10 +2,10 @@ import styles from './ingredient-details.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { FC, useEffect } from 'react';
-import { setDetails } from '../../services/ingredient-details-slice';
+import { setDetails } from '../../../services/ingredient-details-slice';
 import { useMemo } from 'react';
-import { IIngredient } from '../../types/data';
-import { AppDispatch, RootState } from '../../services/store';
+import { IIngredient } from '../../../types/data';
+import { AppDispatch, RootState } from '../../../services/store';
 
 export const IngredientDetails: FC = (): JSX.Element => {
     const { id } = useParams();

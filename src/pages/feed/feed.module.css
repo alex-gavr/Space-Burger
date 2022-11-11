@@ -3,14 +3,15 @@
     flex-flow: column nowrap;
     align-content: center;
     gap: 2.5rem;
-    width: auto;
+    max-width: 100%;
     margin-top: 3rem;
+    padding: 0rem 3rem;
 }
 
 .columns {
-    width: min(95%, 80rem);
+    width: 100%;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 1.5fr;
     gap: 0rem 3.75rem;
     margin-bottom: 5rem;
 }
@@ -70,7 +71,8 @@
 }
 .readyContainer > ul {
     display: flex;
-    flex-flow: column nowrap;
+    flex-flow: column wrap;
+    height: 320px;
     gap: 0.5rem;
 }
 .inWorkContainer > ul {

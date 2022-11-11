@@ -10,13 +10,13 @@ import { onOpenModal } from '../../services/modal-slice';
 import { IIngredient } from '../../types/data';
 import { AppDispatch } from '../../services/store';
 
-interface Props {
+interface IProps {
     ingredient: IIngredient;
     bun: Array<IIngredient>;
     mainIngredients: Array<IIngredient>;
 }
 
-const Ingredient: FC<Props> = ({ ingredient, bun, mainIngredients }):JSX.Element => {
+const Ingredient: FC<IProps> = ({ ingredient, bun, mainIngredients }):JSX.Element => {
     const dispatch: AppDispatch = useDispatch();
     const navigate: NavigateFunction = useNavigate();
     const location: Location = useLocation();

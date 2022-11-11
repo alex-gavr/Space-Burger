@@ -238,19 +238,14 @@ export const userSlice = createSlice({
             state.tokenExpired = null;
         });
         builder.addCase(fetchUserData.fulfilled, (state, action) => {
-            if (action.payload.message === 'jwt expired') {
-                state.tokenExpired = true;
-            } else if (action.payload.message === 'You should be authorised') {
-                state.authorized = false;
-            } else {
-                state.name = action.payload.user.name;
-                state.email = action.payload.user.email;
-                state.loginSuccess = true;
-                state.logoutSuccess = null;
-            }
+            state.name = action.payload.user.name;
+            state.email = action.payload.user.email;
+            state.loginSuccess = true;
+            state.logoutSuccess = null;
             state.loading = false;
         });
         builder.addCase(fetchUserData.rejected, (state) => {
+            state.tokenExpired = true;
             state.loading = null;
             state.error = true;
         });

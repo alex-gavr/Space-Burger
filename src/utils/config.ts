@@ -13,3 +13,5 @@ export const NEW_PASSWORD_SAVE_URL = `${BASE_API_URL}/password-reset/reset`;
 
 export const USER_URL = `${BASE_API_URL}/auth/user`;
 
+export const FEED_ORDERS_URL = 'wss://norma.nomoreparties.space/orders/all';
+export const USER_ORDERS_URL = 'wss://norma.nomoreparties.space/orders';

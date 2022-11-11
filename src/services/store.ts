@@ -5,6 +5,9 @@ import constructorReducer from './constructor-slice';
 import orderDetailsReducer from './order-details-slice';
 import userReducer from './user-slice';
 import modalReducer from './modal-slice';
+import feedOrdersReducer from './feed-orders-slice';
+import userOrderHistoryReducer from './user-order-history-slice';
+import orderDescriptionReducer from './order-description-slice';
 
 
 export const store = configureStore({
@@ -15,6 +18,9 @@ export const store = configureStore({
         orderDetails: orderDetailsReducer,
         user: userReducer,
         modal: modalReducer,
+        feedOrders: feedOrdersReducer,
+        userOrderHistory: userOrderHistoryReducer,
+        orderDescription: orderDescriptionReducer, 
     },
 });
 

@@ -1,4 +1,4 @@
-import { ILoadingAndError, IIngredient, IMainIngredients, IOrderDetails } from './data';
+import { ILoadingAndError, IIngredient, IMainIngredients, IOrderDetails, IOrder } from './data';
 
 export interface IIngredientsState extends ILoadingAndError{
     ingredients: Array<IIngredient>;
@@ -43,4 +43,18 @@ export interface IUserState{
 export interface IModalState {
     title: string;
     isModalOpen: boolean;
+}
+
+export interface IOrdersState{
+    connectStatus: string;
+    success: boolean | null;
+    error: boolean | null;
+    errorCode?: number | null;
+    orders: Array<IOrder>;
+    total: number;
+    totalToday: number;
+}
+
+export interface IOrderDescriptionState{
+    orderDescription: IOrder | null;
 }

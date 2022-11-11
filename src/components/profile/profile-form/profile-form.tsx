@@ -1,9 +1,9 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../services/store';
-import { profileDataChange, profileDataChangedToDefault } from '../../services/user-slice';
-import { PreloaderSmall } from '../preloader/preloader-small';
+import { AppDispatch, RootState } from '../../../services/store';
+import { profileDataChange, profileDataChangedToDefault } from '../../../services/user-slice';
+import { PreloaderSmall } from '../../preloader/preloader-small';
 import styles from './profile-form.module.css';
 
 export const ProfileForm: FC = () => {

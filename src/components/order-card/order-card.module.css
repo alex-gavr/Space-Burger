@@ -11,6 +11,7 @@
     padding: 1.5rem;
     margin-right: 1.5rem;
     overflow: hidden;
+    cursor: pointer;
 }
 .orderInfoContainer{
     width: 100%;
@@ -58,6 +59,13 @@
     justify-content: center;
     align-items: center;
     gap: 1rem;
+}
+.status{
+    margin-top: 0.5rem;
+}
+.statusDone{
+    margin-top: 0.5rem;
+    color: var(--colors-interface-success);
 }
 
 

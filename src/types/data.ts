@@ -20,8 +20,8 @@ export interface IMainIngredients extends IIngredient {
     uuid: string;
 }
 export interface IOrderDetails {
-    name: string ;
-    order: {number: number} ;
+    name: string;
+    order: { number: number };
     success: boolean | null;
 }
 
@@ -29,4 +29,28 @@ export interface IOrderDetails {
 export interface INavData {
     isActive: boolean;
     isPending: boolean;
-};
+}
+
+export interface IOrder {
+    ingredients: Array<string>;
+    _id: string;
+    status: string;
+    number: number;
+    createdAt: string;
+    updatedAt: string;
+    name: string;
+}
+
+export interface IOrders {
+    success: boolean | null;
+    orders: Array<IOrder>;
+    total: number;
+    totalToday: number;
+}
+
+export interface IOrderWithData {
+    id: string;
+    name: string;
+    image: string;
+    price: number;
+}
