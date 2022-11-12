@@ -2,12 +2,10 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { onCloseModal, onOpenModal } from '../../services/modal-slice';
-import { deleteOrderDescription, setOrderDescription } from '../../services/order-description-slice';
+import { useAppDispatch } from '../../services/hook';
+import { onOpenModal } from '../../services/modal-slice';
 import { AppDispatch, RootState } from '../../services/store';
 import { IOrder, IOrderWithData } from '../../types/data';
-import Modal from '../modal/modal';
-import OrderInfo from '../order-full-description/order-info';
 import styles from './order-card.module.css';
 import { UnseenIngredients } from './unseen-ingredients';
 
@@ -19,7 +17,7 @@ interface IProps {
 const OrderCard: FC<IProps> = ({ order }): JSX.Element => {
     const { ingredients: orderIngredients, number, status, name, createdAt } = order;
 
-    const dispatch: AppDispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -51,26 +49,11 @@ const OrderCard: FC<IProps> = ({ order }): JSX.Element => {
     // Открытие модальки
     const handleOpenModal = (order: IOrder): void => {
         if (location.pathname === '/feed') {
-            dispatch(setOrderDescription(order));
             dispatch(onOpenModal(''));
             navigate(`/feed/${order._id}`, { state: { background: location, order: order } });
         } else if (location.pathname === '/profile/orders') {
-            dispatch(setOrderDescription(order));
             dispatch(onOpenModal(''));
             navigate(`/profile/orders/${order._id}`, { state: { background: location, order: order } });
-        }
-    };
-
-    // Закрытие модальки
-    const handleCloseModal = (): void => {
-        if (location.pathname === '/feed') {
-            dispatch(onCloseModal());
-            dispatch(deleteOrderDescription());
-            navigate('/feed');
-        } else if (location.pathname === `/profile/orders`) {
-            dispatch(onCloseModal());
-            dispatch(deleteOrderDescription());
-            navigate('/profile/orders');
         }
     };
 
@@ -107,9 +90,6 @@ const OrderCard: FC<IProps> = ({ order }): JSX.Element => {
                     </div>
                 </div>
             </div>
-            <Modal onClose={handleCloseModal}>
-                <OrderInfo />
-            </Modal>
         </div>
     );
 };

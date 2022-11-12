@@ -3,14 +3,13 @@ import React, { FC, useState } from 'react';
 import styles from './styles.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { newPasswordSave } from '../../services/user-slice';
 import { PreloaderSmall } from '../../components/preloader/preloader-small';
-import { AppDispatch, RootState } from '../../services/store';
+import { useAppDispatch, useAppSelector } from '../../services/hook';
 
 const ResetPassword: FC = (): JSX.Element => {
-    const dispatch: AppDispatch = useDispatch();
-    const { passwordChanged, incorrectToken, loading } = useSelector((state: RootState) => state.user);
+    const dispatch = useAppDispatch();
+    const { passwordChanged, incorrectToken, loading } = useAppSelector((state) => state.user);
     const [token, setToken] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [passwordType, setPasswordType] = useState<'text' | 'password'>('password');

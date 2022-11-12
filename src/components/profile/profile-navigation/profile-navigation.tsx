@@ -1,16 +1,15 @@
 import styles from './profile-navigation.module.css';
 import { NavLink, useLocation } from 'react-router-dom';
-import { AppDispatch, RootState } from '../../../services/store';
-import { useDispatch, useSelector } from 'react-redux';
 import { INavData } from '../../../types/data';
 import { logout } from '../../../services/user-slice';
 import { PreloaderSmall } from '../../preloader/preloader-small';
 import { FC } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../services/hook';
 
 export const ProfileNavigation: FC = (): JSX.Element => {
     const location = useLocation();
-    const dispatch: AppDispatch = useDispatch();
-    const { loading } = useSelector((state: RootState) => state.user);
+    const dispatch = useAppDispatch();
+    const { loading } = useAppSelector((state) => state.user);
 
     const classNameToggle = (navData: INavData) => (navData.isActive ? 'text text_type_main-medium' : 'text text_type_main-medium text_color_inactive');
 

@@ -1,10 +1,9 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
 import { FC, useMemo } from 'react';
 import styles from './burger-ingredients.module.css';
-import { useSelector } from 'react-redux';
 import Ingredient from './ingredient';
-import { RootState } from '../../services/store';
 import { IIngredient } from '../../types/data';
+import { useAppSelector } from '../../services/hook';
 
 interface Props {
     type: string;
@@ -12,11 +11,9 @@ interface Props {
 }
 
 const IngredientCategory: FC<Props> = ({type , title}): JSX.Element => {
-    const { ingredients } = useSelector((state: RootState) => state.ingredients);
-
+    const { ingredients } = useAppSelector((state) => state.ingredients);
     const filteredIngredients = useMemo(() => ingredients.filter((ingredient: IIngredient) => ingredient.type === type), [ingredients]);
-
-    const { bun, mainIngredients } = useSelector((state: RootState) => state.burgerConstructor);
+    const { bun, mainIngredients } = useAppSelector((state) => state.burgerConstructor);
 
     return (
         <div>

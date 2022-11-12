@@ -3,7 +3,6 @@ import { useEffect, FC, SyntheticEvent } from 'react';
 import styles from './burger-constructor.module.css';
 import { Button, CurrencyIcon, ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
-import { useSelector, useDispatch } from 'react-redux';
 import { deleteOrderDetails, fetchOrderDetails } from '../../services/order-details-slice';
 import { useDrop } from 'react-dnd';
 import { addIngredient, emptyConstructor } from '../../services/constructor-slice';
@@ -14,15 +13,15 @@ import { openModalOrder } from '../../services/modal-slice';
 import { onCloseModal } from '../../services/modal-slice';
 import { v4 as uuidv4 } from 'uuid';
 import { PreloaderSmall } from '../preloader/preloader-small';
-import { AppDispatch, RootState } from '../../services/store';
 import { OrderDetails } from './order-details/order-details';
+import { useAppDispatch, useAppSelector } from '../../services/hook';
 
 const BurgerConstructor: FC = (): JSX.Element => {
-    const dispatch: AppDispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate: NavigateFunction = useNavigate();
-    const { bun, mainIngredients } = useSelector((state: RootState) => state.burgerConstructor);
-    const { orderDetails, loading } = useSelector((state: RootState) => state.orderDetails);
-    const { loginSuccess } = useSelector((state: RootState) => state.user);
+    const { bun, mainIngredients } = useAppSelector((state) => state.burgerConstructor);
+    const { orderDetails, loading } = useAppSelector((state) => state.orderDetails);
+    const { loginSuccess } = useAppSelector((state) => state.user);
 
     // Считаем Тотал
     const totalMainIngredients = mainIngredients.reduce((acc, ingredient) => acc + ingredient.price, 0);

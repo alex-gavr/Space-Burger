@@ -3,12 +3,10 @@ import { FC } from 'react';
 import styles from './burger-ingredients.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag } from 'react-dnd';
-import { useDispatch } from 'react-redux';
-import { setDetails } from '../../services/ingredient-details-slice';
-import { Location, NavigateFunction, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { onOpenModal } from '../../services/modal-slice';
 import { IIngredient } from '../../types/data';
-import { AppDispatch } from '../../services/store';
+import { useAppDispatch } from '../../services/hook';
 
 interface IProps {
     ingredient: IIngredient;
@@ -17,12 +15,11 @@ interface IProps {
 }
 
 const Ingredient: FC<IProps> = ({ ingredient, bun, mainIngredients }):JSX.Element => {
-    const dispatch: AppDispatch = useDispatch();
-    const navigate: NavigateFunction = useNavigate();
-    const location: Location = useLocation();
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const handleOpenModal = (ingredient: IIngredient): void => {
-        dispatch(setDetails(ingredient));
         dispatch(onOpenModal('Детали ингредиента'));
         navigate(`/ingredients/${ingredient._id}`, { state: { background: location, ingredient: ingredient } });
     };

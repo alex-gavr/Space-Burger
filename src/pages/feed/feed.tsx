@@ -1,13 +1,12 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import OrderCard from '../../components/order-card/order-card';
-import { RootState } from '../../services/store';
 import styles from './feed.module.css';
 import { Preloader } from '../../components/preloader/preloader';
+import { useAppSelector } from '../../services/hook';
 
 const Feed: FC = () => {
-    const { orders, total, totalToday } = useSelector((state: RootState) => state.feedOrders);
+    const { orders, total, totalToday } = useAppSelector((state) => state.feedOrders);
 
     const completedOrders = orders.filter((orders) => orders.status === 'done');
     const inProgressOrders = orders.filter((orders) => orders.status === 'pending');

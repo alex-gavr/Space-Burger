@@ -1,10 +1,9 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
 import Cookies from 'js-cookie';
 import { useEffect, FC, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import OrderCard from '../../../../components/order-card/order-card';
 import { ProfileNavigation } from '../../../../components/profile/profile-navigation/profile-navigation';
-import { AppDispatch, RootState } from '../../../../services/store';
+import { useAppDispatch, useAppSelector } from '../../../../services/hook';
 import { onCloseWSUser, onErrorWSUser, onMessageWSUser, onOpenWSUser } from '../../../../services/user-order-history-slice';
 import { USER_ORDERS_URL } from '../../../../utils/config';
 import styles from './orders.module.css';
@@ -13,7 +12,7 @@ const Orders: FC = (): JSX.Element => {
     const fullToken = Cookies.get('accessToken');
     const accessToken = fullToken?.split(' ')[1];
 
-    const dispatch: AppDispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     // Запускаю Socket через useRef чтобы в целом была возможность вызывать dispatch на socket в функциях (допустим по нажатию кнопки прекртить соединение)
     let socket: any = useRef();
@@ -40,7 +39,7 @@ const Orders: FC = (): JSX.Element => {
         };
     }, [dispatch, accessToken]);
 
-    const { orders } = useSelector((state: RootState) => state.userOrderHistory);
+    const { orders } = useAppSelector((state) => state.userOrderHistory);
 
     return (
         <div className={styles.grid}>

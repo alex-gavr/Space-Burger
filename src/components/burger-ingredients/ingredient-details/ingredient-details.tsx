@@ -1,17 +1,16 @@
 import styles from './ingredient-details.module.css';
-import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { FC, useEffect } from 'react';
 import { setDetails } from '../../../services/ingredient-details-slice';
 import { useMemo } from 'react';
 import { IIngredient } from '../../../types/data';
-import { AppDispatch, RootState } from '../../../services/store';
+import { useAppDispatch, useAppSelector } from '../../../services/hook';
 
 export const IngredientDetails: FC = (): JSX.Element => {
     const { id } = useParams();
-    const dispatch: AppDispatch = useDispatch();
-    const { isModalOpen } = useSelector((state: RootState) => state.modal);
-    const { ingredients } = useSelector((state: RootState) => state.ingredients);
+    const dispatch = useAppDispatch();
+    const { isModalOpen } = useAppSelector((state) => state.modal);
+    const { ingredients } = useAppSelector((state) => state.ingredients);
 
     const filteredIngredient = useMemo(() => ingredients?.filter((ingredient: IIngredient) => ingredient._id === id), [ingredients, id]);
 
@@ -21,7 +20,7 @@ export const IngredientDetails: FC = (): JSX.Element => {
         }
     }, [filteredIngredient, dispatch]);
 
-    const { details } = useSelector((state: RootState) => state.details);
+    const { details } = useAppSelector((state) => state.details);
 
     return (
         <div className={styles.wrapper}>

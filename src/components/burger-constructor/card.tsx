@@ -1,9 +1,8 @@
 import { FC, ReactNode, useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { reorder } from '../../services/constructor-slice';
-import { useDispatch } from 'react-redux';
 import styles from './burger-constructor.module.css';
-import { AppDispatch } from '../../services/store';
+import { useAppDispatch } from '../../services/hook';
 
 interface Props {
     id: string;
@@ -12,7 +11,7 @@ interface Props {
 }
 
 const Card: FC<Props> = ({ id, children, index }): JSX.Element => {
-    const dispatch: AppDispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const ref = useRef<HTMLDivElement>(null);
     const [{ handlerId }, drop] = useDrop({

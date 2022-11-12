@@ -2,17 +2,16 @@ import '@ya.praktikum/react-developer-burger-ui-components';
 import React, { FC, useState } from 'react';
 import styles from './styles.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, useNavigate, useLocation, NavigateFunction, Location } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { login } from '../../services/user-slice';
 import { PreloaderSmall } from '../../components/preloader/preloader-small';
-import { AppDispatch, RootState } from '../../services/store';
+import { useAppDispatch, useAppSelector } from '../../services/hook';
 
 const Login: FC = (): JSX.Element => {
-    const dispatch: AppDispatch = useDispatch();
-    const navigate: NavigateFunction = useNavigate();
-    const location: Location = useLocation();
-    const { loading } = useSelector((state: RootState) => state.user);
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { loading } = useAppSelector((state) => state.user);
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [passwordType, setPasswordType] = useState<'text' | 'password'>('password');

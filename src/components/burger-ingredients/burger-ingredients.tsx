@@ -3,25 +3,9 @@ import React, { RefObject, useEffect, useRef, useState } from 'react';
 import styles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCategory from './ingredient-category';
-import { IngredientDetails } from './ingredient-details/ingredient-details';
-import Modal from '../modal/modal';
 import { INGREDIENT_TYPES } from '../../utils/ingredient-types';
-import { useDispatch } from 'react-redux';
-import { deleteDetails } from '../../services/ingredient-details-slice';
-import { onCloseModal } from '../../services/modal-slice';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
-import { AppDispatch } from '../../services/store';
 
 const BurgerIngredients = () => {
-    const dispatch: AppDispatch = useDispatch();
-    const navigate: NavigateFunction = useNavigate();
-
-    const handleCloseModal = (): void => {
-        dispatch(onCloseModal());
-        dispatch(deleteDetails());
-        navigate('/');
-    };
-
     const [current, setCurrent] = useState<string>(INGREDIENT_TYPES.BUN);
 
     const bun = useRef<HTMLDivElement>(null);
@@ -90,9 +74,6 @@ const BurgerIngredients = () => {
                     <IngredientCategory title='Начинка' type={INGREDIENT_TYPES.MAIN} />
                 </div>
             </div>
-            <Modal onClose={handleCloseModal}>
-                <IngredientDetails />
-            </Modal>
         </section>
     );
 };

@@ -2,19 +2,18 @@ import '@ya.praktikum/react-developer-burger-ui-components';
 import React, { FC, useEffect, useState } from 'react';
 import styles from './styles.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, NavigateFunction } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { resetPasswordInit } from '../../services/user-slice';
 import { useNavigate } from 'react-router-dom';
 import { PreloaderSmall } from '../../components/preloader/preloader-small';
-import { AppDispatch, RootState } from '../../services/store';
+import { useAppDispatch, useAppSelector } from '../../services/hook';
 
 
 const ForgotPassword: FC = (): JSX.Element => {
-    const dispatch: AppDispatch = useDispatch();
-    const navigate: NavigateFunction = useNavigate();
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
-    const { initPasswordReset, loading } = useSelector((state: RootState) => state.user);
+    const { initPasswordReset, loading } = useAppSelector((state) => state.user);
 
     const [email, setEmail] = useState<string>('');
 

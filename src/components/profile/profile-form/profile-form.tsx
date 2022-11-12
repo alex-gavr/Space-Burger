@@ -1,15 +1,14 @@
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { FC, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../services/store';
+import { useAppDispatch, useAppSelector } from '../../../services/hook';
 import { profileDataChange, profileDataChangedToDefault } from '../../../services/user-slice';
 import { PreloaderSmall } from '../../preloader/preloader-small';
 import styles from './profile-form.module.css';
 
 export const ProfileForm: FC = () => {
 
-    const dispatch: AppDispatch = useDispatch();
-    const { name: nameRedux, email: emailRedux, profileDataChanged, loading } = useSelector((state: RootState) => state.user);
+    const dispatch = useAppDispatch();
+    const { name: nameRedux, email: emailRedux, profileDataChanged, loading } = useAppSelector((state) => state.user);
 
     const [name, setName] = useState<string>(nameRedux);
     const [email, setEmail] = useState<string>(emailRedux);

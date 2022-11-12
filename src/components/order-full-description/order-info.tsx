@@ -2,34 +2,33 @@ import styles from './order-info.module.css';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { OrderIngredients } from './order-ingredient-component/order-ingredients';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../services/store';
 import { useParams } from 'react-router-dom';
 import { setOrderDescriptionLink } from '../../services/order-description-slice';
 import { Preloader } from '../preloader/preloader';
 import { IOrderDetailsAdjustedForModal, IOrderWithData } from '../../types/data';
+import { useAppDispatch, useAppSelector } from '../../services/hook';
 
 const OrderInfo: FC = (): JSX.Element => {
     const [orderDetailsAdjustedForModal, setOrderDetailsAdjustedForModal] = useState<IOrderDetailsAdjustedForModal[] | null>();
     const { id } = useParams();
-    const dispatch: AppDispatch = useDispatch();
-    const { ingredients } = useSelector((state: RootState) => state.ingredients);
+    const dispatch = useAppDispatch();
+    const { ingredients } = useAppSelector((state) => state.ingredients);
 
     // Данные о заказе переданные в редакс
-    const { orderDescription } = useSelector((state: RootState) => state.orderDescription);
+    const { orderDescription } = useAppSelector((state) => state.orderDescription);
 
     // Данные всех заказов. Нужны здесь чтобы если открыли заказ по линке найти этот заказ
-    const { orders } = useSelector((state: RootState) => state.feedOrders);
+    const { orders } = useAppSelector((state) => state.feedOrders);
 
     // Нахожу заказ, который открыли по линке
     const order =  useMemo(() => orders?.filter((order) => order._id === id), [orders, id]);
 
     // Отправляю инфу о заказе в редакс, который открыли по линке
-    useEffect(() => {
-        if (!orderDescription && order !== undefined) {
-            dispatch(setOrderDescriptionLink(order[0]));
-        }
-    }, [order, id, orderDescription, dispatch]);
+    // useEffect(() => {
+    //     if (!orderDescription && order !== undefined) {
+    //         dispatch(setOrderDescriptionLink(order[0]));
+    //     }
+    // }, [order, id, orderDescription, dispatch]);
 
     // Если данные о заказе есть в редаксе / или мы их получили, то запускаю функицю ниже, которая соберет данные так, чтобы их отобразить
     useEffect(() => {
