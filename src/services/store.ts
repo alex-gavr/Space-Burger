@@ -26,17 +26,8 @@ import userOrderHistoryReducer, {
 import orderDescriptionReducer from './order-description-slice';
 import { socketMiddleware } from './middleware/socket-middleware';
 
-interface IActions {
-    wsConnect: any;
-    wsDisconnect: any;
-    wsConnecting: any;
-    onOpen: any;
-    onClose: any;
-    onError: any;
-    onMessage: any;
-}
 
-const ordersWsActions: IActions = {
+const ordersWsActions = {
     wsConnect: ORDERS_CONNECT,
     wsDisconnect: ORDERS_DISCONNECT,
     wsConnecting: ORDERS_WS_CONNECTING,
@@ -45,7 +36,7 @@ const ordersWsActions: IActions = {
     onError: ORDERS_WS_ERROR,
     onMessage: ORDERS_WS_MESSAGE,
 };
-const profileOrdersWsActions: IActions = {
+const profileOrdersWsActions = {
     wsConnect: ORDERS_CONNECT_USER,
     wsDisconnect: ORDERS_DISCONNECT_USER,
     wsConnecting: ORDERS_WS_CONNECTING_USER,

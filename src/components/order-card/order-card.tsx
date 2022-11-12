@@ -1,10 +1,8 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../../services/hook';
+import { useAppDispatch, useAppSelector } from '../../services/hook';
 import { onOpenModal } from '../../services/modal-slice';
-import { AppDispatch, RootState } from '../../services/store';
 import { IOrder, IOrderWithData } from '../../types/data';
 import styles from './order-card.module.css';
 import { UnseenIngredients } from './unseen-ingredients';
@@ -26,7 +24,7 @@ const OrderCard: FC<IProps> = ({ order }): JSX.Element => {
     const maxIngredient = 6;
     const unseenIngredientsNumber = arraylength - maxIngredient;
 
-    const { ingredients } = useSelector((state: RootState) => state.ingredients);
+    const { ingredients } = useAppSelector((state) => state.ingredients);
 
     // Создаю новый массив с нужными данными для отображения инфы в карточке 
     const orderWithData: IOrderWithData[] = orderIngredients.map((id) => {

@@ -1,11 +1,10 @@
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { Outlet, Navigate, useLocation, Location } from 'react-router-dom';
-import { RootState } from '../../services/store';
+import { useAppSelector } from '../../services/hook';
 
 
 const ResetPasswordProtectionRoute:FC = (): JSX.Element => {
-    const { allowToGoToPasswordReset } = useSelector((state: RootState) => state.user);
+    const { allowToGoToPasswordReset } = useAppSelector((state) => state.user);
     const location: Location = useLocation();
     const from: string = location.state?.from || '/';
 
