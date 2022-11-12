@@ -6,9 +6,10 @@ interface IProps {
     image_mobile: string;
     name: string;
     price: number;
+    timesRepeated: number;
 }
 
-export const OrderIngredients: FC<IProps> = ({ image_mobile, name, price }): JSX.Element => {
+export const OrderIngredients: FC<IProps> = ({ image_mobile, name, price, timesRepeated }): JSX.Element => {
     return (
         <div className={styles.ingredient}>
             <div className={styles.imageContainer}>
@@ -16,7 +17,7 @@ export const OrderIngredients: FC<IProps> = ({ image_mobile, name, price }): JSX
             </div>
             <p className='text text_type_main-default'>{name}</p>
             <div className={styles.priceContainer}>
-                <p className='text text_type_digits-default'> 2 x {price}</p>
+                <p className='text text_type_digits-default'> {timesRepeated} x {price}</p>
                 <CurrencyIcon type='primary' />
             </div>
         </div>

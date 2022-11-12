@@ -15,12 +15,11 @@ export const IngredientDetails: FC = (): JSX.Element => {
 
     const filteredIngredient = useMemo(() => ingredients?.filter((ingredient: IIngredient) => ingredient._id === id), [ingredients, id]);
 
-
     useEffect(() => {
         if (filteredIngredient && filteredIngredient.length > 0) {
             dispatch(setDetails(filteredIngredient[0]));
         }
-    }, [filteredIngredient]);
+    }, [filteredIngredient, dispatch]);
 
     const { details } = useSelector((state: RootState) => state.details);
 

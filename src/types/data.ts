@@ -54,3 +54,6 @@ export interface IOrderWithData {
     image: string;
     price: number;
 }
+export interface IOrderDetailsAdjustedForModal extends IOrderWithData {
+    timesRepeated: number;
+}

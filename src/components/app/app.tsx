@@ -44,16 +44,15 @@ const App: FC = (): JSX.Element => {
         if (token) {
             dispatch(fetchUserData());
         }
-    }, []);
+    }, [dispatch, token]);
 
     useEffect(() => {
         if (tokenExpired) {
             dispatch(tokenUpdate());
         }
-    }, [tokenExpired]);
+    }, [tokenExpired, dispatch]);
 
     // Modal Opening Magic After Page Refresh
-
     const openModal = Cookies.get('isModalOpen');
 
     useEffect(() => {
@@ -61,18 +60,12 @@ const App: FC = (): JSX.Element => {
             dispatch(setDetails(location.state.ingredient));
             dispatch(openModalWithCookie('Детали ингредиента'));
         } else if (openModal && location.state?.order) {
-            console.log(location.state);
-            const data = {
-                order: location.state.order,
-                filteredIngredients: location.state.filteredIngredients,
-                price: location.state.price,
-            };
-            dispatch(setOrderDescription(data));
+            dispatch(setOrderDescription(location.state.order));
             dispatch(openModalWithCookie(''));
         }
-    }, [openModal]);
+    }, [openModal, dispatch, location.state]);
 
-    //  SOCKET ДЛЯ ЛЕНТЫ
+    //  SOCKET для ленты. Открываю соединение здесь, чтобы если кто-то перешёл по ссылку на заказ, данные могли отобразиться, иначе не отображаются...
     let socketFeed: any = useRef();
 
     useEffect(() => {
@@ -95,7 +88,7 @@ const App: FC = (): JSX.Element => {
         socketFeed.current.onerror = (event: Error) => {
             dispatch(onErrorWSFeed(event));
         };
-    }, []);
+    }, [dispatch]);
 
     return (
         <>

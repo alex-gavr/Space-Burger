@@ -1,71 +1,114 @@
 import styles from './order-info.module.css';
-import { FC, useEffect, useMemo } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { OrderIngredients } from './order-ingredient-component/order-ingredients';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../services/store';
 import { useParams } from 'react-router-dom';
-import { setOrderDescription } from '../../services/order-description-slice';
+import { setOrderDescriptionLink } from '../../services/order-description-slice';
 import { Preloader } from '../preloader/preloader';
+import { IOrderDetailsAdjustedForModal, IOrderWithData } from '../../types/data';
 
 const OrderInfo: FC = (): JSX.Element => {
+    const [orderDetailsAdjustedForModal, setOrderDetailsAdjustedForModal] = useState<IOrderDetailsAdjustedForModal[] | null>();
     const { id } = useParams();
     const dispatch: AppDispatch = useDispatch();
     const { ingredients } = useSelector((state: RootState) => state.ingredients);
 
-    // ДАННЫЕ О ЗАКАЗЕ ПЕРЕДАННЫЕ В РЕДАКС
+    // Данные о заказе переданные в редакс
     const { orderDescription } = useSelector((state: RootState) => state.orderDescription);
-    // ДАННЫЕ ВСЕХ ЗАКАЗОВ В ЛЕНТЕ
+
+    // Данные всех заказов. Нужны здесь чтобы если открыли заказ по линке найти этот заказ
     const { orders } = useSelector((state: RootState) => state.feedOrders);
 
-    // ИЩЕМ ЗАКАЗ В ЛЕНТЕ ЗАКАЗОВ
-    const order = useMemo(() => orders?.filter((order) => order._id === id), [orders, id]);
+    // Нахожу заказ, который открыли по линке
+    const order =  useMemo(() => orders?.filter((order) => order._id === id), [orders, id]);
 
-    // ВОЗВРАЩАЕМ НУЖНЫЕ ИНГРЕДИЕНТЫ ЧТОБЫ БЫЛИ ФОТКИ/ЦЕНЫ/НАЗВАНИЯ
-    const filteredIngredients = orderDescription
-        // МОДАЛЬКА
-        ? ingredients.filter((ingredients) => orderDescription?.ingredients?.includes(ingredients._id))
-        // СТРАНИЦА
-        : ingredients.filter((ingredients) => order[0]?.ingredients?.includes(ingredients._id));
-
-        console.log(filteredIngredients);
-
-    // МАНИПУЛЯЦИИ ЧТОБЫ КОРРЕКТНО РАССЧИТАТЬ ЦЕНУ
-    const buns = ingredients.filter((ingredient) => ingredient.type === 'bun');
-    const bunIds = buns.map((bun) => bun._id);
-    const filteredBun = filteredIngredients.filter((ingredients) => bunIds.includes(ingredients._id));
-    const filteredMainIngredient = filteredIngredients.filter((ingredients) => !bunIds.includes(ingredients._id));
-    const mainIngredientsPrice = filteredMainIngredient.reduce((acc, ingredient) => acc + ingredient.price, 0);
-    const bunsPrice = filteredBun.reduce((acc, ingredient) => acc + ingredient.price, 0) * 2;
-    const price = mainIngredientsPrice + bunsPrice;
-
-    // ОТПРАВЛЯЕМ ДАННЫЕ В РЕДАКС КОТОРЫЕ СОБРАЛИ ЧЕРЕЗ ID URL
+    // Отправляю инфу о заказе в редакс, который открыли по линке
     useEffect(() => {
-        if (order && order.length > 0 && filteredIngredients && price) {
-            const data = {
-                order: order[0],
-                filteredIngredients: filteredIngredients,
-                price: price,
-            };
-            dispatch(setOrderDescription(data));
+        if (!orderDescription && order !== undefined) {
+            dispatch(setOrderDescriptionLink(order[0]));
         }
-    }, [order, filteredIngredients, price]);
+    }, [order, id, orderDescription, dispatch]);
 
+    // Если данные о заказе есть в редаксе / или мы их получили, то запускаю функицю ниже, которая соберет данные так, чтобы их отобразить
+    useEffect(() => {
+        if (orderDescription) {
+            handleOrderDetailsAdjustedForModal();
+        }
+    },[orderDescription])
+
+
+    // Собераю данные для отображения и расчета стоимости, и записываем их в useState -- orderDetailsAdjustedForModal
+    const handleOrderDetailsAdjustedForModal  = () => {
+        if (orderDescription) {
+            const orderWithData: IOrderWithData[] =
+                orderDescription &&
+                orderDescription.ingredients.map((id) => {
+                    const ingredientData = ingredients.filter((ingredient) => id === ingredient._id);
+                    return {
+                        id: id,
+                        name: ingredientData[0].name,
+                        image: ingredientData[0].image_mobile,
+                        price: ingredientData[0].price,
+                    };
+                });
+            // Смотрю сколько раз повторяются инргедиенты и записываем в удобном формате
+            const result =
+                orderDescription &&
+                Object.entries(
+                    orderDescription.ingredients.reduce((acc: any, value) => {
+                        acc[value] = (acc[value] || 0) + 1;
+                        return acc;
+                    }, {})
+                ).map((value: any) => {
+                    return {
+                        id: value[0],
+                        times: value[1],
+                    };
+                });
+                // добавляю timesRepeated в массив (массив новый)
+            const fullData = orderWithData.map((data) => {
+                const ing = result.filter((value: any) => value.id === data.id);
+                const timesRepeated = ing[0].times;
+                return {
+                    ...data,
+                    timesRepeated: timesRepeated,
+                };
+            });
+            // Фильтрую массив от повторений
+            const orderDetailsAdjustedForModal: IOrderDetailsAdjustedForModal[] = fullData.filter(
+                (value, index, self) => index === self.findIndex((t) => t.id === value.id && t.name === value.name)
+            );
+            setOrderDetailsAdjustedForModal(orderDetailsAdjustedForModal);
+        }
+    };
+
+    //  Считаем тотал
+    const price = orderDetailsAdjustedForModal?.reduce((acc, ingredient) => acc + (ingredient.price * ingredient.timesRepeated), 0);
+    
+    // Манипуляции чтобы корректно отображать статус и цвет
     const statusName = orderDescription?.status === 'done' ? 'Выполнен' : orderDescription?.status === 'pending' ? 'Готовится' : 'Создан';
     const statusClass = orderDescription?.status === 'done' ? styles.statusDone : styles.status;
 
     return (
         <>
-            {order && filteredIngredients && price ? (
+            {order && orderDetailsAdjustedForModal && price ? (
                 <div className={styles.wrapper}>
-                    <p className={`text text_type_main-medium ${styles.orderNumber}`}>#{orderDescription?.number}</p>
-                    <p className={`text text_type_main-medium ${styles.orderName}`}>{orderDescription?.name}</p>
+                    <p className={`text text_type_main-medium ${styles.orderNumber}`}>#{orderDescription ? orderDescription?.number : order[0]?.number} </p>
+                    <p className={`text text_type_main-medium ${styles.orderName}`}>{orderDescription ? orderDescription?.name : order[0]?.name}</p>
                     <p className={`text text_type_main-default ${statusClass}`}>{statusName}</p>
                     <p className={`text text_type_main-medium ${styles.orderDescription}`}>Состав: </p>
                     <div className={styles.orderContainer}>
-                        {filteredIngredients &&
-                            filteredIngredients.map((ingredient) => (
-                                <OrderIngredients key={ingredient._id} image_mobile={ingredient.image_mobile} name={ingredient.name} price={ingredient.price} />
+                        {orderDetailsAdjustedForModal &&
+                            orderDetailsAdjustedForModal.map((ingredient) => (
+                                <OrderIngredients
+                                    key={ingredient.id}
+                                    image_mobile={ingredient.image}
+                                    name={ingredient.name}
+                                    price={ingredient.price}
+                                    timesRepeated={ingredient.timesRepeated}
+                                />
                             ))}
                     </div>
                     <div className={styles.footer}>
@@ -83,4 +126,4 @@ const OrderInfo: FC = (): JSX.Element => {
     );
 };
 
-export default OrderInfo;
+export default React.memo(OrderInfo);

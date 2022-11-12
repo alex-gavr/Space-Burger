@@ -1,12 +1,11 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState, useEffect, FC } from 'react';
+import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { deleteDetails, setDetails } from '../../services/ingredient-details-slice';
 import { onCloseModal, onOpenModal } from '../../services/modal-slice';
 import { deleteOrderDescription, setOrderDescription } from '../../services/order-description-slice';
 import { AppDispatch, RootState } from '../../services/store';
-import { IIngredient, IOrder, IOrderWithData } from '../../types/data';
+import { IOrder, IOrderWithData } from '../../types/data';
 import Modal from '../modal/modal';
 import OrderInfo from '../order-full-description/order-info';
 import styles from './order-card.module.css';
@@ -16,20 +15,22 @@ interface IProps {
     order: IOrder;
 }
 
+// Карточка используется как в ленте так и в истории заказов
 const OrderCard: FC<IProps> = ({ order }): JSX.Element => {
-    const { ingredients: orderIngredients, number, status, name, createdAt, updatedAt } = order;
+    const { ingredients: orderIngredients, number, status, name, createdAt } = order;
 
     const dispatch: AppDispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
 
+    // расчеты чтобы для изменения zIndex и отображения поверх последнего ингредиента компонент UnseenIngredients
     const arraylength = orderIngredients?.length;
     const maxIngredient = 6;
     const unseenIngredientsNumber = arraylength - maxIngredient;
 
     const { ingredients } = useSelector((state: RootState) => state.ingredients);
 
-    // ДЕЛАЮ НОВЫЙ МАССИВ С НУЖНЫМИ ДАННЫМИ
+    // Создаю новый массив с нужными данными для отображения инфы в карточке 
     const orderWithData: IOrderWithData[] = orderIngredients.map((id) => {
         const ingredientData = ingredients.filter((ingredient) => id === ingredient._id);
         return {
@@ -40,59 +41,27 @@ const OrderCard: FC<IProps> = ({ order }): JSX.Element => {
         };
     });
 
-    // СЧИТАЮ ТОТАЛ
+    // Считаю тотал
     const price = orderWithData.reduce((acc, ingredient) => acc + ingredient.price, 0);
-
-    // Смотрю сколько раз повторяются инргедиенты и записываем в удобном формате
-    const result = Object.entries(
-        orderIngredients.reduce((acc: any, value) => {
-            acc[value] = (acc[value] || 0) + 1;
-            return acc;
-        }, {})).map((value: any) => {
-        return {
-            id: value[0],
-            times: value[1],
-        };
-    });
-
-    // Создаю новый массив со сторочкой сколько раз повторяется ингредиент
-    const fullData = orderWithData.map((data) => {
-        const ing = result.filter((value: any) => value.id === data.id);
-        const timesRepeated = ing[0].times;
-        return {
-            ...data,
-            timesRepeated: timesRepeated,
-        };
-    });
-
-    // Убираю дубликаты из массива
-    const orderDetailsAdjustedForModal = fullData.filter((value, index, self) => index === self.findIndex((t) => t.id === value.id && t.name === value.name));
-    console.log(orderDetailsAdjustedForModal);
 
     // Цветной статус для /profile/orders
     const statusName = status === 'done' ? 'Выполнен' : status === 'pending' ? 'Готовится' : 'Создан';
     const statusClass = status === 'done' ? styles.statusDone : styles.status;
 
-    // TODO: check modal
-
-    // МОДАЛЬКА
-    const handleOpenModal = (order: IOrder, orderWithData: IOrderWithData[], price: number): void => {
-        const data = {
-            order: order,
-            filteredIngredients: orderWithData,
-            price: price,
-        };
+    // Открытие модальки
+    const handleOpenModal = (order: IOrder): void => {
         if (location.pathname === '/feed') {
-            dispatch(setOrderDescription(data));
+            dispatch(setOrderDescription(order));
             dispatch(onOpenModal(''));
-            navigate(`/feed/${order._id}`, { state: { background: location, order: order, filteredIngredients: orderWithData, price: price } });
+            navigate(`/feed/${order._id}`, { state: { background: location, order: order } });
         } else if (location.pathname === '/profile/orders') {
-            dispatch(setOrderDescription(data));
+            dispatch(setOrderDescription(order));
             dispatch(onOpenModal(''));
-            navigate(`/profile/orders/${order._id}`, { state: { background: location, order: order, filteredIngredients: orderWithData, price: price } });
+            navigate(`/profile/orders/${order._id}`, { state: { background: location, order: order } });
         }
     };
 
+    // Закрытие модальки
     const handleCloseModal = (): void => {
         if (location.pathname === '/feed') {
             dispatch(onCloseModal());
@@ -107,7 +76,7 @@ const OrderCard: FC<IProps> = ({ order }): JSX.Element => {
 
     return (
         <div>
-            <div className={styles.card} onClick={() => handleOpenModal(order, orderWithData, price)}>
+            <div className={styles.card} onClick={() => handleOpenModal(order)}>
                 <div className={styles.orderInfoContainer}>
                     <p className='text text_type_digits-default'>#{number}</p>
                     <p className='text text_type_main-default text_color_inactive'>

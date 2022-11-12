@@ -10,7 +10,10 @@ export const orderDescriptionSlice = createSlice({
     initialState,
     reducers: {
         setOrderDescription(state, action) {
-            state.orderDescription = action.payload.order;
+            state.orderDescription = action.payload;
+        },
+        setOrderDescriptionLink(state, action) {
+            state.orderDescription = action.payload;
         },
         deleteOrderDescription(state) {
             state.orderDescription = null;
@@ -18,5 +21,5 @@ export const orderDescriptionSlice = createSlice({
     },
 });
 
-export const { setOrderDescription, deleteOrderDescription } = orderDescriptionSlice.actions;
+export const { setOrderDescription, deleteOrderDescription, setOrderDescriptionLink } = orderDescriptionSlice.actions;
 export default orderDescriptionSlice.reducer;
