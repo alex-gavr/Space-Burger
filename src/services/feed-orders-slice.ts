@@ -2,13 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import { IOrdersState } from '../types/store-states';
 
 const initialState: IOrdersState = {
-    connectStatus: '',
-    error: null,
-    errorCode: null,
-    success: null,
+    status: '',
+    connectionError: '',
+    data: null,
     orders: [],
-    total: 0,
-    totalToday: 0,
+    fromLink: null,
 };
 
 
@@ -16,28 +14,46 @@ export const feedOrders = createSlice({
     name: 'feedOrders',
     initialState,
     reducers: {
-        onOpenWSFeed(state, action) {
-            state.connectStatus = action.payload;
+        ORDERS_CONNECT(state) {
+            state.status = "CONNECTING";
         },
-        onErrorWSFeed(state, action) {
-            state.error = true;
-            state.errorCode = action.payload.code
+        ORDERS_DISCONNECT(state) {
+            state.status = "OFFLINE";
+            state.data = null;
+            state.orders= [];
+            state.fromLink = null;
         },
-        onMessageWSFeed(state, action) {
-            state.success = action.payload.success;
+        ORDERS_WS_CONNECTING(state) {
+            state.status = 'CONNECTING';
+        },
+        ORDERS_WS_OPEN(state) {
+            state.status = 'ONLINE';
+        },
+        ORDERS_WS_CLOSE(state) {
+            state.status = 'OFFLINE';
+        },
+        ORDERS_WS_ERROR(state, action) {
+            state.status = 'OFFLINE';
+            state.connectionError = action.payload;
+        },
+        ORDERS_WS_MESSAGE(state, action) {
+            state.data = action.payload;
             state.orders = action.payload.orders;
-            state.total =action.payload.total;
-            state.totalToday = action.payload.totalToday;
         },
-        onCloseWSFeed(state, action) {
-            state.connectStatus = action.payload;
-            state.success = null;
-            state.orders = [];
-            state.total = 0;
-            state.totalToday = 0;
+        cameFromLink(state, action) {
+            state.fromLink = action.payload;
         },
     },
 });
-export const { onOpenWSFeed, onErrorWSFeed, onMessageWSFeed, onCloseWSFeed } = feedOrders.actions;
+export const { 
+    ORDERS_CONNECT,
+    ORDERS_DISCONNECT, 
+    ORDERS_WS_CONNECTING, 
+    ORDERS_WS_OPEN,
+    ORDERS_WS_CLOSE,
+    ORDERS_WS_ERROR,
+    ORDERS_WS_MESSAGE,
+    cameFromLink
+} = feedOrders.actions;
 
 export default feedOrders.reducer;

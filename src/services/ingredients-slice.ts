@@ -9,7 +9,7 @@ const initialState: IIngredientsState = {
     error: false,
 };
 
-export const fetchIngredients = createAsyncThunk<any>('ingredients/getIngredients', async () => {
+export const fetchIngredients = createAsyncThunk('ingredients/getIngredients', async () => {
     return request(INGREDIENTS_URL);
 });
 

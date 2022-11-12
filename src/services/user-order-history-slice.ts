@@ -2,42 +2,57 @@ import { createSlice } from '@reduxjs/toolkit';
 import { IOrdersState } from '../types/store-states';
 
 const initialState: IOrdersState = {
-    connectStatus: '',
-    error: null,
-    errorCode: null,
-    success: null,
+    status: '',
+    connectionError: '',
+    data: null,
     orders: [],
-    total: 0,
-    totalToday: 0,
+    fromLink: null,
 };
-
 
 export const userOrderHistory = createSlice({
     name: 'userOrderHistory',
     initialState,
     reducers: {
-        onOpenWSUser(state, action) {
-            state.connectStatus = action.payload;
+        ORDERS_CONNECT_USER(state, action) {
+            state.status = "CONNECTING";
         },
-        onErrorWSUser(state, action) {
-            state.error = true;
-            state.errorCode = action.payload.code
-        },
-        onMessageWSUser(state, action) {
-            state.success = action.payload.success;
-            state.orders = action.payload.orders;
-            state.total =action.payload.total;
-            state.totalToday = action.payload.totalToday;
-        },
-        onCloseWSUser(state, action) {
-            state.connectStatus = action.payload;
-            state.success = null;
+        ORDERS_DISCONNECT_USER(state, action) {
+            state.status = "OFFLINE";
+            state.data = null;
             state.orders = [];
-            state.total = 0;
-            state.totalToday = 0;
+            state.fromLink = null;
+        },
+        ORDERS_WS_CONNECTING_USER(state, action) {
+            state.status = 'CONNECTING';
+        },
+        ORDERS_WS_OPEN_USER(state, action) {
+            state.status = 'ONLINE';
+        },
+        ORDERS_WS_CLOSE_USER(state, action) {
+            state.status = 'OFFLINE';
+        },
+        ORDERS_WS_ERROR_USER(state, action) {
+            state.status = 'OFFLINE';
+            state.connectionError = action.payload;
+        },
+        ORDERS_WS_MESSAGE_USER(state, action) {
+            state.data = action.payload;
+            state.orders = action.payload.orders;
+        },
+        cameFromLinkUser(state, action) {
+            state.fromLink = action.payload;
         },
     },
 });
-export const { onOpenWSUser, onErrorWSUser, onMessageWSUser, onCloseWSUser } = userOrderHistory.actions;
+export const { 
+    ORDERS_CONNECT_USER, 
+    ORDERS_DISCONNECT_USER, 
+    ORDERS_WS_CONNECTING_USER, 
+    ORDERS_WS_OPEN_USER,
+    ORDERS_WS_CLOSE_USER,
+    ORDERS_WS_ERROR_USER,
+    ORDERS_WS_MESSAGE_USER,
+    cameFromLinkUser
+} = userOrderHistory.actions;
 
 export default userOrderHistory.reducer;

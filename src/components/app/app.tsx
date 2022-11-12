@@ -1,5 +1,5 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
-import { FC, useEffect, useRef } from 'react';
+import { FC, useEffect } from 'react';
 import styles from './app.module.css';
 import AppHeader from '../header/app-header';
 import Home from '../../pages/home/home';
@@ -24,9 +24,7 @@ import ProtectedRoutes from '../../utils/private-routes/protected-routes';
 import Feed from '../../pages/feed/feed';
 import Orders from '../../pages/account/profile/orders/orders';
 import OrderInfo from '../order-full-description/order-info';
-import { FEED_ORDERS_URL } from '../../utils/config';
-import { onCloseWSFeed, onErrorWSFeed, onMessageWSFeed, onOpenWSFeed } from '../../services/feed-orders-slice';
-import { deleteOrderDescription, setOrderDescription } from '../../services/order-description-slice';
+import { setOrderDescription } from '../../services/order-description-slice';
 import Modal from '../modal/modal';
 import { useAppDispatch, useAppSelector } from '../../services/hook';
 
@@ -66,30 +64,6 @@ const App: FC = (): JSX.Element => {
         }
     }, [openModal, dispatch, location.state]);
 
-    //  SOCKET для ленты. Открываю соединение здесь, чтобы если кто-то перешёл по ссылку на заказ, данные могли отобразиться, иначе не отображаются...
-    let socketFeed: any = useRef();
-
-    useEffect(() => {
-        socketFeed.current = new WebSocket(FEED_ORDERS_URL);
-        socketFeed.current.onopen = (event: Event) => {
-            dispatch(onOpenWSFeed(event.type));
-        };
-        socketFeed.current.onmessage = (event: MessageEvent) => {
-            const { data } = event;
-            const parsedData = JSON.parse(data);
-            dispatch(onMessageWSFeed(parsedData));
-        };
-        socketFeed.current.onclose = (event: CloseEvent) => {
-            if (event.wasClean) {
-                dispatch(onCloseWSFeed(event.type));
-            } else if (!event.wasClean) {
-                dispatch(onErrorWSFeed(event));
-            }
-        };
-        socketFeed.current.onerror = (event: Error) => {
-            dispatch(onErrorWSFeed(event));
-        };
-    }, [dispatch]);
 
     const handleCloseModal = (): void => {
         dispatch(onCloseModal());

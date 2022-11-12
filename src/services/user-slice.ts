@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import { LOGIN_URL, REGISTER_URL, PASSWORD_RESET_URL, NEW_PASSWORD_SAVE_URL, TOKEN_URL, USER_URL, LOGOUT_URL } from '../utils/config';
 import Cookies from 'js-cookie';
 import { request } from '../utils/request';
@@ -76,7 +76,7 @@ export const newPasswordSave = createAsyncThunk<any, Omit<IUserData, 'name' | 'e
 });
 
 // TOKEN UPDATE
-export const tokenUpdate = createAsyncThunk<any>('user/newToken', async () => {
+export const tokenUpdate = createAsyncThunk('user/newToken', async () => {
     let token = Cookies.get('refreshToken');
     return await request(TOKEN_URL, {
         method: 'POST',
@@ -86,7 +86,7 @@ export const tokenUpdate = createAsyncThunk<any>('user/newToken', async () => {
 });
 
 // FETCH USER DATA
-export const fetchUserData = createAsyncThunk<any>('user/userData', async () => {
+export const fetchUserData = createAsyncThunk('user/userData', async () => {
     return await request(USER_URL, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json', Authorization: Cookies.get('accessToken') },
@@ -94,7 +94,7 @@ export const fetchUserData = createAsyncThunk<any>('user/userData', async () => 
 });
 
 // LOGOUT
-export const logout = createAsyncThunk<any>('user/logout', async () => {
+export const logout = createAsyncThunk('user/logout', async () => {
     const token = Cookies.get('refreshToken');
     return await request(LOGOUT_URL, {
         method: 'POST',
