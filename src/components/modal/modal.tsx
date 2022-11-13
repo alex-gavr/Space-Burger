@@ -2,9 +2,8 @@ import React, { useEffect, ReactNode, FC, KeyboardEvent } from 'react';
 import styles from './modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { createPortal } from 'react-dom';
-import { ModalOverlay } from '../modal-overlay/modal-overlay';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../types';
+import { ModalOverlay } from './modal-overlay/modal-overlay';
+import { useAppSelector } from '../../services/hook';
 
 interface Props {
     children: ReactNode;
@@ -12,7 +11,7 @@ interface Props {
 }
 
 const Modal:FC<Props> = ({ children, onClose }): JSX.Element | null => {
-    const { isModalOpen, title } = useSelector((state: RootState) => state.modal);
+    const { isModalOpen, title } = useAppSelector((state) => state.modal);
 
     // CLOSE IF ESCAPE KEY PRESSED
     useEffect(() => {

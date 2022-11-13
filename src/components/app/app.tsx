@@ -4,9 +4,8 @@ import styles from './app.module.css';
 import AppHeader from '../header/app-header';
 import Home from '../../pages/home/home';
 import { Preloader } from '../preloader/preloader';
-import { useSelector, useDispatch } from 'react-redux';
 import { fetchIngredients } from '../../services/ingredients-slice';
-import { Location, Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import Login from '../../pages/registration/login';
 import Registration from '../../pages/registration/registration';
 import ForgotPassword from '../../pages/registration/forgot-password';
@@ -17,27 +16,36 @@ import { fetchUserData } from '../../services/user-slice';
 import LogInRoutes from '../../utils/private-routes/login-routes';
 import ResetPasswordProtectionRoute from '../../utils/private-routes/reset-password-protection';
 import { tokenUpdate } from '../../services/user-slice';
-import { IngredientDetails } from '../ingredient-details/ingredient-details';
+import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
 import Cookies from 'js-cookie';
-import { openModalWithCookie } from '../../services/modal-slice';
-import { setDetails } from '../../services/ingredient-details-slice';
+import { onCloseModal, openModalWithCookie } from '../../services/modal-slice';
+import { deleteDetails, setDetails } from '../../services/ingredient-details-slice';
 import ProtectedRoutes from '../../utils/private-routes/protected-routes';
-import { AppDispatch, RootState } from '../../types';
+import Feed from '../../pages/feed/feed';
+import Orders from '../../pages/account/profile/orders/orders';
+import OrderInfo from '../order-full-description/order-info';
+import { deleteOrderDescription, setOrderDescription } from '../../services/order-description-slice';
+import Modal from '../modal/modal';
+import { useAppDispatch, useAppSelector } from '../../services/hook';
 
-const App:FC = ():JSX.Element => {
-    const { loading } = useSelector((state: RootState) => state.ingredients);
-    const { tokenExpired } = useSelector((state: RootState) => state.user);
-    const dispatch: AppDispatch = useDispatch();
-    const location: Location = useLocation();
+const App: FC = (): JSX.Element => {
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const location = useLocation();
+    const { loading } = useAppSelector((state) => state.ingredients);
+    const { tokenExpired } = useAppSelector((state) => state.user);
+    const token = Cookies.get('accessToken');
+    const { orderDescription } = useAppSelector((state) => state.orderDescription);
+    const { details } = useAppSelector((state) => state.details);
 
-    const background: Location = location.state?.background;
+    const background = location.state?.background;
 
     useEffect(() => {
         dispatch(fetchIngredients());
         if (token) {
             dispatch(fetchUserData());
         }
-    }, []);
+    }, [token]);
 
     useEffect(() => {
         if (tokenExpired) {
@@ -46,15 +54,27 @@ const App:FC = ():JSX.Element => {
     }, [tokenExpired]);
 
     // Modal Opening Magic After Page Refresh
-    const token = Cookies.get('accessToken');
     const openModal = Cookies.get('isModalOpen');
 
     useEffect(() => {
-        if (openModal) {
+        if (openModal && location.state?.ingredient) {
             dispatch(setDetails(location.state.ingredient));
             dispatch(openModalWithCookie('Детали ингредиента'));
+        } else if (openModal && location.state?.feed) {
+            dispatch(setOrderDescription(location.state.feed));
+            dispatch(openModalWithCookie(''));
+        } else if (openModal && location.state?.profile) {
+            dispatch(setOrderDescription(location.state.profile));
+            dispatch(openModalWithCookie(''));
         }
     }, [openModal]);
+
+    const handleCloseModal = (): void => {
+        dispatch(onCloseModal());
+        dispatch(deleteDetails());
+        dispatch(deleteOrderDescription());
+        navigate(-1);
+    };
 
     return (
         <>
@@ -68,8 +88,12 @@ const App:FC = ():JSX.Element => {
                             <Route path='*' element={<NotFound />} />
                             <Route path='/' element={<Home />} />
                             <Route path='/ingredients/:id' element={<IngredientDetails />} />
+                            <Route path='/feed' element={<Feed />} />
+                            <Route path='/feed/:id' element={<OrderInfo />} />
                             <Route element={<ProtectedRoutes />}>
                                 <Route path='/profile' element={<Profile />} />
+                                <Route path='/profile/orders' element={<Orders />} />
+                                <Route path='/profile/orders/:id' element={<OrderInfo />} />
                             </Route>
                             <Route element={<LogInRoutes />}>
                                 <Route path='/login' element={<Login />} />
@@ -81,6 +105,16 @@ const App:FC = ():JSX.Element => {
                             </Route>
                         </Routes>
                     </main>
+                    { orderDescription !== null && (
+                        <Modal onClose={handleCloseModal}>
+                            <OrderInfo />
+                        </Modal>
+                    )}
+                    { details !== null && (
+                        <Modal onClose={handleCloseModal}>
+                            <IngredientDetails />
+                        </Modal>
+                    )}
                 </div>
             )}
         </>

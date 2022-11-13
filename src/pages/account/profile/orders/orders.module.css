@@ -1,0 +1,29 @@
+.grid{
+    width: 80%;
+    display: grid;
+    grid-template-columns: 0.7fr 2fr 0.35fr;
+    gap: 3.75rem;
+}
+.feedContainer{
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1rem;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 600px;
+    padding-right: 0.5rem;
+}
+
+.feedContainer::-webkit-scrollbar {
+    width: 0.4em;
+}
+.feedContainer::-webkit-scrollbar-track {
+    background: var(--background);
+}
+
+.feedContainer::-webkit-scrollbar-thumb {
+    background: var(--text-inactive-color);
+}
+.feedContainer::-webkit-scrollbar-thumb:hover {
+    background: var(--colors-interface-accent);
+}

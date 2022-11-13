@@ -1,0 +1,84 @@
+.card {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    gap: 1.5rem;
+    background-color: var(--background-element);
+    border-radius: 2rem;
+    padding: 1.5rem;
+    margin-right: 1.5rem;
+    overflow: hidden;
+    cursor: pointer;
+}
+.orderInfoContainer{
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.ingredientsAndPriceContainer {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 1.5rem;
+}
+.ingredientContainer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 80px;
+}
+
+.ingredient {
+    position: absolute;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background: linear-gradient(black, black) padding-box, linear-gradient(to right, #801ab2, #4c4cff) border-box;
+    border: 2px solid transparent;
+}
+
+.ingredient > img {
+    display: block;
+}
+.priceContainer {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+.status{
+    margin-top: 0.5rem;
+}
+.statusDone{
+    margin-top: 0.5rem;
+    color: var(--colors-interface-success);
+}
+
+
+/* SPAN */
+.unseenIngredients {
+    z-index: 100;
+    background-color: rgba(0,0,0,0.4);
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

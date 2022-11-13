@@ -1,0 +1,110 @@
+.wrapper {
+    display: flex;
+    flex-flow: column nowrap;
+    align-content: center;
+    gap: 2.5rem;
+    max-width: 100%;
+    margin-top: 3rem;
+    padding: 0rem 3rem;
+}
+
+.columns {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 0rem 3.75rem;
+    margin-bottom: 5rem;
+}
+@media screen and (max-width: 1250px) {
+    .columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+.feedContainer{
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1rem;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 600px;
+    padding-right: 0.5rem;
+}
+.numbersWrapper{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-content: center;
+    width: 100%;
+    gap: 3.75rem;
+}
+
+.highestContainer{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.25rem;
+}
+.middleContainer{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-content: center;
+}
+.middleContainer > p {
+    text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25), 0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
+}
+.lowestContainer{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-content: center;
+}
+.lowestContainer > p {
+    text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25), 0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
+}
+.readyContainer{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+    gap: 1.5rem;
+}
+.readyContainer > ul {
+    display: flex;
+    flex-flow: column wrap;
+    height: 320px;
+    gap: 0.5rem;
+}
+.inWorkContainer > ul {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 0.5rem;
+}
+.readyContainer > ul > li {
+    color: var(--colors-interface-success);
+}
+
+.inWorkContainer{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+    gap: 1.5rem;
+}
+
+
+
+
+.feedContainer::-webkit-scrollbar {
+    width: 0.4em;
+}
+.feedContainer::-webkit-scrollbar-track {
+    background: var(--background);
+}
+
+.feedContainer::-webkit-scrollbar-thumb {
+    background: var(--text-inactive-color);
+}
+.feedContainer::-webkit-scrollbar-thumb:hover {
+    background: var(--colors-interface-accent);
+}

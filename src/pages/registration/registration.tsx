@@ -3,14 +3,13 @@ import React, { FC, useState } from 'react';
 import styles from './styles.module.css';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../../services/user-slice';
 import { PreloaderSmall } from '../../components/preloader/preloader-small';
-import { AppDispatch, RootState } from '../../types';
+import { useAppDispatch, useAppSelector } from '../../services/hook';
 
 const Registration: FC = (): JSX.Element => {
-    const dispatch: AppDispatch = useDispatch();
-    const { accountExists, loading } = useSelector((state: RootState) => state.user);
+    const dispatch = useAppDispatch();
+    const { accountExists, loading } = useAppSelector((state) => state.user);
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');

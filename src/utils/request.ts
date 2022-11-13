@@ -9,6 +9,6 @@ interface IOptions {
     body?: any;
 }
 
-export const request = (url: RequestInfo | URL, options: IOptions | undefined) => {
+export const request = (url: RequestInfo | URL, options?: IOptions | undefined) => {
     return fetch(url, options).then(checkResponse);
 };
