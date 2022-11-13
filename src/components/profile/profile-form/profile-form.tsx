@@ -61,7 +61,6 @@ export const ProfileForm: FC = () => {
             const userData = { email: email, password: password, name: name };
 
             if (name || email || password) {
-                console.log(userData);
                 dispatch(profileDataChange(userData));
                 setDisableEmailChange(true);
                 setDisablePasswordChange(true);

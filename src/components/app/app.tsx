@@ -24,17 +24,19 @@ import ProtectedRoutes from '../../utils/private-routes/protected-routes';
 import Feed from '../../pages/feed/feed';
 import Orders from '../../pages/account/profile/orders/orders';
 import OrderInfo from '../order-full-description/order-info';
-import { setOrderDescription } from '../../services/order-description-slice';
+import { deleteOrderDescription, setOrderDescription } from '../../services/order-description-slice';
 import Modal from '../modal/modal';
 import { useAppDispatch, useAppSelector } from '../../services/hook';
 
 const App: FC = (): JSX.Element => {
     const navigate = useNavigate();
-    const dispatch= useAppDispatch();
+    const dispatch = useAppDispatch();
     const location = useLocation();
     const { loading } = useAppSelector((state) => state.ingredients);
     const { tokenExpired } = useAppSelector((state) => state.user);
     const token = Cookies.get('accessToken');
+    const { orderDescription } = useAppSelector((state) => state.orderDescription);
+    const { details } = useAppSelector((state) => state.details);
 
     const background = location.state?.background;
 
@@ -43,13 +45,13 @@ const App: FC = (): JSX.Element => {
         if (token) {
             dispatch(fetchUserData());
         }
-    }, [dispatch, token]);
+    }, [token]);
 
     useEffect(() => {
         if (tokenExpired) {
             dispatch(tokenUpdate());
         }
-    }, [tokenExpired, dispatch]);
+    }, [tokenExpired]);
 
     // Modal Opening Magic After Page Refresh
     const openModal = Cookies.get('isModalOpen');
@@ -58,19 +60,21 @@ const App: FC = (): JSX.Element => {
         if (openModal && location.state?.ingredient) {
             dispatch(setDetails(location.state.ingredient));
             dispatch(openModalWithCookie('Детали ингредиента'));
-        } else if (openModal && location.state?.order) {
-            dispatch(setOrderDescription(location.state.order));
+        } else if (openModal && location.state?.feed) {
+            dispatch(setOrderDescription(location.state.feed));
+            dispatch(openModalWithCookie(''));
+        } else if (openModal && location.state?.profile) {
+            dispatch(setOrderDescription(location.state.profile));
             dispatch(openModalWithCookie(''));
         }
-    }, [openModal, dispatch, location.state]);
-
+    }, [openModal]);
 
     const handleCloseModal = (): void => {
         dispatch(onCloseModal());
         dispatch(deleteDetails());
+        dispatch(deleteOrderDescription());
         navigate(-1);
     };
-
 
     return (
         <>
@@ -101,10 +105,16 @@ const App: FC = (): JSX.Element => {
                             </Route>
                         </Routes>
                     </main>
-                    <Modal onClose={handleCloseModal}>
-                        {location.state?.ingredient && <IngredientDetails />}
-                        {location.state?.order && <OrderInfo />}
-                    </Modal>
+                    { orderDescription !== null && (
+                        <Modal onClose={handleCloseModal}>
+                            <OrderInfo />
+                        </Modal>
+                    )}
+                    { details !== null && (
+                        <Modal onClose={handleCloseModal}>
+                            <IngredientDetails />
+                        </Modal>
+                    )}
                 </div>
             )}
         </>

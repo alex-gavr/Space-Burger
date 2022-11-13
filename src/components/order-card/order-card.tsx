@@ -48,10 +48,10 @@ const OrderCard: FC<IProps> = ({ order }): JSX.Element => {
     const handleOpenModal = (order: IOrder): void => {
         if (location.pathname === '/feed') {
             dispatch(onOpenModal(''));
-            navigate(`/feed/${order._id}`, { state: { background: location, order: order } });
+            navigate(`/feed/${order._id}`, { state: { background: location, feed: order } });
         } else if (location.pathname === '/profile/orders') {
             dispatch(onOpenModal(''));
-            navigate(`/profile/orders/${order._id}`, { state: { background: location, order: order } });
+            navigate(`/profile/orders/${order._id}`, { state: { background: location, profile: order } });
         }
     };
 

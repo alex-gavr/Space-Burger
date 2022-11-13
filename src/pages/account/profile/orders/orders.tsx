@@ -1,6 +1,6 @@
 import '@ya.praktikum/react-developer-burger-ui-components';
 import Cookies from 'js-cookie';
-import { useEffect, FC, useRef } from 'react';
+import { useEffect, FC } from 'react';
 import OrderCard from '../../../../components/order-card/order-card';
 import { ProfileNavigation } from '../../../../components/profile/profile-navigation/profile-navigation';
 import { useAppDispatch, useAppSelector } from '../../../../services/hook';
