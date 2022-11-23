@@ -13,22 +13,22 @@ export const userOrderHistory = createSlice({
     name: 'userOrderHistory',
     initialState,
     reducers: {
-        ORDERS_CONNECT_USER(state, action) {
+        ORDERS_CONNECT_USER(state) {
             state.status = "CONNECTING";
         },
-        ORDERS_DISCONNECT_USER(state, action) {
+        ORDERS_DISCONNECT_USER(state) {
             state.status = "OFFLINE";
             state.data = null;
             state.orders = [];
             state.fromLink = null;
         },
-        ORDERS_WS_CONNECTING_USER(state, action) {
+        ORDERS_WS_CONNECTING_USER(state) {
             state.status = 'CONNECTING';
         },
-        ORDERS_WS_OPEN_USER(state, action) {
+        ORDERS_WS_OPEN_USER(state) {
             state.status = 'ONLINE';
         },
-        ORDERS_WS_CLOSE_USER(state, action) {
+        ORDERS_WS_CLOSE_USER(state) {
             state.status = 'OFFLINE';
         },
         ORDERS_WS_ERROR_USER(state, action) {

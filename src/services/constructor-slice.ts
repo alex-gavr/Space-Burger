@@ -13,7 +13,6 @@ const constructorSlice = createSlice({
         addIngredient(state, action) {
             if (action.payload.type === 'bun') {
                 const hasBun = state.bun.some((i) => i.type === 'bun');
-
                 if (hasBun) {
                     let currentBun = state.bun.find((i) => i.type === 'bun');
                     state.bun.splice(
