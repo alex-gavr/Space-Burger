@@ -7,9 +7,11 @@
 .VSCodeCounter
 .vscode
 
+
 # testing
 /coverage
-.cypress.config.ts
+/cypress.config.ts
+
 
 # production
 /build
