@@ -86,6 +86,7 @@ const App: FC = (): JSX.Element => {
                     <main>
                         <Routes location={background ?? location}>
                             <Route path='*' element={<NotFound />} />
+                            <Route path='/space-burger/' element={<Home />} />
                             <Route path='/' element={<Home />} />
                             <Route path='/ingredients/:id' element={<IngredientDetails />} />
                             <Route path='/feed' element={<Feed />} />
