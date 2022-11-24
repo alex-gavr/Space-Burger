@@ -36,7 +36,7 @@ const Modal:FC<Props> = ({ children, onClose }): JSX.Element | null => {
                 }}>
                 <div className={styles.rowBetween}>
                     <h1>{title}</h1>
-                    <div onClick={onClose} className={styles.iconContainer}>
+                    <div onClick={onClose} className={styles.iconContainer} data-test='modal-close-button'>
                         <CloseIcon type='primary' />
                     </div>
                 </div>

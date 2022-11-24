@@ -16,7 +16,7 @@ const IngredientCategory: FC<Props> = ({type , title}): JSX.Element => {
     const { bun, mainIngredients } = useAppSelector((state) => state.burgerConstructor);
 
     return (
-        <div>
+        <div data-test='ingredient'>
             <h3 className='text text_type_main-medium'>{title}</h3>
             <ul className={styles.container}>
                 {filteredIngredients &&

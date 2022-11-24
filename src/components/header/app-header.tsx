@@ -37,7 +37,7 @@ const AppHeader:FC = (): JSX.Element => {
                     {/* MAIN NAV */}
                     <ul>
                         <li className={styles.profile}>
-                            <NavLink to='/profile' className={classNameToggle}>
+                            <NavLink to='/profile' className={classNameToggle} data-test='profileButton'>
                                 <div className={styles.textIconContainer}>
                                     <ProfileIcon type='primary' />
                                     <p>Личный кабинет</p>
@@ -81,7 +81,7 @@ const AppHeader:FC = (): JSX.Element => {
                         </li>
                         <li className={styles.fullLogoThird}>
                             <NavLink to='/'>
-                                <div className={styles.textIconContainer}>
+                                <div className={styles.textIconContainer} data-test='logo'>
                                     <Logo />
                                 </div>
                             </NavLink>
