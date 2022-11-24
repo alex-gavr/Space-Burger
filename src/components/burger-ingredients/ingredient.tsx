@@ -40,7 +40,7 @@ const Ingredient: FC<IProps> = ({ ingredient, bun, mainIngredients }):JSX.Elemen
     }
 
     return (
-        <li className={styles.containerElement} onClick={() => handleOpenModal(ingredient)} ref={drag}>
+        <li className={styles.containerElement} onClick={() => handleOpenModal(ingredient)} ref={drag} data-test={`ingredient-${ingredient._id}`}>
             <div className={styles.containerImage}>
                 <img src={ingredient.image} alt={ingredient.name} />
             </div>

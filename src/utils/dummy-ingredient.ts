@@ -1,0 +1,61 @@
+//  Здесь расположены болванки ингредиентов для тестовых файлов
+export const dummyIngredientBun = {
+    calories: 2222,
+    carbohydrates: 120,
+    fat: 50,
+    image: 'bun.png',
+    image_large: 'bun.png',
+    image_mobile: 'bun.png',
+    name: 'burger',
+    price: 9999,
+    proteins: 50,
+    type: 'bun',
+    __v: 1,
+    _id: '21512421',
+};
+export const dummyIngredientBun2 = {
+    calories: 1222,
+    carbohydrates: 120,
+    fat: 10,
+    image: 'bun.png',
+    image_large: 'bun.png',
+    image_mobile: 'bun.png',
+    name: 'burgerBun2',
+    price: 9999,
+    proteins: 50,
+    type: 'bun',
+    __v: 1,
+    _id: '21515212421',
+};
+
+export const dummyIngredientSauce = {
+    calories: 3333,
+    carbohydrates: 332,
+    fat: 10,
+    image: 'sauce.png',
+    image_large: 'sauce.png',
+    image_mobile: 'sauce.png',
+    name: 'sauce',
+    price: 999,
+    proteins: 50,
+    type: 'sauce',
+    __v: 1,
+    _id: '21421',
+    uuid: 'string',
+};
+
+export const dummyIngredientMain = {
+    calories: 433,
+    carbohydrates: 32,
+    fat: 90,
+    image: 'main.png',
+    image_large: 'main.png',
+    image_mobile: 'main.png',
+    name: 'main',
+    price: 9199,
+    proteins: 59,
+    type: 'main',
+    __v: 1,
+    _id: '2142491',
+    uuid: 'string',
+};

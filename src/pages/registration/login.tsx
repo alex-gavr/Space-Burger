@@ -48,6 +48,7 @@ const Login: FC = (): JSX.Element => {
                     error={false}
                     errorText={'Ошибка'}
                     size={'default'}
+                    data-test='emailInput'
                 />
                 <Input
                     placeholder={'Пароль'}
@@ -60,9 +61,10 @@ const Login: FC = (): JSX.Element => {
                     size={'default'}
                     icon={passwordType === 'password' ? 'ShowIcon' : 'HideIcon'}
                     onIconClick={onIconClick}
+                    data-test='passwordInput'
                 />
                 <div className={styles.marginBottomForButton}>
-                    <Button htmlType='submit' type='primary' disabled={!email || !password}>
+                    <Button htmlType='submit' type='primary' disabled={!email || !password} data-test='loginButton'>
                         {loading ? <PreloaderSmall /> : 'Войти'}
                     </Button>
                 </div>

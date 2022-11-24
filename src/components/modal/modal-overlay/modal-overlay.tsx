@@ -8,7 +8,7 @@ interface Props {
 
 export const ModalOverlay: FC<Props> = ({ children, onClose }): JSX.Element => {
     return (
-        <div className={styles.background} onClick={onClose}>
+        <div className={styles.background} onClick={onClose} data-test='modal-overlay'>
             {children}
         </div>
     );

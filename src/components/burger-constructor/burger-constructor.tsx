@@ -60,7 +60,7 @@ const BurgerConstructor: FC = (): JSX.Element => {
     const [{ canDrop }, drop] = useDrop(() => ({
         accept: 'ingredient',
         drop: (ingredient: any) => {
-            const item = {...ingredient.ingredient, uuid: uuidv4()}
+            const item = { ...ingredient.ingredient, uuid: uuidv4() };
             dispatch(addIngredient(item));
         },
         collect: (monitor) => ({
@@ -70,7 +70,7 @@ const BurgerConstructor: FC = (): JSX.Element => {
 
     return (
         <section className={styles.wrapper}>
-            <ul ref={drop} className={`${styles.container} ${canDrop ? styles.canDrop : null}`}>
+            <ul ref={drop} className={`${styles.container} ${canDrop ? styles.canDrop : null}`} data-test='drag-destination'>
                 {/* ВЕРХНЯЯ БУЛКА */}
                 <div className={styles.paddingRight}>
                     {bun &&
@@ -120,8 +120,14 @@ const BurgerConstructor: FC = (): JSX.Element => {
                     <CurrencyIcon type='primary' />
                 </div>
                 {/* Кнопка оформить заказ */}
-                <Button htmlType='submit' type='primary' size='large' onClick={handleSubmit} disabled={bun.length === 0 || mainIngredients.length === 0 ? true : false}>
-                    {loading ? <PreloaderSmall /> :  "Оформить заказ"}
+                <Button
+                    htmlType='submit'
+                    type='primary'
+                    size='large'
+                    onClick={handleSubmit}
+                    disabled={bun.length === 0 || mainIngredients.length === 0 ? true : false}
+                    data-test='makeOrderButton'>
+                    {loading ? <PreloaderSmall /> : 'Оформить заказ'}
                 </Button>
             </div>
             {orderDetails.success && loginSuccess && (

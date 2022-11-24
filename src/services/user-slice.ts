@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { LOGIN_URL, REGISTER_URL, PASSWORD_RESET_URL, NEW_PASSWORD_SAVE_URL, TOKEN_URL, USER_URL, LOGOUT_URL } from '../utils/config';
 import Cookies from 'js-cookie';
 import { request } from '../utils/request';
@@ -156,19 +156,15 @@ export const userSlice = createSlice({
             state.loginSuccess = null;
         });
         builder.addCase(login.fulfilled, (state, action) => {
-            if (!action.payload.success) {
-                state.loginSuccess = false;
-            } else {
-                state.name = action.payload.user.name;
-                state.email = action.payload.user.email;
-                Cookies.remove('refreshToken', { path: '/' });
-                Cookies.remove('accessToken', { path: '/' });
-                Cookies.set('refreshToken', action.payload.refreshToken);
-                Cookies.set('accessToken', action.payload.accessToken);
-                state.loginSuccess = true;
-                state.logoutSuccess = false;
-                state.authorized = true;
-            }
+            state.name = action.payload.user.name;
+            state.email = action.payload.user.email;
+            Cookies.remove('refreshToken', { path: '/' });
+            Cookies.remove('accessToken', { path: '/' });
+            Cookies.set('refreshToken', action.payload.refreshToken);
+            Cookies.set('accessToken', action.payload.accessToken);
+            state.loginSuccess = true;
+            state.logoutSuccess = false;
+            state.authorized = true;
             state.loading = false;
         });
         builder.addCase(login.rejected, (state) => {
