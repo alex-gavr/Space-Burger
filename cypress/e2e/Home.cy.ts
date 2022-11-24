@@ -9,9 +9,10 @@ describe('Here we test home component aka user order flow ', () => {
     });
 
     it('should login', () => {
+        
         cy.getBySel('profileButton').click();
-        cy.getBySel('emailInput').type('sashadrug10@gmail.com');
-        cy.getBySel('passwordInput').type('12345');
+        cy.getBySel('emailInput').type(Cypress.env('email'));
+        cy.getBySel('passwordInput').type(Cypress.env('password'));
         cy.getBySel('loginButton').click();
         cy.getBySel('logo').click();
     });
